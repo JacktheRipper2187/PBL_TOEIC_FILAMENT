@@ -3,22 +3,19 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\JadwalPendaftaranResource\Pages;
-use App\Filament\Resources\JadwalPendaftaranResource\RelationManagers;
-use App\Models\JadwalPendaftaran;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Models\JadwalPendaftaran;
 
 class JadwalPendaftaranResource extends Resource
 {
     protected static ?string $model = JadwalPendaftaran::class;
+    protected static ?string $navigationIcon = 'heroicon-o-calendar';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+    // Wajib ada: Form configuration
     public static function form(Form $form): Form
     {
         return $form
@@ -31,14 +28,30 @@ class JadwalPendaftaranResource extends Resource
                 Forms\Components\TextInput::make('kuota')
                     ->required()
                     ->numeric(),
+                Forms\Components\DatePicker::make('tanggal_mulai')
+                    ->required(),
+                Forms\Components\DatePicker::make('tanggal_akhir')
+                    ->required(),
             ]);
     }
 
+    // Table configuration (sudah ada di kode Anda)
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('judul')
+                    ->label('Judul Pendaftaran'),
+                Tables\Columns\TextColumn::make('content')
+                    ->label('Content Pendaftaran'),
+                Tables\Columns\TextColumn::make('kuota')
+                    ->label('Kuota'),
+                Tables\Columns\TextColumn::make('tanggal_mulai')
+                    ->label('Tanggal Mulai Pendaftaran')
+                    ->date('d F Y'),
+                Tables\Columns\TextColumn::make('tanggal_akhir')
+                    ->label('Tanggal Tenggat Pendaftaran')
+                    ->date('d F Y'),
             ])
             ->filters([
                 //
@@ -53,13 +66,7 @@ class JadwalPendaftaranResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
+    // Wajib ada: Pages/routes configuration
     public static function getPages(): array
     {
         return [
