@@ -8,7 +8,7 @@
     $whatsapp = get_setting_value('_whatsapp');
     $pendaftaran = get_pendaftaran_value();
         // Ambil data dari model yang sesuai dengan kategori
-    $jadwalPendaftaran = get_JadwalPendafatran_value();
+    $jadwalPendaftaran = get_JadwalPendaftaran_value();
     $ujian = get_JadwalUjian_value();
     $pengambilan = get_JadwalSertifikat_value();
 @endphp
@@ -174,7 +174,7 @@
     <section class="page-section portfolio" id="pendaftaran">
         <div class="container">
             <!-- Pendaftaran Section Heading-->
-            <h2 class="page-section-heading text-center text-uppercase text-secondary mb-4">PENDAFTARAN</h2>
+            <h2 class="page-section-heading text-center text-uppercase text-secondary mb-4">PENDAFTAR</h2>
             <!-- Icon Divider-->
             <div class="divider-custom">
                 <div class="divider-custom-line"></div>
@@ -380,8 +380,8 @@
                                         Daftar Sekarang
                                     </a>
                                 @else
-                                    <a href="{{ route('pendaftaran') }}" class="btn btn-primary btn-lg">
-                                        Daftar Sekarang
+                                   <a href="{{ route('formpendaftaran') }}" class="btn btn-primary btn-lg">
+                                        Daftar Sekarang7
                                     </a>
                                 @endif
                                 
