@@ -35,7 +35,7 @@ function get_pendaftaran_value()
   $data = pendaftaran::all();
   return $data;
 }
-function get_JadwalPendafatran_value()
+function get_JadwalPendaftaran_value()
 {
   $data = JadwalPendaftaran::all();
   return $data;

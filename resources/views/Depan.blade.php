@@ -8,7 +8,7 @@
     $whatsapp = get_setting_value('_whatsapp');
     $pendaftaran = get_pendaftaran_value();
         // Ambil data dari model yang sesuai dengan kategori
-    $jadwalPendaftaran = get_JadwalPendafatran_value();
+    $jadwalPendaftaran = get_JadwalPendaftaran_value();
     $ujian = get_JadwalUjian_value();
     $pengambilan = get_JadwalSertifikat_value();
 @endphp
