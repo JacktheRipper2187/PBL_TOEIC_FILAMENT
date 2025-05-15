@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PesertaController;
 use App\Http\Controllers\PendaftaranController;
+use Illuminate\Support\Facades\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,3 +34,10 @@ Route::get('/', function () {
 Route::get('/pendaftaran', function () {
     return view('pendaftaran'); // resources/views/pendaftaran.blade.php
 })->name('pendaftaran');
+
+Route::get('/change-language/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'id'])) {
+        Session::put('locale', $locale);
+    }
+    return redirect()->back();
+})->name('change.language');

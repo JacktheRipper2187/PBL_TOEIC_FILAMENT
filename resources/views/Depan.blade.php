@@ -69,22 +69,22 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded"
-                            href="#beranda">Beranda</a></li>
+                            href="#beranda">{{ __('messages.home') }}</a></li>
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded"
-                            href="#syarat">Syarat & Ketentuan</a></li>
+                            href="#syarat">{{ __('messages.terms') }}</a></li>
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded"
-                            href="#pendaftaran">Pendaftaran</a></li>
+                            href="#pendaftaran">{{ __('messages.registration') }}</a></li>
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded"
-                            href="#jadwal">Jadwal</a></li>
+                            href="#jadwal">{{ __('messages.schedule') }}</a></li>
                     <!-- Menambahkan dropdown untuk pilihan bahasa -->
                     <li class="nav-item dropdown mx-0 mx-lg-1">
                         <a class="nav-link dropdown-toggle py-3 px-0 px-lg-3 rounded" href="#" id="navbarDropdown"
                             role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Pilih Bahasa
+                            {{ __('messages.select_language') }}
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Indonesia</a></li>
-                            <li><a class="dropdown-item" href="#">Inggris</a></li>
+                            <li><a class="dropdown-item" href="{{ route('change.language', 'id') }}">{{ __('messages.indonesian') }}</a></li>
+                            <li><a class="dropdown-item" href="{{ route('change.language', 'en') }}">{{ __('messages.english') }}</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -174,7 +174,7 @@
     <section class="page-section portfolio" id="pendaftaran">
         <div class="container">
             <!-- Pendaftaran Section Heading-->
-            <h2 class="page-section-heading text-center text-uppercase text-secondary mb-4">PENDAFTAR</h2>
+            <h2 class="page-section-heading text-center text-uppercase text-secondary mb-4">{{ __('messages.pendaftar') }}</h2>
             <!-- Icon Divider-->
             <div class="divider-custom">
                 <div class="divider-custom-line"></div>
@@ -211,7 +211,7 @@
 <section class="page-section bg-primary text-white mb-0" id="jadwal">
     <div class="container">
         <!-- Heading Section -->
-        <h2 class="page-section-heading text-center text-uppercase text-white mb-4">Jadwal </h2>
+        <h2 class="page-section-heading text-center text-uppercase text-white mb-4">{{ __('messages.schedule') }}</h2>
         
         <!-- Tombol Kategori -->
        <!-- Tombol Kategori -->
@@ -414,14 +414,14 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="row">
                 <!-- Footer Location-->
                 <div class="col-lg-4 mb-5 mb-lg-0">
-                    <h4 class="text-uppercase mb-4">Lokasi</h4>
+                    <h4 class="text-uppercase mb-4">{{ __('messages.location') }}</h4>
                     <p class="lead mb-0">
                         {{ $location }}
                     </p>
                 </div>
                 <!-- Footer Social Icons-->
                 <div class="col-lg-4 mb-5 mb-lg-0">
-                    <h4 class="text-uppercase mb-4">Tentang Situs</h4>
+                    <h4 class="text-uppercase mb-4">{{ __('messages.about') }}</h4>
                     <div class="d-flex justify-content-center">
                         @if ($instagram)
                             <a class="btn btn-outline-light btn-social mx-1" href="{{ $instagram }}"
