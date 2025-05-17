@@ -16,49 +16,54 @@ return new class extends Migration
             $table->id();
             $table->string('key');
             $table->string('label');
-            $table->string('value')->nullable();
             $table->string('type');
             $table->timestamps();
-
+            $table->string('value_en')->nullable();
+            $table->string('value_id')->nullable();
         });
 
-        setting ::create([
+        setting::create([
             'key' => '_site_name',
             'label' => 'Judul Situs',
-            'value' => 'UPA Bahasa Polinema',   
             'type' => 'text',
+            'value_en' => 'UPA Bahasa Polinema',
+            'value_id' => 'UPA Bahasa Polinema',
         ]);
 
-        setting ::create([
+        setting::create([
             'key' => '_location',
             'label' => 'Alamat Kantor',
-            'value' => 'Jl. Soekarno Hatta No. 9, Malang, Jawa Timur 65141',
             'type' => 'text',
+            'value_en' => 'Jl. Soekarno Hatta No. 9, Malang, East Java 65141',
+            'value_id' => 'Jl. Soekarno Hatta No. 9, Malang, Jawa Timur 65141',
         ]);
-        setting ::create([
+        setting::create([
             'key' => '_instagram',
             'label' => 'Instagram',
-            'value' => 'https://www.instagram.com/upabahasa/',
             'type' => 'text',
+            'value_en' => 'https://www.instagram.com/upabahasa/',
+            'value_id' => 'https://www.instagram.com/upabahasa/',
         ]);
-        setting ::create([
+        setting::create([
             'key' => '_whatsapp',
             'label' => 'Whatsapp',
-            'value' => 'https://wa.me/6281234567890',
             'type' => 'text',
+            'value_en' => 'https://wa.me/6281234567890',
+            'value_id' => 'https://wa.me/6281234567890',
         ]);
-        setting ::create([
+        setting::create([
             'key' => '_email',
             'label' => 'Email',
-            'value' => 'upabahasapolinema@gmail.com',        
             'type' => 'text',
+            'value_en' => 'upabahasapolinema@gmail.com',
+            'value_id' => 'upabahasapolinema@gmail.com',
         ]);
-         setting ::create([
+        setting::create([
             'key' => '_site_description',
             'label' => 'Deskripsi Situs',
-            'value' => 'Jika Butuh Bantuan Silahkan Hubungi Kami',
             'type' => 'text',
-           
+            'value_en' => 'If You Need Help, Please Contact Us',
+            'value_id' => 'Jika Butuh Bantuan Silahkan Hubungi Kami',
         ]);
     }
 

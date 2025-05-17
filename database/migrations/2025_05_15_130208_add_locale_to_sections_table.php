@@ -11,13 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sections', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->string('thumbnail');
-            $table->longText('content');
-            $table->enum('post_as', ['Beranda','SyaratKetentuan'])->nullable();
-            $table->timestamps();
+        Schema::table('sections', function (Blueprint $table) {
+            $table->string('locale')->default('id');
         });
     }
 
@@ -26,6 +21,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sections');
+    Schema::dropIfExists('sections');
     }
 };

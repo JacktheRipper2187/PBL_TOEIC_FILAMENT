@@ -125,25 +125,26 @@
 
     <!-- Script untuk Tanggal & Waktu -->
     <script>
+        const locale = "{{ session('locale', 'id') }}"; // Default ke 'id' (Indonesia)
         function updateCurrentDate() {
-            const now = new Date();
-            const options = {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                timeZone: 'Asia/Jakarta'
-            };
+        const now = new Date();
+        const options = {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            timeZone: 'Asia/Jakarta'
+        };
 
-            // Format: "11 Mei 2025 14.36 WIB"
-            document.getElementById('current-date').textContent =
-                now.toLocaleDateString('id-ID', options).replace('pukul', '').trim() + ' WIB';
-        }
+        // Format tanggal sesuai locale
+        document.getElementById('current-date').textContent =
+            now.toLocaleDateString(locale, options).replace('pukul', '').trim() + ' WIB';
+    }
 
-        // Update setiap menit (60000ms)
-        updateCurrentDate();
-        setInterval(updateCurrentDate, 60000);
+    // Update setiap menit (60000ms)
+    updateCurrentDate();
+    setInterval(updateCurrentDate, 60000);
     </script>
 
     <!-- Syarat dan Ketentuan Section-->
@@ -216,9 +217,9 @@
         <!-- Tombol Kategori -->
        <!-- Tombol Kategori -->
 <div class="text-center mb-4">
-    <button class="btn btn-outline-light mx-2 active" onclick="showCategory('pendaftaran')">Pendaftaran</button>
-    <button class="btn btn-outline-light mx-2" onclick="showCategory('ujian')">Ujian</button>
-    <button class="btn btn-outline-light mx-2" onclick="showCategory('pengambilan')">Pengambilan Sertifikat</button>
+    <button class="btn btn-outline-light mx-2" onclick="showCategory('pendaftaran')">{{ __('messages.registration') }}</button>
+    <button class="btn btn-outline-light mx-2" onclick="showCategory('ujian')">{{ __('messages.exam') }}</button>
+    <button class="btn btn-outline-light mx-2" onclick="showCategory('pengambilan')">{{ __('messages.certificate') }}</button>
 </div>
         <!-- Konten Kategori -->
         <div class="category-content">
@@ -228,10 +229,10 @@
         <table class="table table-hover table-striped">
             <thead class="thead-dark">
                 <tr>
-                    <th width="25%">Program Tes</th>
-                    <th width="30%">Periode Pendaftaran</th>
-                    <th width="20%">Waktu Pendaftaran</th>
-                    <th width="15%">Kuota</th>
+                    <th width="25%">{{ __('messages.program') }}</th>
+                    <th width="30%">{{ __('messages.period') }}</th>
+                    <th width="20%">{{ __('messages.registration_schedule') }}</th>
+                    <th width="15%">{{ __('messages.quota') }}</th>
                     <th width="10%">Status</th>
                 </tr>
             </thead>
@@ -289,7 +290,7 @@
                     <tr>
                         <td colspan="5" class="text-center py-4">
                             <i class="fas fa-calendar-times me-2"></i>
-                            Tidak ada jadwal pendaftaran tersedia
+                            {{ __('messages.no_registration') }}
                         </td>
                     </tr>
                 @endforelse
@@ -446,7 +447,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 <!-- Footer About Text-->
                 <div class="col-lg-4">
-                    <h4 class="text-uppercase mb-4">Jika Ada Kendala</h4>
+                    <h4 class="text-uppercase mb-4">{{ __('messages.issue') }}</h4>
                     <p class="lead mb-0">
                         {{ $site_description }}
                     </p>
@@ -491,7 +492,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <div class="mt-4">
                                 @if($item->link)
                                     <a href="{{ $item->link }}" class="btn btn-primary btn-lg" target="_blank">
-                                        Daftar Sekarang
+                                        {{ __('messages.regis') }}
                                     </a>
                                 @else
                                    <a href="{{ route('formpendaftaran') }}" class="btn btn-primary btn-lg">
@@ -501,7 +502,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 
                                 <button class="btn btn-outline-secondary btn-lg ms-2" data-bs-dismiss="modal">
                                     <i class="fas fa-xmark fa-fw"></i>
-                                    Tutup
+                                    {{ __('messages.close') }}
                                 </button>
                             </div>
                         </div>

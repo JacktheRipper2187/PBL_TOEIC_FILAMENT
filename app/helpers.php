@@ -6,34 +6,39 @@ use App\Models\section;
 use App\Models\setting;
 use App\Models\pendaftaran;
 use App\Models\JadwalUjian;
+use Illuminate\Support\Facades\DB;
 
 
 
 function get_setting_value($key)
 {
-  $data = setting::where('key', $key)->first();
-  if (isset($data->value)) {
-    return $data->value;
-  } else {
-    return 'empty';
-  }
+    $locale = session('locale', 'id'); // Default ke 'id'
+    $setting = DB::table('settings')->where('key', $key)->first();
+
+    if ($setting) {
+        // Ambil value sesuai bahasa
+        return $locale === 'en' ? $setting->value_en : $setting->value_id;
+    }
+
+    return null; // Jika setting tidak ditemukan
 }
 
 function get_section_value()
 {
-  $data = section::whereIn('post_as', ['Beranda', 'SyaratKetentuan'])
-    ->get(['post_as', 'title', 'thumbnail', 'content']);
+    $locale = session('locale', 'id'); // Default ke 'id'
+    $data = section::where('locale', $locale)
+        ->whereIn('post_as', ['Beranda', 'SyaratKetentuan'])
+        ->get(['post_as', 'title', 'thumbnail', 'content']);
 
-  if ($data->isNotEmpty()) {
-    return $data->keyBy('post_as'); // Biar bisa diakses seperti array: $data['Beranda']
-  } else {
-    return collect(); // koleksi kosong, lebih aman daripada string 'empty'
-  }
+    if ($data->isNotEmpty()) {
+        return $data->keyBy('post_as'); // Biar bisa diakses seperti array: $data['Beranda']
+    } else {
+        return collect(); // Koleksi kosong, lebih aman daripada string 'empty'
+    }
 }
-function get_pendaftaran_value()
-{
-  $data = pendaftaran::all();
-  return $data;
+function get_pendaftaran_value() {
+    $locale = session('locale', 'id'); // atau app()->getLocale()
+    return DB::table('pendaftarans')->where('locale', $locale)->get();
 }
 function get_JadwalPendaftaran_value()
 {

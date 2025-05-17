@@ -11,4 +11,13 @@ return [
     'location' => 'Lokasi',
     'about' => 'Tentang Situs',
     'issue' => 'Jika Ada Kendala',
+    'exam' => 'Ujian',
+    'certificate' => 'Pengambilan Sertifikat',
+    'program' => 'Program Tes',
+    'period' => 'Periode Pendaftaran',
+     'registration_schedule' => 'Waktu Pendaftaran',
+     'quota' => 'Kuota',
+     'no_registration' => 'Tidak ada jadwal pendaftaran tersedia',
+     'regis' => 'Daftar Sekarang',
+     'close' => 'Tutup',
 ];
