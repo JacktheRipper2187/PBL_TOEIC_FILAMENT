@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PesertaController;
+use App\Http\Controllers\PendaftaranController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,3 +29,7 @@ Route::get('/peserta', [PesertaController::class, 'index'])
 Route::get('/', function () {
     return view('Depan');
 });
+// Menampilkan form pendaftaran (GET)
+Route::get('/pendaftaran', function () {
+    return view('pendaftaran'); // resources/views/pendaftaran.blade.php
+})->name('pendaftaran');

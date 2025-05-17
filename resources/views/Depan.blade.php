@@ -174,7 +174,7 @@
     <section class="page-section portfolio" id="pendaftaran">
         <div class="container">
             <!-- Pendaftaran Section Heading-->
-            <h2 class="page-section-heading text-center text-uppercase text-secondary mb-4">PENDAFTARAN</h2>
+            <h2 class="page-section-heading text-center text-uppercase text-secondary mb-4">PENDAFTAR</h2>
             <!-- Icon Divider-->
             <div class="divider-custom">
                 <div class="divider-custom-line"></div>
@@ -494,8 +494,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                         Daftar Sekarang
                                     </a>
                                 @else
-                                    <a href="{{ route('pendaftaran') }}" class="btn btn-primary btn-lg">
-                                        Daftar Sekarang
+                                   <a href="{{ route('formpendaftaran') }}" class="btn btn-primary btn-lg">
+                                        Daftar Sekarang7
                                     </a>
                                 @endif
                                 
