@@ -25,7 +25,7 @@ return new class extends Migration
         setting ::create([
             'key' => '_site_name',
             'label' => 'Judul Situs',
-            'value' => 'Website Toeic',
+            'value' => 'UPA Bahasa Polinema',   
             'type' => 'text',
         ]);
 
@@ -43,7 +43,7 @@ return new class extends Migration
         ]);
         setting ::create([
             'key' => '_whatsapp',
-            'label' => 'Wahtsapp',
+            'label' => 'Whatsapp',
             'value' => 'https://wa.me/6281234567890',
             'type' => 'text',
         ]);
