@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PesertaController;
 use App\Http\Controllers\PendaftaranController;
+use App\Http\Controllers\JadwalController;
 use Illuminate\Support\Facades\Session;
 
 /*
@@ -17,7 +18,7 @@ use Illuminate\Support\Facades\Session;
 */
 // Menampilkan form pendaftaran (GET)
 Route::get('/pendaftaran', function () {
-    return view('pendaftaran'); // resources/views/pendaftaran.blade.php
+    return view('pendaftaran');
 })->name('pendaftaran');
 
 // Menyimpan data pendaftaran (POST)
@@ -27,14 +28,16 @@ Route::post('/pendaftaran/store', [PesertaController::class, 'store'])
 // Menampilkan daftar peserta (GET)
 Route::get('/peserta', [PesertaController::class, 'index'])
      ->name('peserta.index');
-Route::get('/', function () {
-    return view('Depan');
-});
-// Menampilkan form pendaftaran (GET)
-Route::get('/pendaftaran', function () {
-    return view('pendaftaran'); // resources/views/pendaftaran.blade.php
-})->name('pendaftaran');
 
+// GANTI route ini:
+// Route::get('/', function () {
+//     return view('Depan');
+// });
+
+// DENGAN ini (pakai controller)
+Route::get('/', [JadwalController::class, 'index']);
+
+// Ganti bahasa
 Route::get('/change-language/{locale}', function ($locale) {
     if (in_array($locale, ['en', 'id'])) {
         Session::put('locale', $locale);

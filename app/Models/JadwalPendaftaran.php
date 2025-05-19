@@ -11,21 +11,20 @@ class JadwalPendaftaran extends Model
     protected $table = 'jadwal_pendaftaran';
 
     protected $fillable = [
-        'judul',
-        'content',
+        'lokasi',
         'kuota',
-        'tanggal_mulai',   // Kolom tanggal mulai
-        'tanggal_akhir',   // Kolom tanggal akhir
+        'tgl_buka',   // Kolom tanggal mulai
+        'tgl_tutup',   // Kolom tanggal akhir
     ];
 
     // Accessor untuk menampilkan format tanggal yang lebih mudah dibaca
     public function getTanggalMulaiFormattedAttribute()
     {
-        return \Carbon\Carbon::parse($this->tanggal_mulai)->format('d F Y');
+        return \Carbon\Carbon::parse($this->tgl_buka)->format('d F Y');
     }
 
     public function getTanggalAkhirFormattedAttribute()
     {
-        return \Carbon\Carbon::parse($this->tanggal_akhir)->format('d F Y');
+        return \Carbon\Carbon::parse($this->tgl_tutup)->format('d F Y');
     }
 }

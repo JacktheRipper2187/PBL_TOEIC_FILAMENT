@@ -214,180 +214,182 @@
         <!-- Heading Section -->
         <h2 class="page-section-heading text-center text-uppercase text-white mb-4">{{ __('messages.schedule') }}</h2>
         
-        <!-- Tombol Kategori -->
        <!-- Tombol Kategori -->
 <div class="text-center mb-4">
-    <button class="btn btn-outline-light mx-2" onclick="showCategory('pendaftaran')">{{ __('messages.registration') }}</button>
-    <button class="btn btn-outline-light mx-2" onclick="showCategory('ujian')">{{ __('messages.exam') }}</button>
-    <button class="btn btn-outline-light mx-2" onclick="showCategory('pengambilan')">{{ __('messages.certificate') }}</button>
+    <button type="button" class="btn btn-outline-light mx-2 active" data-target="jadwalpendaftaran">Pendaftaran</button>
+    <button type="button" class="btn btn-outline-light mx-2" data-target="ujian">Ujian</button>
+    <button type="button" class="btn btn-outline-light mx-2" data-target="pengambilan">Sertifikat</button>
 </div>
-        <!-- Konten Kategori -->
-        <div class="category-content">
-       <!-- Data Pendaftaran -->
-<div id="pendaftaran" class="category-table">
-    <div class="table-responsive">
-        <table class="table table-hover table-striped">
-            <thead class="thead-dark">
-                <tr>
-                    <th width="25%">{{ __('messages.program') }}</th>
-                    <th width="30%">{{ __('messages.period') }}</th>
-                    <th width="20%">{{ __('messages.registration_schedule') }}</th>
-                    <th width="15%">{{ __('messages.quota') }}</th>
-                    <th width="10%">Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($jadwalPendaftaran as $item)
-                    @php
-                        $now = now();
-                        $startDate = \Carbon\Carbon::parse($item->tanggal_mulai);
-                        $endDate = \Carbon\Carbon::parse($item->tanggal_akhir);
-                        $isOpen = $now->between($startDate, $endDate);
-                        $isComing = $now < $startDate;
-                        $isClosed = $now > $endDate;
-                    @endphp
+
+<!-- Konten Kategori -->
+<div class="category-content">
+    <!-- Data Pendaftaran -->
+    <div id="jadwal_pendaftaran" class="category-table">
+        <div class="row">
+            @forelse ($JadwalPendaftaran as $item)
+                @php
+                    $now = now();
+                    $startDate = $item->tgl_buka ? \Carbon\Carbon::parse($item->tgl_buka) : null;
+                    $endDate = $item->tgl_tutup ? \Carbon\Carbon::parse($item->tgl_tutup) : null;
                     
-                    <tr>
-                        <td>
-                            <strong>{{ $item->judul }}</strong>
-                            @if($item->content)
-                                <br><small class="text-muted">{{ $item->content }}</small>
-                            @endif
-                        </td>
-                        <td>
-                            {{ $startDate->translatedFormat('j F Y') }}<br>
-                            <small>s.d. {{ $endDate->translatedFormat('j F Y') }}</small>
-                        </td>
-                        <td>
-                            @if($item->jam_mulai && $item->jam_selesai)
-                                {{ \Carbon\Carbon::parse($item->jam_mulai)->format('H:i') }} - 
-                                {{ \Carbon\Carbon::parse($item->jam_selesai)->format('H:i') }} WIB
+                @endphp
+                <div class="col-md-6 mb-4">
+                    <div class="card border-primary shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title text-uppercase fw-bold">Pendaftaran TOEIC</h5>
+                            @if($startDate && $endDate)
+                                <p class="card-text mb-2">
+                                    Tanggal Pendaftaran: {{ $startDate->translatedFormat('j F Y') }} - {{ $endDate->translatedFormat('j F Y') }}
+                                </p>
                             @else
-                                <span class="text-muted">24 Jam Online</span>
+                                <p class="text-danger">Tanggal belum tersedia</p>
                             @endif
-                        </td>
-                        <td>
-                            @if($item->kuota > 0)
-                                {{ number_format($item->kuota, 0, ',', '.') }} kursi
-                            @else
-                                <span class="text-danger">Penuh</span>
-                            @endif
-                        </td>
-                        <td class="text-center">
-                            @if($isComing)
-                                <span class="badge bg-info">Akan Dibuka</span>
-                            @elseif($isClosed)
-                                <span class="badge bg-secondary">Ditutup</span>
-                            @else
-                                <span class="badge bg-success">Buka</span>
-                                @if($now->diffInDays($endDate) < 3)
-                                    <br><small class="text-warning mt-1 d-block">Segera tutup!</small>
-                                @endif
-                            @endif
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="5" class="text-center py-4">
-                            <i class="fas fa-calendar-times me-2"></i>
-                            {{ __('messages.no_registration') }}
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
-</div>
-
-            <!-- Data Ujian -->
-            <div id="ujian" class="category-table" style="display:none;">
-                <div class="table-responsive">
-                    <table class="table table-hover table-striped">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>Hari, Tanggal</th>
-                                <th>Jam</th>
-                                <th>Lokasi</th>
-                                <th>Keterangan</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($ujian as $item)
-                                <tr>
-                                    <td>{{ \Carbon\Carbon::parse($item->hari_tanggal)->translatedFormat('l, j F Y') }}</td>
-                                    <td>{{ $item->jam }}</td>
-                                    <td>{{ $item->kampus_cabang }}</td>
-                                    <td>{{ $item->jurusan }} - {{ $item->program_studi }}</td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="4" class="text-center">Tidak ada jadwal ujian saat ini</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+                            <span class="badge {{ $item->kuota > 0 ? 'bg-success' : 'bg-danger' }}">
+                                {{ $item->kuota > 0 ? number_format($item->kuota, 0, ',', '.') . ' Kuota' : 'Penuh' }}
+                            </span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            <!-- Data Pengambilan Sertifikat -->
-            <div id="pengambilan" class="category-table" style="display:none;">
-                <div class="table-responsive">
-                    <table class="table table-hover table-striped">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>Hari, Tanggal</th>
-                                <th>Jam</th>
-                                <th>Lokasi</th>
-                                <th>Keterangan</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($pengambilan as $item)
-                                <tr>
-                                    <td>{{ \Carbon\Carbon::parse($item->hari_tanggal)->translatedFormat('l, j F Y') }}</td>
-                                    <td>{{ $item->waktu }}</td>
-                                    <td>{{ $item->lokasi }}</td>
-                                    <td>{{ $item->keterangan }}</td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="4" class="text-center">Tidak ada jadwal pengambilan sertifikat saat ini</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+            @empty
+                <div class="col-12 text-center py-4">
+                    <i class="fas fa-calendar-times me-2"></i>
+                    Tidak ada jadwal pendaftaran tersedia
                 </div>
-            </div>
+            @endforelse
         </div>
     </div>
-</section>
 
-<!-- JavaScript untuk toggle kategori -->
+    <!-- Data Ujian -->
+    <div id="ujian" class="category-table" style="display:none;">
+        <div class="table-responsive">
+            <table class="table table-hover table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Hari, Tanggal</th>
+                        <th>Jam</th>
+                        <th>Lokasi</th>
+                        <th>Keterangan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($ujian as $item)
+                        <tr>
+                            <td>{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('l, j F Y') }}</td>
+                            <td>{{ $item->jam }}</td>
+                            <td>{{ $item->kampus_cabang }}</td>
+                            <td>{{ $item->jurusan }} - {{ $item->program_studi }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="text-center">Tidak ada jadwal ujian saat ini</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Data Pengambilan Sertifikat -->
+    <div id="pengambilan" class="category-table" style="display:none;">
+        <div class="table-responsive">
+            <table class="table table-hover table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Hari, Tanggal</th>
+                        <th>Jam</th>
+                        <th>Lokasi</th>
+                        <th>Keterangan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($pengambilan as $item)
+                        <tr>
+                            <td>{{ \Carbon\Carbon::parse($item->hari_tanggal)->translatedFormat('l, j F Y') }}</td>
+                            <td>{{ $item->waktu }}</td>
+                            <td>{{ $item->lokasi }}</td>
+                            <td>{{ $item->keterangan }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="text-center">Tidak ada jadwal pengambilan sertifikat saat ini</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<!-- Script Toggle -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const buttons = document.querySelectorAll('[data-target]');
-    
+    const categoryTables = document.querySelectorAll('.category-table');
+
     buttons.forEach(button => {
         button.addEventListener('click', function() {
             // Remove active class from all buttons
             buttons.forEach(btn => btn.classList.remove('active'));
-            
             // Add active class to clicked button
             this.classList.add('active');
-            
-            // Hide all tables
-            document.querySelectorAll('.category-table').forEach(table => {
+
+            // Hide all category tables
+            categoryTables.forEach(table => {
                 table.style.display = 'none';
             });
-            
-            // Show selected table
+
+            // Show target category table
             const target = this.getAttribute('data-target');
-            document.getElementById(target).style.display = 'block';
+            const targetTable = document.getElementById(target);
+            if (targetTable) targetTable.style.display = 'block';
         });
     });
+
+    // Show pendaftaran by default and set its button active
+    categoryTables.forEach(table => table.style.display = 'none');
+    document.getElementById('pendaftaran').style.display = 'block';
+    // Set active class on the Pendaftaran button
+    buttons.forEach(btn => {
+        if(btn.getAttribute('data-target') === 'pendaftaran') {
+            btn.classList.add('active');
+        }
+    });
+
+    // OPTIONAL: Debug $Pendaftaran data existence
+    // console.log(@json($JadwalPendaftaran));
 });
 </script>
 
+<!-- Styling -->
+<style>
+.btn-outline-light.active {
+    background-color: rgba(255,255,255,0.2);
+    color: white;
+}
+.table {
+    background-color: white;
+    color: #212529;
+}
+.thead-dark th {
+    background-color: #343a40;
+    color: white;
+}
+.badge {
+    font-size: 0.95rem;
+    padding: 0.5em 0.8em;
+    border-radius: 8px;
+}
+.card-title {
+    font-size: 1.1rem;
+}
+.card {
+    border-width: 2px;
+    border-radius: 12px;
+}
+</style>
+
+<!--footer bg style-->
 <style>
     .btn-outline-light.active {
         background-color: rgba(255,255,255,0.2);
@@ -406,7 +408,6 @@ document.addEventListener('DOMContentLoaded', function() {
         padding: 0.35em 0.65em;
     }
 </style>
-
     </section>
 
     <!-- Footer-->
