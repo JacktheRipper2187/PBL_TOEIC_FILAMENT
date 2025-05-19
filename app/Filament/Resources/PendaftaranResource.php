@@ -31,7 +31,7 @@ class PendaftaranResource extends Resource
                     Forms\Components\FileUpload::make('thumbnail')
                         ->required()
                         ->image() // Gunakan image() di FileUpload untuk memastikan hanya gambar yang bisa di-upload
-                        ->disk('public'), 
+                        ->disk('public_folder'), 
                     Forms\Components\RichEditor::make('content')
                         ->required(),
                     Forms\Components\TextInput::make('link')

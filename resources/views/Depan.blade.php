@@ -196,7 +196,7 @@
                             <div class="portfolio-item-caption-content text-center text-white"><i
                                     class="fas fa-plus fa-3x"></i></div>
                         </div>
-                        <img class="img-fluid" src="{{ Storage::url($item->thumbnail) }}" alt="..." />
+                         <img class="img-fluid" src="{{ asset('uploads/' . $item->thumbnail) }}" alt="..." />
                     </div>
                 </div>
                 {{-- <!-- last Pendaftaran {{$i}}--> --}}
@@ -542,7 +542,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <div class="divider-custom-line"></div>
                             </div>
                             <!-- pendaftaran Modal - Image-->
-                            <img class="img-fluid rounded mb-5" src="{{Storage::url($item->thumbnail)}}" alt="..." />
+                            <img class="img-fluid rounded mb-5" src="{{ asset('uploads/' . $item->thumbnail) }}" alt="..." />
                             {!! $item->content !!}
                             
                             <!-- Tombol Daftar Sekarang -->
