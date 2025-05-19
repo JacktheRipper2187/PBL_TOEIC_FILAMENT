@@ -14,24 +14,42 @@ class PendaftaranTableSeeder extends Seeder
     {
         DB::table('pendaftarans')->insert([
             [
-                'title_id' => 'PENDAFTARAN BERBAYAR',
-                'title_en' => 'PAID REGISTRATION',
-                'thumbnail_id' => '01Jv08SWA1GJFEJJGGTNXDPRP.png', // Thumbnail untuk bahasa Indonesia
-                'thumbnail_en' => '01Jv08SWA1GJFEJJGGTNXDPRP_EN.png', // Thumbnail untuk bahasa Inggris
-                'content_id' => '<p>Pokoknya ini bayar kalau daftar di sini harus bayar.</p>',
-                'content_en' => '<p>You need to pay if you register here.</p>',
-                'link' => 'https://ltc-indonesia.com/toeic/',
+                'group_id'   => 1,
+                'locale'     => 'id',
+                'title'      => 'PENDAFTARAN BERBAYAR',
+                'thumbnail'  => '01JV69SWA1GJFEJJGGTNXDPRP.png',
+                'content'    => '<p>Pokoknya ini bayar kalau daftar di sini harus bayar.</p>',
+                'link'       => 'https://ltc-indonesia.com/toeic/',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'title_id' => 'PENDAFTARAN GRATIS',
-                'title_en' => 'FREE REGISTRATION',
-                'thumbnail_id' => '01Jv08R42PQVK5NORJQ8ZR5JZ.png', // Thumbnail untuk bahasa Indonesia
-                'thumbnail_en' => '01Jv08R42PQVK5NORJQ8ZR5JZ_EN.png', // Thumbnail untuk bahasa Inggris
-                'content_id' => '<p>Ini gratis.</p>',
-                'content_en' => '<p>This is free.</p>',
-                'link' => null,
+                'group_id'   => 2,
+                'locale'     => 'id',
+                'title'      => 'PENDAFTARAN GRATIS',
+                'thumbnail'  => '01JV69R42PQVK5NORJQ8ZR5JZ.png',
+                'content'    => '<p>ini gratis&nbsp;</p>',
+                'link'       => '-',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'group_id'   => 1,
+                'locale'     => 'en',
+                'title'      => 'PAID REGISTRATION',
+                'thumbnail'  => '01JVBNEJQKFXPT25YVEKN5768.png',
+                'content'    => '<p>This is paid registration...</p>',
+                'link'       => 'https://ltc-indonesia.com/toeic/',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'group_id'   => 2,
+                'locale'     => 'en',
+                'title'      => 'FREE REGISTRATION',
+                'thumbnail'  => '01JVB3Y229QCZJZ3673CEE200.png',
+                'content'    => '<p>This is free registration...</p>',
+                'link'       => '-',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
