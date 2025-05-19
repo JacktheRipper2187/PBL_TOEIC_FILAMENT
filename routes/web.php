@@ -5,6 +5,10 @@ use App\Http\Controllers\PesertaController;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\JadwalController;
 use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\HasilController;
+use App\Http\Controllers\HasilDepanController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -44,3 +48,9 @@ Route::get('/change-language/{locale}', function ($locale) {
     }
     return redirect()->back();
 })->name('change.language');
+
+//hasil
+// Route::get('/hasilini', [HasilDepanController::class, 'index'])->name('hasil.index');          // halaman form cari sesi
+Route::get('/hasil/cari', [HasilController::class, 'cari'])->name('hasil.cari');       // proses pencarian hasil
+Route::get('/hasil/download/{id}', [HasilController::class, 'download'])->name('hasil.download'); // download file hasil
+// Route::get('/hasil', [HasilDepanController::class, 'index'])->name('hasil.index');

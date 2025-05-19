@@ -216,10 +216,66 @@
         
        <!-- Tombol Kategori -->
 <div class="text-center mb-4">
-    <button type="button" class="btn btn-outline-light mx-2 active" data-target="jadwalpendaftaran">Pendaftaran</button>
-    <button type="button" class="btn btn-outline-light mx-2" data-target="ujian">Ujian</button>
-    <button type="button" class="btn btn-outline-light mx-2" data-target="pengambilan">Sertifikat</button>
+    <button type="button" class="btn btn-outline-light mx-2 active" data-target="jadwalpendaftaran">{{ __('messages.registration') }}</button>
+    <button type="button" class="btn btn-outline-light mx-2" data-target="ujian">{{ __('messages.exam') }}</button>
+    <button type="button" class="btn btn-outline-light mx-2" data-target="pengambilan">{{ __('messages.certificate') }}</button>
+        <button id="btnHasil" class="btn btn-outline-light mx-2">Hasil Ujian</button>
 </div>
+
+<!-- Data Hasil Ujian -->
+<div id="hasil" class="category-table" style="display:none;">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form action="{{ route('hasil.cari') }}" method="GET" class="d-flex">
+                <select name="sesi" class="form-select me-2" required>
+                    <option value="" disabled selected>Pilih sesi ujian...</option>
+                    @foreach($sesiList as $sesi)
+                        <option value="{{ $sesi }}">{{ $sesi }}</option>
+                    @endforeach
+                </select>
+                <button type="submit" class="btn btn-success">Cari</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Fungsi ini untuk tombol kategori lain, kalau kamu sudah punya di JS, pakai fungsi ini.
+    function showCategory(category) {
+        // sembunyikan semua category-table dulu
+        document.querySelectorAll('.category-table').forEach(div => {
+            div.style.display = 'none';
+        });
+        // tampilkan sesuai category yg dipilih
+        const selected = document.getElementById(category);
+        if(selected) selected.style.display = 'block';
+    }
+
+    // Tombol Hasil Ujian toggle tampilkan dropdown sesi
+    document.getElementById('btnHasil').addEventListener('click', function() {
+        const hasilDiv = document.getElementById('hasil');
+        if(hasilDiv.style.display === 'none' || hasilDiv.style.display === '') {
+            // sembunyikan kategori lain supaya tidak bentrok (opsional)
+            document.querySelectorAll('.category-table').forEach(div => {
+                div.style.display = 'none';
+            });
+            hasilDiv.style.display = 'block';
+        } else {
+            hasilDiv.style.display = 'none';
+        }
+    });
+</script>
+
+
+
+<script>
+function showCategory(id) {
+    // sembunyikan semua category-table
+    document.querySelectorAll('.category-table').forEach(div => div.style.display = 'none');
+    // tampilkan yang dipilih
+    document.getElementById(id).style.display = 'block';
+}
+</script>
 
 <!-- Konten Kategori -->
 <div class="category-content">
