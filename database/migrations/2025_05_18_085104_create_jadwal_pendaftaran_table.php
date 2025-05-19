@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         // contoh untuk jadwal_pendaftaran
-Schema::create('jadwal_pendaftarans', function (Blueprint $table) {
+Schema::create('jadwal_pendaftaran', function (Blueprint $table) {
     $table->id();
     $table->string('lokasi');
     $table->date('tgl_buka');
