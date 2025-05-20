@@ -54,3 +54,13 @@ Route::get('/change-language/{locale}', function ($locale) {
 Route::get('/hasil/cari', [HasilController::class, 'cari'])->name('hasil.cari');       // proses pencarian hasil
 Route::get('/hasil/download/{id}', [HasilController::class, 'download'])->name('hasil.download'); // download file hasil
 // Route::get('/hasil', [HasilDepanController::class, 'index'])->name('hasil.index');
+
+// // Halaman admin
+Route::get('/admin/peserta', [PesertaController::class, 'index'])->name('peserta.index');
+
+Route::get('/pendaftaran', [PendaftaranController::class, 'create'])->name('pendaftaran.form');
+Route::post('/pendaftaran', [PendaftaranController::class, 'store'])->name('pendaftaran.store');
+
+// Route untuk admin melihat data
+Route::get('/admin/pendaftaran', [PendaftaranController::class, 'index'])->name('admin.pendaftaran');
+Route::post('/pendaftaran', [PesertaController::class, 'store'])->name('pendaftaran.store');

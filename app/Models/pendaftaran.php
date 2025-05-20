@@ -12,11 +12,11 @@ class pendaftaran extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'title',
-        'thumbnail',
-        'content',
-        'link',
-    ];
+    'title', 'title_id', 'title_en',
+    'thumbnail', 'thumbnail_id', 'thumbnail_en',
+    'content', 'content_id', 'content_en',
+    'link'
+];
     protected static function boot()
 {
     parent::boot();
