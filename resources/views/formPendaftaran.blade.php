@@ -5,7 +5,6 @@
 <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 
 <!-- Modal Success -->
-<!-- Modal Success -->
 <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -206,43 +205,50 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 // Data untuk dropdown
-const dataJurusan = {
-    "utama": [
-        {value: "TE", label: "Teknik Elektro"},
-        {value: "TM", label: "Teknik Mesin"},
-        {value: "TS", label: "Teknik Sipil"},
-        {value: "AK", label: "Akuntansi"},
-        {value: "AN", label: "Administrasi Niaga"},
-        {value: "TK", label: "Teknik Kimia"},
-        {value: "TI", label: "Teknologi Informasi"}
-    ],
-    "kediri": [
-        {value: "TE", label: "Teknik Elektro"}, 
-        {value: "TM", label: "Teknik Mesin"},
-        {value: "TI", label: "Teknologi Informasi"},
-        {value: "AK", label: "Akuntansi"}
-    ],
-    "pamekasan": [
-        {value: "TM", label: "Teknik Mesin"},
-        {value: "AK", label: "Akuntansi"},
-        {value: "AN", label: "Administrasi Niaga"}
-    ],
-    "lumajang": [
-        {value: "TI", label: "Teknologi Informasi"},
-        {value: "TS", label: "Teknik Sipil"},
-        {value: "AK", label: "Akuntansi"}
-    ]
-};
+ const dataJurusan = {
+        "utama": [
+            { value: "TE", label: "Teknik Elektro" },
+            { value: "TM", label: "Teknik Mesin" },
+            { value: "TS", label: "Teknik Sipil" },
+            { value: "AK", label: "Akuntansi" },
+            { value: "AN", label: "Administrasi Niaga" },
+            { value: "TK", label: "Teknik Kimia" },
+            { value: "TI", label: "Teknologi Informasi" }
+        ],
+        "kediri": [
+            { value: "TI", label: "Teknologi Informasi" },
+            { value: "TM", label: "Teknik Mesin" },
+            { value: "AK", label: "Akuntansi" },
+            { value: "TE", label: "Teknik Elektro" }
+        ],
+        "lumajang": [
+            { value: "TI", label: "Teknologi Informasi" },
+            { value: "TS", label: "Teknik Sipil" },
+            { value: "AK", label: "Akuntansi" }
+        ],
+        "pamekasan": [
+            { value: "TM", label: "Teknik Mesin" },
+            { value: "AK", label: "Akuntansi" },
+            { value: "AN", label: "Teknologi Informasi" }
+        ]
+    };
 
-const dataProgramStudi = {
-    "TE": ["D-IV Teknik Elektronika", "D-IV Sistem Kelistrikan", "D-IV Jaringan Telekomunikasi Digital"],
-    "TM": ["D-IV Teknik Otomotif Elektronik", "D-IV Teknik Mesin Produksi dan Perawatan"],
-    "TS": ["D-IV Teknik Konstruksi Gedung", "D-IV Teknik Perencanaan Jalan dan Jembatan"],
-    "AK": ["D-IV Akuntansi Keuangan", "D-IV Akuntansi Manajerial"],
-    "AN": ["D-IV Administrasi Bisnis", "D-IV Administrasi Perkantoran"],
-    "TK": ["D-IV Teknik Kimia Industri", "D-IV Teknik Pengolahan Minyak dan Gas"],
-    "TI": ["D-IV Teknologi Informasi", "D-IV Sistem Informasi"]
-};
+    const dataProgramStudi = {
+        "TE": ["D-IV Teknik Elektronika","D-IV Sistem Kelistrikan",
+                    "D-IV Jaringan Telekomunikasi Digital",
+                    "D-III Teknik Elektronika",
+                    "D-III Teknik Listrik",
+                    "D-III Teknik Telekomunikasi"],
+        "TM": ["D-IV Teknik Otomotif Elektronik", "D-IV Teknik Mesin Produksi dan Perawatan",
+                    "D-III Teknik Mesin", "D-III Teknologi Pemeliharaan Pesawat Udara"],
+        "TS": ["D-IV Manajemen Rekayasa Konstruksi", "D-IV Teknologi Rekayasa Konstruksi Jalan dan Jembatan",
+                    "D-III Teknik Sipil", "D-III Teknik Konstruksi Jalan dan Jembatan", "D-III Teknologi Pertambangan"],
+        "AK": ["D-IV Akuntansi Manajemen", "D-IV Keuangan", "D-III Akuntansi"],
+        "AN": ["D-IV Manajemen Pemasaran", "D-IV Bahasa Inggris untuk Komunikasi Bisnis dan Profesional", 
+                    "D-IV Pengelolaan Arsip dan Rekaman Informasi", "D-IV Usaha Perjalanan Wisata", "D-IV Bahasa Inggris untuk Industri Pariwisata", "D-III Administrasi Bisnis"],
+        "TK": ["D-IV Teknologi Kimia Industri", "D-III Teknik Kimia"],
+        "TI": ["D-IV Teknik Informatika", "D-IV Sistem Informasi Bisnis", "D-II Pengembangan Piranti Lunak Situs"]
+    };
 
 // Fungsi untuk update dropdown jurusan
 function updateJurusan() {
