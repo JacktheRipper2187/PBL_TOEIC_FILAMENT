@@ -216,7 +216,7 @@
         
        <!-- Tombol Kategori -->
 <div class="text-center mb-4">
-    <button type="button" class="btn btn-outline-light mx-2 active" data-target="jadwalpendaftaran">{{ __('messages.registration') }}</button>
+    <button type="button" class="btn btn-outline-light mx-2 active" data-target="jadwal_pendaftaran">{{ __('messages.registration') }}</button>
     <button type="button" class="btn btn-outline-light mx-2" data-target="ujian">{{ __('messages.exam') }}</button>
     <button type="button" class="btn btn-outline-light mx-2" data-target="pengambilan">{{ __('messages.certificate') }}</button>
         <button id="btnHasil" class="btn btn-outline-light mx-2">Hasil Ujian</button>
@@ -279,41 +279,47 @@ function showCategory(id) {
 
 <!-- Konten Kategori -->
 <div class="category-content">
-    <!-- Data Pendaftaran -->
-    <div id="jadwal_pendaftaran" class="category-table">
-        <div class="row">
-            @forelse ($JadwalPendaftaran as $item)
-                @php
-                    $now = now();
-                    $startDate = $item->tgl_buka ? \Carbon\Carbon::parse($item->tgl_buka) : null;
-                    $endDate = $item->tgl_tutup ? \Carbon\Carbon::parse($item->tgl_tutup) : null;
-                    
-                @endphp
-                <div class="col-md-6 mb-4">
-                    <div class="card border-primary shadow-sm h-100">
-                        <div class="card-body">
-                            <h5 class="card-title text-uppercase fw-bold">Pendaftaran TOEIC</h5>
+<!-- Data Pendaftaran -->
+<div id="jadwal_pendaftaran" class="category-table">
+    <div class="table-responsive">
+        <table class="table table-hover table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Nama</th>
+                    <th>Tanggal Pendaftaran</th>
+                    <th>Kuota</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($JadwalPendaftaran as $item)
+                    @php
+                        $startDate = $item->tgl_buka ? \Carbon\Carbon::parse($item->tgl_buka) : null;
+                        $endDate = $item->tgl_tutup ? \Carbon\Carbon::parse($item->tgl_tutup) : null;
+                    @endphp
+                    <tr>
+                        <td>Pendaftaran TOEIC</td>
+                        <td>
                             @if($startDate && $endDate)
-                                <p class="card-text mb-2">
-                                    Tanggal Pendaftaran: {{ $startDate->translatedFormat('j F Y') }} - {{ $endDate->translatedFormat('j F Y') }}
-                                </p>
+                                {{ $startDate->translatedFormat('j F Y') }} - {{ $endDate->translatedFormat('j F Y') }}
                             @else
-                                <p class="text-danger">Tanggal belum tersedia</p>
+                                <span class="text-danger">Tanggal belum tersedia</span>
                             @endif
+                        </td>
+                        <td>
                             <span class="badge {{ $item->kuota > 0 ? 'bg-success' : 'bg-danger' }}">
                                 {{ $item->kuota > 0 ? number_format($item->kuota, 0, ',', '.') . ' Kuota' : 'Penuh' }}
                             </span>
-                        </div>
-                    </div>
-                </div>
-            @empty
-                <div class="col-12 text-center py-4">
-                    <i class="fas fa-calendar-times me-2"></i>
-                    Tidak ada jadwal pendaftaran tersedia
-                </div>
-            @endforelse
-        </div>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="3" class="text-center">Tidak ada jadwal pendaftaran tersedia</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
     </div>
+</div>
 
     <!-- Data Ujian -->
     <div id="ujian" class="category-table" style="display:none;">
