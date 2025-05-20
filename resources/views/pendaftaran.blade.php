@@ -29,7 +29,7 @@
         <h3 class="card-title fw-bold text-success mb-3">Pendaftaran Peserta</h3>
         <form id="pendaftaranForm" method="POST" action="{{ route('pendaftaran.store') }}" enctype="multipart/form-data">
             @csrf
-
+            
             <div class="mb-3 row">
                 <label for="nama_lengkap" class="col-md-3 col-form-label">Nama Lengkap</label>
                 <div class="col-md-9">
@@ -46,6 +46,7 @@
                     <input type="text" id="nim_nik" name="nim_nik" value="{{ old('nim_nik') }}" class="form-control" placeholder="Masukkan NIM/NIK Anda">
                     @error('nim_nik')
                         <div class="text-danger">{{ $message }}</div>
+                        <small class="text-danger"></small>
                     @enderror
                 </div>
             </div>
@@ -154,6 +155,7 @@
             </div>
 
             <button type="submit" class="btn btn-success" id="submitBtn">Daftar Sekarang</button>
+            <a href="{{ url('/') }}" class="btn btn-danger">Kembali</a>
         </form>
     </div>
 </div>
@@ -248,7 +250,7 @@
         $('#kampus').on('change', updateJurusan);
         $('#jurusan').on('change', updateProgramStudi);
         
-        $('#pendaftaranForm').on('submit', function(e) {
+        $('#pendaftaranForm').on('submit', function(e) {3
             e.preventDefault();
             
             var form = this;
@@ -307,4 +309,10 @@
             });
         });
     });
+</script>
+<script>
+    @if(session('success'))
+        var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+        successModal.show();
+    @endif
 </script>

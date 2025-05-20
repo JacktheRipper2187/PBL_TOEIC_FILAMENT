@@ -43,6 +43,13 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+        
+        'public_folder' => [
+        'driver' => 'local',
+        'root' => public_path('uploads'), // misal ke public/uploads
+        'url' => env('APP_URL').'/uploads',
+        'visibility' => 'public',
+    ],
 
         's3' => [
             'driver' => 's3',

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('thumbnail');
             $table->longText('content');
             $table->enum('post_as', ['Beranda','SyaratKetentuan'])->nullable();
+            $table->string('locale')->default('id');
             $table->timestamps();
         });
     }

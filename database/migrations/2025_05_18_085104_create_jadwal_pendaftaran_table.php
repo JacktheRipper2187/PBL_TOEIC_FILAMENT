@@ -11,9 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('sections', function (Blueprint $table) {
-            $table->string('locale')->default('id');
-        });
+        // contoh untuk jadwal_pendaftaran
+Schema::create('jadwal_pendaftaran', function (Blueprint $table) {
+    $table->id();
+    $table->string('lokasi');
+    $table->date('tgl_buka');
+    $table->date('tgl_tutup');
+    $table->integer('kuota');
+    $table->timestamps();
+});
+
     }
 
     /**
@@ -21,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-    Schema::dropIfExists('sections');
+        Schema::dropIfExists('jadwal_pendaftaran');
     }
 };
