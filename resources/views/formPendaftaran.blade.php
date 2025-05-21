@@ -1,254 +1,268 @@
-<!-- Styles -->
-<link rel="stylesheet" href="{{ asset('themes/ezone/assets/css/style.css') }}">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-<link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+{{-- filepath: resources/views/formPendaftaran.blade.php --}}
+@php
+    $site_name = get_setting_value('_site_name');
+    $section = get_section_value();
+    $location = get_setting_value('_location');
+    $site_description = get_setting_value('_site_description');
+    $instagram = get_setting_value('_instagram');
+    $email = get_setting_value('_email');
+    $whatsapp = get_setting_value('_whatsapp');
+    $pendaftaran = get_pendaftaran_value();
+        // Ambil data dari model yang sesuai dengan kategori
+    $jadwalPendaftaran = get_JadwalPendaftaran_value();
+    $ujian = get_JadwalUjian_value();
+    $pengambilan = get_JadwalSertifikat_value();
+@endphp
+@extends('layouts.depan')
 
-<!-- Modal Success -->
-<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-success text-white">
-                <h5 class="modal-title" id="successModalLabel">Pendaftaran Berhasil!</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p><i class="bi bi-check-circle-fill text-success me-2"></i> Selamat! Anda berhasil terdaftar untuk mengikuti tes TOEIC gratis. Silakan tunggu informasi lebih lanjut melalui WhatsApp dari pihak TOEIC terkait jadwal dan prosedur tes. Pastikan juga untuk mengecek jadwal tes secara berkala melalui website resmi kami. Terima kasih</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Mengerti</button>
+@section('title', '{{ $site_name }}')
+
+@section('content')
+<section class="page-section bg-primary text-white mb-0" id="pendaftaran">
+    <div class="container">
+        <br>
+        <h2 class="page-section-heading text-center text-uppercase text-white mb-4">Pendaftaran Peserta</h2>
+        <div class="divider-custom">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+            <div class="divider-custom-line"></div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Modal Success -->
+                <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header bg-success text-white">
+                                <h5 class="modal-title" id="successModalLabel">Pendaftaran Berhasil!</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p><i class="bi bi-check-circle-fill text-success me-2"></i> Selamat! Anda berhasil terdaftar untuk mengikuti tes TOEIC gratis. Silakan tunggu informasi lebih lanjut melalui WhatsApp dari pihak TOEIC terkait jadwal dan prosedur tes. Pastikan juga untuk mengecek jadwal tes secara berkala melalui website resmi kami. Terima kasih</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Mengerti</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal Error -->
+                <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header bg-danger text-white">
+                                <h5 class="modal-title" id="errorModalLabel">Pendaftaran Gagal</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" id="errorModalBody"></div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Mengerti</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card shadow mb-4">
+                    <div class="card-body p-4 text-dark">
+                        @if(session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+                        @if($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        <form id="pendaftaranForm" method="POST" action="{{ route('pendaftaran.store') }}" enctype="multipart/form-data">
+                            @csrf
+
+                            <div class="mb-3 row">
+                                <label for="nama_lengkap" class="col-md-3 col-form-label">Nama Lengkap</label>
+                                <div class="col-md-9">
+                                    <input type="text" id="nama_lengkap" name="nama_lengkap" value="{{ old('nama_lengkap') }}" class="form-control" placeholder="Masukkan nama lengkap Anda" required>
+                                    @error('nama_lengkap')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label for="nim_nik" class="col-md-3 col-form-label">NIM</label>
+                                <div class="col-md-9">
+                                    <input type="text" id="nim_nik" name="nim_nik" value="{{ old('nim_nik') }}" class="form-control" placeholder="Masukkan NIM Anda" required pattern="\d{8,15}">
+                                    @error('nim_nik')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                    <div id="nimValidation" class="mt-2"></div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label for="email" class="col-md-3 col-form-label">Email</label>
+                                <div class="col-md-9">
+                                    <input type="email" id="email" name="email" value="{{ old('email') }}" class="form-control" placeholder="Masukkan email aktif" required>
+                                    @error('email')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label for="alamat_asal" class="col-md-3 col-form-label">Alamat Asal</label>
+                                <div class="col-md-9">
+                                    <textarea id="alamat_asal" name="alamat_asal" class="form-control" required>{{ old('alamat_asal') }}</textarea>
+                                    @error('alamat_asal')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label for="alamat_sekarang" class="col-md-3 col-form-label">Alamat Sekarang</label>
+                                <div class="col-md-9">
+                                    <textarea id="alamat_sekarang" name="alamat_sekarang" class="form-control" required>{{ old('alamat_sekarang') }}</textarea>
+                                    @error('alamat_sekarang')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Dropdown Kampus -->
+                            <div class="mb-3 row">
+                                <label for="kampus" class="col-md-3 col-form-label">Kampus</label>
+                                <div class="col-md-9">
+                                    <select id="kampus" name="kampus" class="form-select" required>
+                                        <option value="" selected disabled>Pilih Kampus</option>
+                                        <option value="utama" {{ old('kampus') == 'utama' ? 'selected' : '' }}>Kampus Utama</option>
+                                        <option value="kediri" {{ old('kampus') == 'kediri' ? 'selected' : '' }}>PSDKU Kediri</option>
+                                        <option value="pamekasan" {{ old('kampus') == 'pamekasan' ? 'selected' : '' }}>PSDKU Pamekasan</option>
+                                        <option value="lumajang" {{ old('kampus') == 'lumajang' ? 'selected' : '' }}>PSDKU Lumajang</option>
+                                    </select>
+                                    @error('kampus')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Dropdown Jurusan -->
+                            <div class="mb-3 row">
+                                <label for="jurusan" class="col-md-3 col-form-label">Jurusan</label>
+                                <div class="col-md-9">
+                                    <select id="jurusan" name="jurusan" class="form-select" required>
+                                        <option value="" selected disabled>Pilih Jurusan</option>
+                                    </select>
+                                    @error('jurusan')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Dropdown Program Studi -->
+                            <div class="mb-3 row">
+                                <label for="program_studi" class="col-md-3 col-form-label">Program Studi</label>
+                                <div class="col-md-9">
+                                    <select id="program_studi" name="program_studi" class="form-select" required>
+                                        <option value="" selected disabled>Pilih Program Studi</option>
+                                    </select>
+                                    @error('program_studi')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label for="foto_formal" class="col-md-3 col-form-label">Foto Formal</label>
+                                <div class="col-md-9">
+                                    <input type="file" id="foto_formal" name="foto_formal" class="form-control" accept="image/jpeg,image/png" required>
+                                    <small class="text-muted">Format: JPG/PNG, maksimal 2MB</small>
+                                    @error('foto_formal')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="upload_ktp" class="col-md-3 col-form-label">Upload KTP</label>
+                                <div class="col-md-9">
+                                    <input type="file" id="upload_ktp" name="upload_ktp" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required>
+                                    <small class="text-muted">Format: PDF/JPG/PNG, maksimal 2MB</small>
+                                    @error('upload_ktp')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="upload_ktm" class="col-md-3 col-form-label">Upload KTM</label>
+                                <div class="col-md-9">
+                                    <input type="file" id="upload_ktm" name="upload_ktm" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required>
+                                    <small class="text-muted">Format: PDF/JPG/PNG, maksimal 2MB</small>
+                                    @error('upload_ktm')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-success" id="submitBtn">Daftar Sekarang</button>
+                            <a href="{{ url()->previous() }}" class="btn btn-secondary ms-2">Kembali</a>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</section>
+@endsection
 
-<!-- Modal Error -->
-<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title" id="errorModalLabel">Pendaftaran Gagal</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" id="errorModalBody">
-                {{-- <p><i class="bi bi-exclamation-triangle-fill text-danger me-2"></i> Mohon maaf, Anda tidak dapat mendaftar untuk tes TOEIC gratis kali ini. Data Anda tidak terdaftar sebagai mahasiswa yang berhak mengikuti tes gratis atau Anda sudah pernah mengikuti tes gratis sebelumnya. Jika Anda ingin mengikuti tes TOEIC, Anda dapat mendaftar secara umum melalui website resmi. Terima kasih atas perhatian Anda.</p> --}}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Mengerti</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="card shadow mb-4">
-    <div class="card-body p-4">
-        <h3 class="card-title fw-bold text-success mb-3">Pendaftaran Peserta</h3>
-        
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-        
-        @if($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-        <form id="pendaftaranForm" method="POST" action="{{ route('pendaftaran.store') }}" enctype="multipart/form-data">
-            @csrf
-
-            <div class="mb-3 row">
-                <label for="nama_lengkap" class="col-md-3 col-form-label">Nama Lengkap</label>
-                <div class="col-md-9">
-                    <input type="text" id="nama_lengkap" name="nama_lengkap" value="{{ old('nama_lengkap') }}" class="form-control" placeholder="Masukkan nama lengkap Anda" required>
-
-                    @error('nama_lengkap')
-                        <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-                <label for="nim_nik" class="col-md-3 col-form-label">NIM <small class="text-muted"></small></label>
-                <div class="col-md-9">
-                    <input type="text" id="nim_nik" name="nim_nik" value="{{ old('nim_nik') }}" class="form-control" placeholder="Masukkan NIM Anda" required pattern="\d{8,15}">
-                    @error('nim_nik')
-                        <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                    <div id="nimValidation" class="mt-2"></div>
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-                <label for="email" class="col-md-3 col-form-label">Email</label>
-                <div class="col-md-9">
-                    <input type="email" id="email" name="email" value="{{ old('email') }}" class="form-control" placeholder="Masukkan email aktif" required>
-                    @error('email')
-                        <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-
-           <div class="mb-3 row">
-                <label for="alamat_asal" class="col-md-3 col-form-label">Alamat Asal</label>
-                <div class="col-md-9">
-                    <textarea id="alamat_asal" name="alamat_asal" class="form-control" required>{{ old('alamat_asal') }}</textarea>
-                    @error('alamat_asal')
-                        <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-                <label for="alamat_sekarang" class="col-md-3 col-form-label">Alamat Sekarang</label>
-                <div class="col-md-9">
-                    <textarea id="alamat_sekarang" name="alamat_sekarang" class="form-control" required>{{ old('alamat_sekarang') }}</textarea>
-                    @error('alamat_sekarang')
-                        <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-
-
-
-            <!-- Dropdown Kampus -->
-            <div class="mb-3 row">
-                <label for="kampus" class="col-md-3 col-form-label">Kampus</label>
-                <div class="col-md-9">
-                    <select id="kampus" name="kampus" class="form-select" required>
-                        <option value="" selected disabled>Pilih Kampus</option>
-                        <option value="utama" {{ old('kampus') == 'utama' ? 'selected' : '' }}>Kampus Utama</option>
-                        <option value="kediri" {{ old('kampus') == 'kediri' ? 'selected' : '' }}>PSDKU Kediri</option>
-                        <option value="pamekasan" {{ old('kampus') == 'pamekasan' ? 'selected' : '' }}>PSDKU Pamekasan</option>
-                        <option value="lumajang" {{ old('kampus') == 'lumajang' ? 'selected' : '' }}>PSDKU Lumajang</option>
-                    </select>
-                    @error('kampus')
-                        <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-
-            <!-- Dropdown Jurusan -->
-            <div class="mb-3 row">
-                <label for="jurusan" class="col-md-3 col-form-label">Jurusan</label>
-                <div class="col-md-9">
-                    <select id="jurusan" name="jurusan" class="form-select" required>
-                        <option value="" selected disabled>Pilih Jurusan</option>
-                    </select>
-                    @error('jurusan')
-                        <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-
-            <!-- Dropdown Program Studi -->
-            <div class="mb-3 row">
-                <label for="program_studi" class="col-md-3 col-form-label">Program Studi</label>
-                <div class="col-md-9">
-                    <select id="program_studi" name="program_studi" class="form-select" required>
-                        <option value="" selected disabled>Pilih Program Studi</option>
-                    </select>
-                    @error('program_studi')
-                        <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-
-          
-        
-            <div class="mb-3 row">
-                <label for="foto_formal" class="col-md-3 col-form-label">Foto Formal</label>
-                <div class="col-md-9">
-                    <input type="file" id="foto_formal" name="foto_formal" class="form-control" accept="image/jpeg,image/png" required>
-                    <small class="text-muted">Format: JPG/PNG, maksimal 2MB</small>
-                    @error('foto_formal')
-                        <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-              <div class="mb-3 row">
-                <label for="upload_ktp" class="col-md-3 col-form-label">Upload KTP</label>
-                <div class="col-md-9">
-                    <input type="file" id="upload_ktp" name="upload_ktp" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required>
-                    <small class="text-muted">Format: PDF/JPG/PNG, maksimal 2MB</small>
-                    @error('upload_ktp')
-                        <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-            <div class="mb-3 row">
-                <label for="upload_ktm" class="col-md-3 col-form-label">Upload KTM</label>
-                <div class="col-md-9">
-                    <input type="file" id="upload_ktm" name="upload_ktm" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required>
-                    <small class="text-muted">Format: PDF/JPG/PNG, maksimal 2MB</small>
-                    @error('upload_ktm')
-                        <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-
-            <button type="submit" class="btn btn-success" id="submitBtn">Daftar Sekarang</button>
-            <a href="{{ url()->previous() }}" class="btn btn-secondary ms-2">Kembali</a>
-        </form>
-    </div>
-</div>
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@push('scripts')
 <script>
-// Data untuk dropdown
- const dataJurusan = {
-        "utama": [
-            { value: "TE", label: "Teknik Elektro" },
-            { value: "TM", label: "Teknik Mesin" },
-            { value: "TS", label: "Teknik Sipil" },
-            { value: "AK", label: "Akuntansi" },
-            { value: "AN", label: "Administrasi Niaga" },
-            { value: "TK", label: "Teknik Kimia" },
-            { value: "TI", label: "Teknologi Informasi" }
-        ],
-        "kediri": [
-            { value: "TI", label: "Teknologi Informasi" },
-            { value: "TM", label: "Teknik Mesin" },
-            { value: "AK", label: "Akuntansi" },
-            { value: "TE", label: "Teknik Elektro" }
-        ],
-        "lumajang": [
-            { value: "TI", label: "Teknologi Informasi" },
-            { value: "TS", label: "Teknik Sipil" },
-            { value: "AK", label: "Akuntansi" }
-        ],
-        "pamekasan": [
-            { value: "TM", label: "Teknik Mesin" },
-            { value: "AK", label: "Akuntansi" },
-            { value: "AN", label: "Teknologi Informasi" }
-        ]
-    };
+const dataJurusan = {
+    "utama": [
+        { value: "TE", label: "Teknik Elektro" },
+        { value: "TM", label: "Teknik Mesin" },
+        { value: "TS", label: "Teknik Sipil" },
+        { value: "AK", label: "Akuntansi" },
+        { value: "AN", label: "Administrasi Niaga" },
+        { value: "TK", label: "Teknik Kimia" },
+        { value: "TI", label: "Teknologi Informasi" }
+    ],
+    "kediri": [
+        { value: "TI", label: "Teknologi Informasi" },
+        { value: "TM", label: "Teknik Mesin" },
+        { value: "AK", label: "Akuntansi" },
+        { value: "TE", label: "Teknik Elektro" }
+    ],
+    "lumajang": [
+        { value: "TI", label: "Teknologi Informasi" },
+        { value: "TS", label: "Teknik Sipil" },
+        { value: "AK", label: "Akuntansi" }
+    ],
+    "pamekasan": [
+        { value: "TM", label: "Teknik Mesin" },
+        { value: "AK", label: "Akuntansi" },
+        { value: "AN", label: "Teknologi Informasi" }
+    ]
+};
 
-    const dataProgramStudi = {
-        "TE": ["D-IV Teknik Elektronika","D-IV Sistem Kelistrikan",
-                    "D-IV Jaringan Telekomunikasi Digital",
-                    "D-III Teknik Elektronika",
-                    "D-III Teknik Listrik",
-                    "D-III Teknik Telekomunikasi"],
-        "TM": ["D-IV Teknik Otomotif Elektronik", "D-IV Teknik Mesin Produksi dan Perawatan",
-                    "D-III Teknik Mesin", "D-III Teknologi Pemeliharaan Pesawat Udara"],
-        "TS": ["D-IV Manajemen Rekayasa Konstruksi", "D-IV Teknologi Rekayasa Konstruksi Jalan dan Jembatan",
-                    "D-III Teknik Sipil", "D-III Teknik Konstruksi Jalan dan Jembatan", "D-III Teknologi Pertambangan"],
-        "AK": ["D-IV Akuntansi Manajemen", "D-IV Keuangan", "D-III Akuntansi"],
-        "AN": ["D-IV Manajemen Pemasaran", "D-IV Bahasa Inggris untuk Komunikasi Bisnis dan Profesional", 
-                    "D-IV Pengelolaan Arsip dan Rekaman Informasi", "D-IV Usaha Perjalanan Wisata", "D-IV Bahasa Inggris untuk Industri Pariwisata", "D-III Administrasi Bisnis"],
-        "TK": ["D-IV Teknologi Kimia Industri", "D-III Teknik Kimia"],
-        "TI": ["D-IV Teknik Informatika", "D-IV Sistem Informasi Bisnis", "D-II Pengembangan Piranti Lunak Situs"]
-    };
+const dataProgramStudi = {
+    "TE": ["D-IV Teknik Elektronika","D-IV Sistem Kelistrikan",
+                "D-IV Jaringan Telekomunikasi Digital",
+                "D-III Teknik Elektronika",
+                "D-III Teknik Listrik",
+                "D-III Teknik Telekomunikasi"],
+    "TM": ["D-IV Teknik Otomotif Elektronik", "D-IV Teknik Mesin Produksi dan Perawatan",
+                "D-III Teknik Mesin", "D-III Teknologi Pemeliharaan Pesawat Udara"],
+    "TS": ["D-IV Manajemen Rekayasa Konstruksi", "D-IV Teknologi Rekayasa Konstruksi Jalan dan Jembatan",
+                "D-III Teknik Sipil", "D-III Teknik Konstruksi Jalan dan Jembatan", "D-III Teknologi Pertambangan"],
+    "AK": ["D-IV Akuntansi Manajemen", "D-IV Keuangan", "D-III Akuntansi"],
+    "AN": ["D-IV Manajemen Pemasaran", "D-IV Bahasa Inggris untuk Komunikasi Bisnis dan Profesional", 
+                "D-IV Pengelolaan Arsip dan Rekaman Informasi", "D-IV Usaha Perjalanan Wisata", "D-IV Bahasa Inggris untuk Industri Pariwisata", "D-III Administrasi Bisnis"],
+    "TK": ["D-IV Teknologi Kimia Industri", "D-III Teknik Kimia"],
+    "TI": ["D-IV Teknik Informatika", "D-IV Sistem Informasi Bisnis", "D-II Pengembangan Piranti Lunak Situs"]
+};
 
 // Fungsi untuk update dropdown jurusan
 function updateJurusan() {
@@ -372,3 +386,4 @@ $(document).ready(function() {
     });
 });
 </script>
+@endpush
