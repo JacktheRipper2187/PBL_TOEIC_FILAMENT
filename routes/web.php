@@ -8,6 +8,7 @@ use App\Http\Controllers\JadwalController;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\HasilController;
 use App\Http\Controllers\HasilDepanController;
+use App\Http\Controllers\TemplateController;
 
 
 
@@ -80,4 +81,6 @@ Route::get('/hasil/cari', [HasilController::class, 'cari'])->name('hasil.cari');
 Route::get('/hasil/download/{id}', [HasilController::class, 'download'])->name('hasil.download'); // download file hasil
 // Route::get('/hasil', [HasilDepanController::class, 'index'])->name('hasil.index');
 
+// Route untuk download template Excel MahasiswaTerdaftar
+Route::get('/template/mahasiswa-terdaftar', [TemplateController::class, 'mahasiswaTerdaftar'])->name('template.mahasiswa-terdaftar');
 
