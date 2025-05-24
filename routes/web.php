@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\HasilController;
 use App\Http\Controllers\HasilDepanController;
 use App\Http\Controllers\TemplateController;
+use App\Http\Controllers\Admin\PendaftarController;
 
 
 
@@ -84,3 +85,6 @@ Route::get('/hasil/download/{id}', [HasilController::class, 'download'])->name('
 // Route untuk download template Excel MahasiswaTerdaftar
 Route::get('/template/mahasiswa-terdaftar', [TemplateController::class, 'mahasiswaTerdaftar'])->name('template.mahasiswa-terdaftar');
 
+// Route untuk export data pendaftars
+Route::get('/admin/pendaftar/export-excel', [PendaftarController::class, 'exportExcel'])->name('admin.pendaftar.export-excel');
+Route::get('/admin/pendaftar/export-pdf', [PendaftarController::class, 'exportPdf'])->name('admin.pendaftar.export-pdf');

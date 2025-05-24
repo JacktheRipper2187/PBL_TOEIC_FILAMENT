@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Tables\Actions\Action;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -83,7 +84,7 @@ class PendaftarResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('nama_lengkap')->label('Nama')->searchable(),
-                Tables\Columns\TextColumn::make('nim')->label('NIM/NIK')->searchable(),
+                Tables\Columns\TextColumn::make('nim_nik')->label('NIM/NIK')->searchable(),
                 Tables\Columns\TextColumn::make('email')->label('Email'),
                 Tables\Columns\TextColumn::make('kampus')->label('Kampus'),
                 Tables\Columns\TextColumn::make('jurusan')->label('Jurusan'),
@@ -109,6 +110,19 @@ class PendaftarResource extends Resource
             ])
             ->filters([
                 // filter jika perlu
+            ])
+            ->headerActions([
+                Action::make('Export Excel')
+                    ->label('Export Excel')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->url(route('admin.pendaftar.export-excel'))
+                    ->openUrlInNewTab(),
+
+                Action::make('Export PDF')
+                    ->label('Export PDF')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->url(route('admin.pendaftar.export-pdf'))
+                    ->openUrlInNewTab(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
