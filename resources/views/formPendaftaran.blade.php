@@ -207,7 +207,7 @@
                             </div>
 
                             <button type="submit" class="btn btn-success" id="submitBtn">Daftar Sekarang</button>
-                            <a href="{{ url()->previous() }}" class="btn btn-secondary ms-2">Kembali</a>
+                            <a href="{{ url('/') }}" class="btn btn-danger">Kembali</a>
                         </form>
                     </div>
                 </div>

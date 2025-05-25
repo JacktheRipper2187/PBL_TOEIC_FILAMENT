@@ -64,17 +64,20 @@ class PendaftarResource extends Resource
                     ->label('Foto Formal')
                     ->image()
                     ->directory('pendaftar/foto_formal')
-                    ->nullable(),
+                    ->nullable()
+                    ->disk('public'),
 
                 Forms\Components\FileUpload::make('upload_ktp')
                     ->label('Upload KTP')
                     ->directory('pendaftar/ktp')
-                    ->nullable(),
+                    ->nullable()
+                    ->disk('public'),
 
                 Forms\Components\FileUpload::make('upload_ktm')
                     ->label('Upload KTM')
                     ->directory('pendaftar/ktm')
-                    ->nullable(),
+                    ->nullable()
+                    ->disk('public'),
             ]);
     }
 

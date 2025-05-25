@@ -70,3 +70,10 @@ if (!function_exists('get_JadwalUjian_value')) {
         return $data;
     }
 }
+
+function get_JadwalUjian_value()
+{
+  $data = JadwalUjian::all();
+  return $data;
+}
+

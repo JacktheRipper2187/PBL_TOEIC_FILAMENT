@@ -55,7 +55,6 @@ class PesertaResource extends Resource
             Forms\Components\FileUpload::make('foto_formal')
                 ->image()
                 ->disk('public')
-                
                 ->directory('foto_formal')   // Ini akan otomatis simpan file di folder 'foto_formal'
                 ->label('Foto Formal'),
 
