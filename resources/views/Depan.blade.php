@@ -285,7 +285,7 @@ function showCategory(id) {
         <table class="table table-hover table-striped">
             <thead class="thead-dark">
                 <tr>
-                    <th>Nama</th>
+                    <th>Sesi</th>
                     <th>Tanggal Pendaftaran</th>
                     <th>Kuota</th>
                 </tr>
@@ -322,34 +322,27 @@ function showCategory(id) {
 </div>
 
     <!-- Data Ujian -->
-    <div id="ujian" class="category-table" style="display:none;">
-        <div class="table-responsive">
-            <table class="table table-hover table-striped">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Hari, Tanggal</th>
-                        <th>Jam</th>
-                        <th>Lokasi</th>
-                        <th>Keterangan</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($ujian as $item)
-                        <tr>
-                            <td>{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('l, j F Y') }}</td>
-                            <td>{{ $item->jam }}</td>
-                            <td>{{ $item->kampus_cabang }}</td>
-                            <td>{{ $item->jurusan }} - {{ $item->program_studi }}</td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="4" class="text-center">Tidak ada jadwal ujian saat ini</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+@section('content')
+<div class="container">
+    <h1>Jadwal Ujian</h1>
+    @foreach($jadwals as $jadwal)
+        <div class="card mb-3">
+            <div class="card-header">
+                {{ \Carbon\Carbon::parse($jadwal->tanggal)->format('d M Y') }} - {{ $jadwal->kampus_cabang }} - {{ $jadwal->jurusan }} - {{ $jadwal->program_studi }}
+            </div>
+            <ul class="list-group list-group-flush">
+                @foreach($jadwal->sesi as $sesi)
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Sesi: {{ $sesi->sesi }}
+                        <a href="{{ route('jadwal.download', $sesi->sesi) }}" class="btn btn-sm btn-primary">Download Jadwal</a>
+                    </li>
+                @endforeach
+            </ul>
         </div>
-    </div>
+    @endforeach
+</div>
+@endsection
+
 
     <!-- Data Pengambilan Sertifikat -->
     <div id="pengambilan" class="category-table" style="display:none;">
