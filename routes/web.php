@@ -10,6 +10,7 @@ use App\Http\Controllers\HasilController;
 use App\Http\Controllers\HasilDepanController;
 use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\Admin\PendaftarController;
+use App\Http\Controllers\JadwalPendaftaranController;
 
 
 
@@ -88,3 +89,17 @@ Route::get('/template/mahasiswa-terdaftar', [TemplateController::class, 'mahasis
 // Route untuk export data pendaftars
 Route::get('/admin/pendaftar/export-excel', [PendaftarController::class, 'exportExcel'])->name('admin.pendaftar.export-excel');
 Route::get('/admin/pendaftar/export-pdf', [PendaftarController::class, 'exportPdf'])->name('admin.pendaftar.export-pdf');
+
+// Halaman depan
+Route::get('/', [JadwalController::class, 'index']);
+
+// Admin: CRUD Jadwal Pendaftaran
+Route::prefix('admin/jadwal')->group(function () {
+    Route::get('/', [JadwalController::class, 'adminIndex'])->name('admin.jadwal.index');
+    Route::get('/create', [JadwalController::class, 'create'])->name('admin.jadwal.create');
+    Route::post('/store', [JadwalController::class, 'store'])->name('admin.jadwal.store');
+    Route::get('/edit/{id}', [JadwalController::class, 'edit'])->name('admin.jadwal.edit');
+    Route::put('/update/{id}', [JadwalController::class, 'update'])->name('admin.jadwal.update');
+    Route::delete('/delete/{id}', [JadwalController::class, 'destroy'])->name('admin.jadwal.destroy');
+});
+

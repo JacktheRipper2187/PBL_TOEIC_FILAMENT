@@ -19,5 +19,9 @@ class JadwalController extends Controller
         $sesiList = Hasil::select('sesi')->distinct()->orderBy('sesi')->pluck('sesi');
 
         return view('depan', compact('JadwalPendaftaran', 'ujian', 'pengambilan', 'sesiList'));
+        
+        //jadwal pendaftaran
+        $JadwalPendaftaran = JadwalPendaftaran::orderBy('tgl_buka')->get();
+        return view('depan', compact('JadwalPendaftaran'));
     }
 }

@@ -285,25 +285,19 @@ function showCategory(id) {
         <table class="table table-hover table-striped">
             <thead class="thead-dark">
                 <tr>
-                    <th>Sesi</th>
+                    <th>Lokasi</th>
                     <th>Tanggal Pendaftaran</th>
                     <th>Kuota</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($JadwalPendaftaran as $item)
-                    @php
-                        $startDate = $item->tgl_buka ? \Carbon\Carbon::parse($item->tgl_buka) : null;
-                        $endDate = $item->tgl_tutup ? \Carbon\Carbon::parse($item->tgl_tutup) : null;
-                    @endphp
                     <tr>
-                        <td>Pendaftaran TOEIC</td>
+                        <td>{{ $item->lokasi }}</td>
                         <td>
-                            @if($startDate && $endDate)
-                                {{ $startDate->translatedFormat('j F Y') }} - {{ $endDate->translatedFormat('j F Y') }}
-                            @else
-                                <span class="text-danger">Tanggal belum tersedia</span>
-                            @endif
+                            {{ \Carbon\Carbon::parse($item->tgl_buka)->translatedFormat('j F Y') }}
+                            -
+                            {{ \Carbon\Carbon::parse($item->tgl_tutup)->translatedFormat('j F Y') }}
                         </td>
                         <td>
                             <span class="badge {{ $item->kuota > 0 ? 'bg-success' : 'bg-danger' }}">
@@ -381,7 +375,6 @@ function showCategory(id) {
         </div>
     </div>
 </div>
-
 
 <!-- Script Toggle -->
 <script>
