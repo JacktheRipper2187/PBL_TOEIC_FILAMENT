@@ -45,6 +45,7 @@
             display: flex;
             justify-content: center;
             gap: 1.5rem;
+            margin-bottom: 1.5rem;
         }
         .btn-view {
             background: #0d6efd;
@@ -80,8 +81,21 @@
             background: #126a37;
             color: #fff;
         }
-        .icon {
-            font-size: 1.3rem;
+        .btn-secondary {
+            padding: 0.65rem 1.6rem;
+            font-size: 1.05rem;
+            border-radius: 8px;
+            text-decoration: none;
+            color: white;
+            background-color: #6c757d;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background-color 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background-color: #5c636a;
+            color: #fff;
         }
     </style>
 </head>
@@ -98,18 +112,24 @@
     @endif
 
     <div class="btn-group" role="group" aria-label="File actions">
-    {{-- Tombol Lihat --}}
-    <a href="{{ asset('storage/' . $hasil->file_path) }}" target="_blank" class="btn btn-info">
-        <i class="bi bi-eye"></i> Lihat File
-    </a>
+        {{-- Tombol Lihat --}}
+        <a href="{{ asset('storage/' . $hasil->file_path) }}" target="_blank" class="btn btn-view">
+            <i class="bi bi-eye"></i> Lihat File
+        </a>
 
+        {{-- Tombol Download --}}
+        <a href="{{ route('hasil.download', $hasil->id) }}" class="btn btn-download">
+            <i class="bi bi-download"></i> Download File
+        </a>
+    </div>
 
-    {{-- Tombol Download --}}
-    <a href="{{ route('hasil.download', $hasil->id) }}" class="btn btn-success">
-        <i class="bi bi-download"></i> Download File
-    </a>
+    {{-- Tombol Kembali --}}
+    <div class="d-flex justify-content-center">
+        <a href="{{ url('/') }}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Kembali
+        </a>
+    </div>
 </div>
 
-</div>
 </body>
 </html>

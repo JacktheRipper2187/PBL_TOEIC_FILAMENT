@@ -17,6 +17,7 @@
         type="text/css" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
+    @stack('styles')
 </head>
 <body id="page-top">
     @include('layouts.navbar')

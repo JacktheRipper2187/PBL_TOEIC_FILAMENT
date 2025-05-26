@@ -12,7 +12,7 @@ class FormPendaftaranController extends Controller
 {
     public function showForm()
     {
-        $pendaftars = Pendaftar::all(); // Fetch all registrants if needed
+        $pendaftars = Pendaftar::all();
         return view('formpendaftaran', compact('pendaftars'));
     }
 
@@ -35,16 +35,20 @@ class FormPendaftaranController extends Controller
 
             Log::info('Data Pendaftaran:', $validated);
 
-            // Sanitize inputs (trim whitespace)
+            // Sanitize inputs
             $nim = trim($validated['nim_nik']);
             $nama = trim($validated['nama_lengkap']);
 
-            Log::debug('Mencari mahasiswa:', [
-                'input_nim' => $nim,
-                'input_nama' => $nama,
-            ]);
+            // Cek apakah sudah pernah mendaftar
+            $existing = Pendaftar::where('nim_nik', $nim)->first();
+            if ($existing) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Anda sudah terdaftar sebagai peserta ujian TOEIC gratis. Silakan cek WhatsApp atau email Anda untuk informasi lebih lanjut.'
+                ], 409);
+            }
 
-            // Search for student record with case-insensitive match
+            // Cek apakah data mahasiswa terdaftar
             $mahasiswa = MahasiswaTerdaftar::where('nim', $nim)
                 ->where(function($query) use ($nama) {
                     $query->where('nama_lengkap', 'LIKE', "%$nama%");
@@ -52,18 +56,9 @@ class FormPendaftaranController extends Controller
                 ->first();
 
             if (!$mahasiswa) {
-                $shouldMatch = MahasiswaTerdaftar::where('nim', $nim)
-                    ->orWhere('nama_lengkap', 'LIKE', "%$nama%")
-                    ->get();
-
-                Log::error('Data tidak ditemukan padahal seharusnya match:', [
-                    'should_match' => $shouldMatch,
-                    'all_data' => MahasiswaTerdaftar::all()
-                ]);
-
                 return response()->json([
                     'success' => false,
-                    'message' => 'Mohon maaf, Anda tidak dapat mendaftar untuk tes TOEIC gratis kali ini. Data Anda tidak terdaftar sebagai mahasiswa yang berhak mengikuti tes gratis atau Anda sudah pernah mengikuti tes gratis sebelumnya. Jika Anda ingin mengikuti tes TOEIC, Anda dapat mendaftar secara umum melalui website resmi. Terima kasih atas perhatian Anda.',
+                    'message' => 'Data Anda tidak ditemukan dalam daftar peserta yang berhak mendaftar ujian TOEIC gratis. Silakan hubungi panitia untuk konfirmasi.',
                     'errors' => [
                         'nim_nik' => ['NIM tidak valid atau tidak sesuai dengan nama']
                     ]
@@ -104,7 +99,7 @@ class FormPendaftaranController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'Terjadi kesalahan pada server: ' . $e->getMessage()
+                'message' => 'Terjadi kesalahan pada server. Silakan coba beberapa saat lagi atau hubungi panitia.'
             ], 500);
         }
     }

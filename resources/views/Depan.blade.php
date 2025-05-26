@@ -285,7 +285,7 @@ function showCategory(id) {
         <table class="table table-hover table-striped">
             <thead class="thead-dark">
                 <tr>
-                    <th>Nama</th>
+                    <th>Sesi</th>
                     <th>Tanggal Pendaftaran</th>
                     <th>Kuota</th>
                 </tr>
