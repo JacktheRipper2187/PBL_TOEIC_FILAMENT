@@ -12,8 +12,9 @@ class ListJadwalSertifikats extends ListRecords
 
     protected function getHeaderActions(): array
     {
-        return [
-            Actions\CreateAction::make(),
+         return [
+            Actions\CreateAction::make()
+              ->icon('heroicon-m-plus')
         ];
     }
 }
