@@ -4704,9 +4704,10 @@ textarea.form-control-lg {
   --bs-alert-color: #842029;
   --bs-alert-bg: #f8d7da;
   --bs-alert-border-color: #f5c2c7;
+  color: #000 !important; 
 }
 .alert-danger .alert-link {
-  color: #6a1a21;
+  color: var(--bs-alert-color, #842029); /* fallback ke #842029 */
 }
 
 .alert-light {
