@@ -64,6 +64,16 @@ class FormPendaftaranController extends Controller
                     ]
                 ], 422);
             }
+                    // Cek kuota pendaftaran
+            $jumlahPendaftar = Pendaftar::count();
+            $batasPendaftaran = env('KUOTA_PENDAFTARAN_TOEIC', 3000); // atau bisa 3 untuk testing
+            
+            if ($jumlahPendaftar >= $batasPendaftaran) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Kuota pendaftaran TOEIC gratis sudah penuh. Terima kasih atas minat Anda.',
+            ], 403);
+        }
 
             // Handle file uploads
             $data = $validated;
@@ -101,6 +111,16 @@ class FormPendaftaranController extends Controller
                 'success' => false,
                 'message' => 'Terjadi kesalahan pada server. Silakan coba beberapa saat lagi atau hubungi panitia.'
             ], 500);
+        }
+         // Cek apakah jumlah pendaftar sudah mencapai batas maksimal
+        $jumlahPendaftar = Pendaftar::count();
+        $batasPendaftaran = 3000;
+        
+        if ($jumlahPendaftar >= $batasPendaftaran) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Kuota pendaftaran TOEIC gratis sudah penuh. Terima kasih atas minat Anda.',
+            ], 403);
         }
     }
 }
