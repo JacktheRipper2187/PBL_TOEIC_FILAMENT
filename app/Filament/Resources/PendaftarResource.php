@@ -117,13 +117,15 @@ class PendaftarResource extends Resource
             ->headerActions([
                 Action::make('Export Excel')
                     ->label('Export Excel')
-                    ->icon('heroicon-o-arrow-down-tray')
+                    ->icon('heroicon-o-arrow-up-tray')
+                    ->color('success') // hijau
                     ->url(route('admin.pendaftar.export-excel'))
                     ->openUrlInNewTab(),
 
                 Action::make('Export PDF')
                     ->label('Export PDF')
-                    ->icon('heroicon-o-arrow-down-tray')
+                    ->icon('heroicon-o-arrow-up-tray')
+                    ->color('danger') // merah
                     ->url(route('admin.pendaftar.export-pdf'))
                     ->openUrlInNewTab(),
             ])

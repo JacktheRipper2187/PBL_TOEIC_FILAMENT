@@ -255,8 +255,20 @@
                                     </div>
                                 </div>
 
-                                <button type="submit" class="btn btn-success" id="submitBtn">Daftar Sekarang</button>
-                                <a href="{{ url('/') }}" class="btn btn-danger">Kembali</a>
+                                <div class="mb-3 row">
+                                    <div class="col-md-9 offset-md-3">
+                                        <button type="submit" class="btn btn-success" id="submitBtn">
+                                            {{-- Icon daftar (Bootstrap Icons check-circle) --}}
+                                            <i class="bi bi-check-circle me-1"></i>
+                                            Daftar Sekarang
+                                        </button>
+                                        <a href="{{ url('/') }}" class="btn btn-secondary ms-2">
+                                            {{-- Icon panah kiri (Bootstrap Icons arrow-left) --}}
+                                            <i class="bi bi-arrow-left me-1"></i>
+                                            Kembali
+                                        </a>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -462,7 +474,7 @@
                             setTimeout(() => {
                                 var modalEl = document.getElementById('successModal');
                                 var modalInstance = bootstrap.Modal.getInstance(
-                                modalEl);
+                                    modalEl);
                                 if (modalInstance) {
                                     modalInstance.hide();
                                 }
