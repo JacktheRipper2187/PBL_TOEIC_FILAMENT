@@ -41,8 +41,27 @@ class JadwalSertifikatResource extends Resource
     {
         return $table
             ->columns([
-                //
-            ])
+            Tables\Columns\TextColumn::make('hari_tanggal')
+                ->label('Hari & Tanggal')
+                ->date('l, d M Y') 
+                ->sortable()
+                ->searchable(),
+
+            Tables\Columns\TextColumn::make('waktu')
+                ->label('Waktu')
+                ->time()
+                ->sortable(),
+
+            Tables\Columns\TextColumn::make('lokasi')
+                ->label('Lokasi')
+                ->sortable()
+                ->searchable(),
+
+            Tables\Columns\TextColumn::make('keterangan')
+                ->label('Keterangan')
+                ->limit(30) 
+                ->toggleable(), 
+        ])
             ->filters([
                 //
             ])

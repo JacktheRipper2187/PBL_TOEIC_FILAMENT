@@ -40,7 +40,7 @@
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <p><i class="bi bi-check-circle-fill text-success me-2"></i> Selamat! Anda berhasil
+                                    <p><i class="bi bi-check-circle-fill text-success me-2"></i>Selamat! Anda berhasil
                                         terdaftar untuk mengikuti tes TOEIC gratis. Silakan tunggu informasi lebih lanjut
                                         melalui WhatsApp dari pihak TOEIC terkait jadwal dan prosedur tes. Pastikan juga
                                         untuk mengecek jadwal tes secara berkala melalui website resmi kami. Terima kasih
