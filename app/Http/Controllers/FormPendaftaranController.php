@@ -52,6 +52,15 @@ class FormPendaftaranController extends Controller
                 ], 422);
             }
 
+            // ⛔ CEK DUPLIKAT GLOBAL NIM
+            $duplikatGlobal = Pendaftar::where('nim_nik', $nim)->first();
+            if ($duplikatGlobal) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'NIM ini sudah pernah digunakan untuk pendaftaran.',
+                ], 422);
+            }
+
             $jadwal = JadwalPendaftaran::findOrFail($validated['jadwal_pendaftaran_id']);
 
             // ❗Cek apakah kuota penuh
