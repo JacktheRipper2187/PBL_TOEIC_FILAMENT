@@ -219,11 +219,12 @@
     <button type="button" class="btn btn-outline-light mx-2 active" data-target="jadwal_pendaftaran">{{ __('messages.registration') }}</button>
     <button type="button" class="btn btn-outline-light mx-2" data-target="ujian">{{ __('messages.exam') }}</button>
     <button type="button" class="btn btn-outline-light mx-2" data-target="pengambilan">{{ __('messages.certificate') }}</button>
-        <button id="btnHasil" class="btn btn-outline-light mx-2">Hasil Ujian</button>
+    <button type="button" class="btn btn-outline-light mx-2" data-target="hasil_ujian">{{ __('messages.exam_result') }}</button>
 </div>
 
 <!-- Data Hasil Ujian -->
-<div id="hasil" class="category-table" style="display:none;">
+<!-- Data Hasil Ujian -->
+<div id="hasil_ujian" class="category-table" style="display:none;">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <form action="{{ route('hasil.cari') }}" method="GET" class="d-flex">

@@ -205,6 +205,23 @@
                                 </div>
 
                                 <div class="mb-3 row">
+                                    <label for="jadwal_id" class="col-md-3 col-form-label">Pilih Jadwal Tes</label>
+                                    <div class="col-md-9">
+                                        <select name="jadwal_id" id="jadwal_id" class="form-select" required>
+                                            <option value="" disabled selected>Pilih Jadwal</option>
+                                                @foreach ($jadwalList as $jadwal)
+                                                    <option value="{{ $jadwal->id }}">
+                                                        {{ $jadwal->tanggal_mulai_formatted }} - {{ $jadwal->tanggal_akhir_formatted }} (Kuota: {{ $jadwal->kuota }})
+                                                    </option>
+                                                @endforeach
+                                        </select>
+                                            @error('jadwal_id')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 row">
                                     <label for="foto_formal" class="col-md-3 col-form-label">Foto Formal</label>
                                     <div class="col-md-9">
                                         <input type="file" id="foto_formal" name="foto_formal" class="form-control"

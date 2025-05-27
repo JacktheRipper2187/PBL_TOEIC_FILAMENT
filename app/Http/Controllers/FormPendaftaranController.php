@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pendaftar;
+use App\Models\Pendaftaran;
 use App\Models\MahasiswaTerdaftar;
+use App\Models\JadwalPendaftaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
@@ -13,7 +15,8 @@ class FormPendaftaranController extends Controller
     public function showForm()
     {
         $pendaftars = Pendaftar::all();
-        return view('formpendaftaran', compact('pendaftars'));
+        $jadwalList = JadwalPendaftaran::where('kuota', '>', 0)->get();
+        return view('formpendaftaran', compact('pendaftars', 'jadwalList'));
     }
 
     public function submitForm(Request $request)
@@ -31,37 +34,53 @@ class FormPendaftaranController extends Controller
                 'foto_formal' => 'nullable|image|max:2048',
                 'upload_ktp' => 'nullable|file|max:2048',
                 'upload_ktm' => 'nullable|file|max:2048',
+                'jadwal_id' => 'required|exists:jadwal_pendaftaran,id',
             ]);
 
-            Log::info('Data Pendaftaran:', $validated);
-
-            // Sanitize inputs
             $nim = trim($validated['nim_nik']);
             $nama = trim($validated['nama_lengkap']);
 
-            // Cek apakah sudah pernah mendaftar
-            $existing = Pendaftar::where('nim_nik', $nim)->first();
-            if ($existing) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Anda sudah terdaftar sebagai peserta ujian TOEIC gratis. Silakan cek WhatsApp atau email Anda untuk informasi lebih lanjut.'
-                ], 409);
-            }
-
-            // Cek apakah data mahasiswa terdaftar
             $mahasiswa = MahasiswaTerdaftar::where('nim', $nim)
-                ->where(function($query) use ($nama) {
-                    $query->where('nama_lengkap', 'LIKE', "%$nama%");
-                })
+                ->where('nama_lengkap', 'LIKE', "%$nama%")
                 ->first();
 
             if (!$mahasiswa) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Data Anda tidak ditemukan dalam daftar peserta yang berhak mendaftar ujian TOEIC gratis. Silakan hubungi panitia untuk konfirmasi.',
-                    'errors' => [
-                        'nim_nik' => ['NIM tidak valid atau tidak sesuai dengan nama']
-                    ]
+                    'message' => 'Mohon maaf, data Anda tidak ditemukan.',
+                    'errors' => ['nim_nik' => ['NIM tidak valid atau tidak sesuai dengan nama']]
+                ], 422);
+            }
+
+            $jadwal = JadwalPendaftaran::findOrFail($validated['jadwal_id']);
+
+            // ❗Cek apakah kuota penuh
+            if ($jadwal->kuota <= 0) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Kuota untuk jadwal yang dipilih sudah penuh.',
+                    'errors' => ['jadwal_id' => ['Kuota penuh']]
+                ], 422);
+            }
+
+            // ❗Cek apakah pendaftaran sudah ditutup atau belum dibuka
+            $now = now();
+            if ($now->lt($jadwal->tgl_buka) || $now->gt($jadwal->tgl_tutup)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Pendaftaran belum dibuka atau sudah ditutup.',
+                ], 422);
+            }
+
+            // ❗Cek apakah user sudah mendaftar sebelumnya
+            $sudahDaftar = Pendaftaran::where('nim_nik', $nim)
+                ->where('jadwal_id', $jadwal->id)
+                ->first();
+
+            if ($sudahDaftar) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Anda sudah terdaftar untuk jadwal ini.',
                 ], 422);
             }
                     // Cek kuota pendaftaran
@@ -75,12 +94,10 @@ class FormPendaftaranController extends Controller
             ], 403);
         }
 
-            // Handle file uploads
             $data = $validated;
 
             if ($request->hasFile('foto_formal')) {
                 $data['foto_formal'] = $request->file('foto_formal')->store('pendaftar/foto_formal', 'public');
-                Log::info('Foto formal disimpan di:', ['path' => $data['foto_formal']]);
             }
 
             if ($request->hasFile('upload_ktp')) {
@@ -91,15 +108,16 @@ class FormPendaftaranController extends Controller
                 $data['upload_ktm'] = $request->file('upload_ktm')->store('pendaftar/ktm', 'public');
             }
 
-            // Save the registrant data
-            $pendaftar = Pendaftar::create($data);
-            Log::info('Pendaftaran berhasil disimpan:', ['id' => $pendaftar->id]);
+            // Simpan pendaftaran
+            $pendaftar = Pendaftaran::create($data);
+
+            // ❗Kurangi kuota
+            $jadwal->decrement('kuota');
 
             return response()->json([
                 'success' => true,
-                'message' => 'Selamat! Anda berhasil terdaftar untuk mengikuti tes TOEIC gratis. Silakan tunggu informasi lebih lanjut melalui WhatsApp dari pihak TOEIC terkait jadwal dan prosedur tes. Pastikan juga untuk mengecek jadwal tes secara berkala melalui website resmi kami. Terima kasih.'
+                'message' => 'Selamat! Anda berhasil terdaftar untuk mengikuti tes TOEIC gratis.'
             ]);
-
         } catch (\Exception $e) {
             Log::error('Error saat pendaftaran:', [
                 'request_data' => $request->all(),
@@ -109,7 +127,7 @@ class FormPendaftaranController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'Terjadi kesalahan pada server. Silakan coba beberapa saat lagi atau hubungi panitia.'
+                'message' => 'Terjadi kesalahan pada server: ' . $e->getMessage()
             ], 500);
         }
          // Cek apakah jumlah pendaftar sudah mencapai batas maksimal

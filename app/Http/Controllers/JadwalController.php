@@ -24,4 +24,10 @@ class JadwalController extends Controller
         $JadwalPendaftaran = JadwalPendaftaran::orderBy('tgl_buka')->get();
         return view('depan', compact('JadwalPendaftaran'));
     }
+
+    public function pendaftar()
+{
+    return $this->hasMany(PendaftaranController::class, 'jadwal_id');
+}
+
 }
