@@ -73,7 +73,7 @@ class FormPendaftaranController extends Controller
             }
 
             // ❗Cek apakah user sudah mendaftar sebelumnya
-            $sudahDaftar = Pendaftaran::where('nim_nik', $nim)
+            $sudahDaftar = Pendaftar::where('nim_nik', $nim)
                 ->where('jadwal_id', $jadwal->id)
                 ->first();
 
@@ -109,7 +109,7 @@ class FormPendaftaranController extends Controller
             }
 
             // Simpan pendaftaran
-            $pendaftar = Pendaftaran::create($data);
+            $pendaftar = Pendaftar::create($data);
 
             // ❗Kurangi kuota
             $jadwal->decrement('kuota');

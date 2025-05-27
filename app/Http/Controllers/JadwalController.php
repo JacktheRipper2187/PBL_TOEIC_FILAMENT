@@ -20,8 +20,8 @@ class JadwalController extends Controller
 
         return view('depan', compact('JadwalPendaftaran', 'ujian', 'pengambilan', 'sesiList'));
         
-        //jadwal pendaftaran
-        $JadwalPendaftaran = JadwalPendaftaran::orderBy('tgl_buka')->get();
+        //jadwal pendaftaranx
+        $jadwalPendaftaran = JadwalPendaftaran::orderBy('tgl_buka')->get();
         return view('depan', compact('JadwalPendaftaran'));
     }
 
