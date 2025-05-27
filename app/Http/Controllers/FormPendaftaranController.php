@@ -34,7 +34,7 @@ class FormPendaftaranController extends Controller
                 'foto_formal' => 'nullable|image|max:2048',
                 'upload_ktp' => 'nullable|file|max:2048',
                 'upload_ktm' => 'nullable|file|max:2048',
-                'jadwal_id' => 'required|exists:jadwal_pendaftaran,id',
+                'jadwal_pendaftaran_id' => 'required|exists:jadwal_pendaftaran,id',
             ]);
 
             $nim = trim($validated['nim_nik']);
@@ -52,14 +52,14 @@ class FormPendaftaranController extends Controller
                 ], 422);
             }
 
-            $jadwal = JadwalPendaftaran::findOrFail($validated['jadwal_id']);
+            $jadwal = JadwalPendaftaran::findOrFail($validated['jadwal_pendaftaran_id']);
 
             // ❗Cek apakah kuota penuh
             if ($jadwal->kuota <= 0) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Kuota untuk jadwal yang dipilih sudah penuh.',
-                    'errors' => ['jadwal_id' => ['Kuota penuh']]
+                    'errors' => ['jadwal_pendaftaran_id' => ['Kuota penuh']]
                 ], 422);
             }
 
@@ -74,7 +74,7 @@ class FormPendaftaranController extends Controller
 
             // ❗Cek apakah user sudah mendaftar sebelumnya
             $sudahDaftar = Pendaftar::where('nim_nik', $nim)
-                ->where('jadwal_id', $jadwal->id)
+                ->where('jadwal_pendaftaran_id', $jadwal->id)
                 ->first();
 
             if ($sudahDaftar) {
