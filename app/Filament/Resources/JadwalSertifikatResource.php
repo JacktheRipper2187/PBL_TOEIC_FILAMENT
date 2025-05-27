@@ -24,7 +24,7 @@ class JadwalSertifikatResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
-  {
+    {
         return $form
             ->schema([
                 TimePicker::make('waktu')
@@ -48,6 +48,7 @@ class JadwalSertifikatResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()->icon('heroicon-o-trash'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
