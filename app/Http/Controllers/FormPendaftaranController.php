@@ -16,7 +16,7 @@ class FormPendaftaranController extends Controller
     {
         $pendaftars = Pendaftar::all();
         $jadwalList = JadwalPendaftaran::where('kuota', '>', 0)->get();
-        return view('formpendaftaran', compact('pendaftars', 'jadwalList'));
+        return view('formPendaftaran', compact('pendaftars', 'jadwalList'));
     }
 
     public function submitForm(Request $request)

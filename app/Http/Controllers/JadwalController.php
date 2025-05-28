@@ -18,11 +18,11 @@ class JadwalController extends Controller
         // Ambil daftar sesi unik untuk hasil
         $sesiList = Hasil::select('sesi')->distinct()->orderBy('sesi')->pluck('sesi');
 
-        return view('depan', compact('JadwalPendaftaran', 'ujian', 'pengambilan', 'sesiList'));
+        return view('Depan', compact('JadwalPendaftaran', 'ujian', 'pengambilan', 'sesiList'));
         
         //jadwal pendaftaranx
-        $jadwalPendaftaran = JadwalPendaftaran::orderBy('tgl_buka')->get();
-        return view('depan', compact('JadwalPendaftaran'));
+        $JadwalPendaftaran = JadwalPendaftaran::orderBy('tgl_buka')->get();
+        return view('Depan', compact('JadwalPendaftaran'));
     }
 
     public function pendaftar()

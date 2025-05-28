@@ -3,8 +3,8 @@
 
 use App\Models\JadwalPendaftaran;
 use App\Models\JadwalSertifikat;
-use App\Models\section;
-use App\Models\setting;
+use App\Models\Section;
+use App\Models\Setting;
 use App\Models\pendaftaran;
 use App\Models\JadwalUjian;
 use Illuminate\Support\Facades\DB;
@@ -28,7 +28,7 @@ if (!function_exists('get_section_value')) {
     function get_section_value()
     {
         $locale = session('locale', 'id'); // Default ke 'id'
-        $data = section::where('locale', $locale)
+        $data = Section::where('locale', $locale)
             ->whereIn('post_as', ['Beranda', 'SyaratKetentuan'])
             ->get(['post_as', 'title', 'thumbnail', 'content']);
 
