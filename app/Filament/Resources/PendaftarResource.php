@@ -13,6 +13,7 @@ use Filament\Tables\Table;
 use Filament\Tables\Actions\Action;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Storage;
 
 class PendaftarResource extends Resource
 {
@@ -81,7 +82,6 @@ class PendaftarResource extends Resource
             ]);
     }
 
-
     public static function table(Table $table): Table
     {
         return $table
@@ -92,40 +92,61 @@ class PendaftarResource extends Resource
                 Tables\Columns\TextColumn::make('kampus')->label('Kampus'),
                 Tables\Columns\TextColumn::make('jurusan')->label('Jurusan'),
                 Tables\Columns\TextColumn::make('program_studi')->label('Prodi'),
-                Tables\Columns\ImageColumn::make('foto_formal')
+
+                Tables\Columns\TextColumn::make('foto_formal')
                     ->label('Foto Formal')
-                    ->disk('public')
-                    ->width(50)
-                    ->height(50),
+                    ->formatStateUsing(fn () => '🖼️ Lihat')
+                    ->action(
+                        Tables\Actions\Action::make('Lihat Foto')
+                            ->modalHeading('Preview Foto Formal')
+                            ->modalContent(fn ($record) => view('components.preview-image', [
+                            'imageUrl' => Storage::url($record->foto_formal),
+                            ]))
+                            ->modalSubmitAction(false)
+                            ->modalCancelAction(false)
+                    ),
 
-                Tables\Columns\ImageColumn::make('upload_ktp')
+                Tables\Columns\TextColumn::make('upload_ktp')
                     ->label('KTP')
-                    ->disk('public')
-                    ->width(50)
-                    ->height(50),
+                    ->formatStateUsing(fn () => '🖼️ Lihat')
+                    ->action(
+                        Tables\Actions\Action::make('Lihat KTP')
+                            ->modalHeading('Preview KTP')
+                            ->modalContent(fn ($record) => view('components.preview-image', [
+                            'imageUrl' => Storage::url($record->upload_ktp),
+        ]))
 
-                Tables\Columns\ImageColumn::make('upload_ktm')
+                            ->modalSubmitAction(false)
+                            ->modalCancelAction(false)
+                    ),
+
+                Tables\Columns\TextColumn::make('upload_ktm')
                     ->label('KTM')
-                    ->disk('public')
-                    ->width(50)
-                    ->height(50),
-
+                    ->formatStateUsing(fn () => '🖼️ Lihat')
+                    ->action(
+                        Tables\Actions\Action::make('Lihat KTM')
+                            ->modalHeading('Preview KTM')
+                            ->modalContent(fn ($record) => view('components.preview-image', ['imageUrl' => Storage::url($record->upload_ktm),
+                            ]))
+                            ->modalSubmitAction(false)
+                            ->modalCancelAction(false)    
+                    ),
             ])
             ->filters([
-                // filter jika perlu
+                // tambahkan filter jika perlu
             ])
             ->headerActions([
-                Action::make('Export Excel')
+                Tables\Actions\Action::make('Export Excel')
                     ->label('Export Excel')
                     ->icon('heroicon-o-arrow-up-tray')
-                    ->color('success') // hijau
+                    ->color('success')
                     ->url(route('admin.pendaftar.export-excel'))
                     ->openUrlInNewTab(),
 
-                Action::make('Export PDF')
+                Tables\Actions\Action::make('Export PDF')
                     ->label('Export PDF')
                     ->icon('heroicon-o-arrow-up-tray')
-                    ->color('danger') // merah
+                    ->color('danger')
                     ->url(route('admin.pendaftar.export-pdf'))
                     ->openUrlInNewTab(),
             ])
@@ -139,7 +160,6 @@ class PendaftarResource extends Resource
                 ]),
             ]);
     }
-
 
     public static function getRelations(): array
     {
