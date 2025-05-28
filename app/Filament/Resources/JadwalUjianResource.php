@@ -21,7 +21,7 @@ class JadwalUjianResource extends Resource
     protected static ?string $model = JadwalUjian::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+    protected static ?string $navigationGroup = 'Manajemen Jadwal';
     public static function form(Form $form): Form
      {
         return $form
@@ -74,4 +74,26 @@ class JadwalUjianResource extends Resource
             'edit' => Pages\EditJadwalUjian::route('/{record}/edit'),
         ];
     }
+    public static function canViewAny(): bool
+{
+    $user = auth()->user();
+
+    return $user instanceof \App\Models\User && $user->hasRole('admin');
+}
+
+public static function canCreate(): bool
+{
+    return static::canViewAny(); // Admin otomatis bisa create
+}
+
+public static function canEdit($record): bool
+{
+    return static::canViewAny(); // Admin otomatis bisa edit
+}
+
+public static function canDelete($record): bool
+{
+    return static::canViewAny(); // Admin otomatis bisa delete
+}
+
 }
