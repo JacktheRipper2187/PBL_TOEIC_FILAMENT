@@ -171,42 +171,34 @@
         </div>
     </section>
 
-    <!-- Pendaftaran Section-->
-    <section class="page-section portfolio" id="pendaftaran">
-        <div class="container">
-            <!-- Pendaftaran Section Heading-->
-            <h2 class="page-section-heading text-center text-uppercase text-secondary mb-4">{{ __('messages.pendaftar') }}</h2>
-            <!-- Icon Divider-->
-            <div class="divider-custom">
-                <div class="divider-custom-line"></div>
-                <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-                <div class="divider-custom-line"></div>
-            </div>
-            <!-- Pendaftaran Grid Items-->
-            <div class="row justify-content-center">
-                @php
-                    $i=1;
-                @endphp
-                @foreach ($pendaftaran as $item)
-            {{-- <!-- Pendaftaran Item {{ $i }}--> --}}
-                <div class="col-md-6 col-lg-4 mb-5">
-                <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal{{$i}}">
-                        <div
-                            class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                            <div class="portfolio-item-caption-content text-center text-white"><i
-                                    class="fas fa-plus fa-3x"></i></div>
-                        </div>
-                         <img class="img-fluid" src="{{ asset('uploads/' . $item->thumbnail) }}" alt="..." />
-                    </div>
-                </div>
-                {{-- <!-- last Pendaftaran {{$i}}--> --}}
-               @php
-                   $i++;
-               @endphp
-                @endforeach 
-            </div>
+   <!-- Pendaftaran Section-->
+<section class="page-section portfolio" id="pendaftaran">
+    <div class="container">
+        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-4">{{ __('messages.pendaftar') }}</h2>
+        <div class="divider-custom">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+            <div class="divider-custom-line"></div>
         </div>
-    </section>
+        <div class="row justify-content-center">
+            @foreach ($pendaftaran as $item)
+            <div class="col-md-6 col-lg-4 mb-5">
+                <a href="{{ $item->link ? $item->link : route('formpendaftaran') }}" 
+                   class="portfolio-item mx-auto d-block" 
+                   target="{{ $item->link ? '_blank' : '_self' }}">
+                    <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
+                        <div class="portfolio-item-caption-content text-center text-white">
+                            <i class="fas fa-plus fa-3x"></i>
+                        </div>
+                    </div>
+                    <img class="img-fluid" src="{{ asset('uploads/' . $item->thumbnail) }}" alt="..." />
+                </a>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+
 
 <!-- Jadwal Section -->
 <section class="page-section bg-primary text-white mb-0" id="jadwal">
@@ -286,29 +278,33 @@ function showCategory(id) {
         <table class="table table-hover table-striped">
             <thead class="thead-dark">
                 <tr>
-                    <th>Lokasi</th>
-                    <th>Tanggal Pendaftaran</th>
+                    <th>Skema</th>
+                    <th>Periode Pendaftaran</th>
                     <th>Kuota</th>
+                    <th>Keterangan</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($JadwalPendaftaran as $item)
                     <tr>
-                        <td>{{ $item->lokasi }}</td>
+                        <td>{{ ucfirst($item->skema) }}</td>
                         <td>
                             {{ \Carbon\Carbon::parse($item->tgl_buka)->translatedFormat('j F Y') }}
                             -
                             {{ \Carbon\Carbon::parse($item->tgl_tutup)->translatedFormat('j F Y') }}
+                            <br>
+                            <small class="text-muted">{{ $item->periode_pendaftaran }}</small>
                         </td>
                         <td>
                             <span class="badge {{ $item->kuota > 0 ? 'bg-success' : 'bg-danger' }}">
                                 {{ $item->kuota > 0 ? number_format($item->kuota, 0, ',', '.') . ' Kuota' : 'Penuh' }}
                             </span>
                         </td>
+                        <td>{{ $item->keterangan }}</td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="3" class="text-center">Tidak ada jadwal pendaftaran tersedia</td>
+                        <td colspan="4" class="text-center">Tidak ada jadwal pendaftaran tersedia</td>
                     </tr>
                 @endforelse
             </tbody>

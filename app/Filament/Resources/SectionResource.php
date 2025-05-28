@@ -21,7 +21,7 @@ class SectionResource extends Resource
     protected static ?string $model = Section::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-computer-desktop';
-
+protected static ?string $navigationGroup = 'Manajemen Tampilan';
     public static function form(Form $form): Form
     {
         return $form
@@ -82,4 +82,27 @@ class SectionResource extends Resource
             'edit' => Pages\EditSection::route('/{record}/edit'),
         ];
     }
+
+public static function canViewAny(): bool
+{
+    $user = auth()->user();
+
+    return $user instanceof \App\Models\User && $user->hasRole('admin');
+}
+
+public static function canCreate(): bool
+{
+    return static::canViewAny(); // Admin otomatis bisa create
+}
+
+public static function canEdit($record): bool
+{
+    return static::canViewAny(); // Admin otomatis bisa edit
+}
+
+public static function canDelete($record): bool
+{
+    return static::canViewAny(); // Admin otomatis bisa delete
+}
+
 }

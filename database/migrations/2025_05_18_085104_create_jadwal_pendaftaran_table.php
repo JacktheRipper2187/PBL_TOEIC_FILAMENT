@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -9,11 +10,12 @@ class CreateJadwalPendaftaranTable extends Migration
     {
         Schema::create('jadwal_pendaftaran', function (Blueprint $table) {
             $table->id();
-            $table->string('lokasi');          // varchar(255), NOT NULL
-            $table->date('tgl_buka');          // date, NOT NULL
-            $table->date('tgl_tutup');         // date, NOT NULL
-            $table->integer('kuota');          // int, NOT NULL
-            $table->timestamps();              // created_at & updated_at nullable timestamps
+            $table->string('skema');                    // Tambahan: nama skema pendaftaran
+            $table->date('tgl_buka');                   // tanggal mulai pendaftaran
+            $table->date('tgl_tutup');                  // tanggal berakhir pendaftaran
+            $table->integer('kuota');                   // kuota peserta
+            $table->text('keterangan')->nullable();     // keterangan tambahan, opsional
+            $table->timestamps();                       // created_at & updated_at
         });
     }
 

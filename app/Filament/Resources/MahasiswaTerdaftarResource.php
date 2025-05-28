@@ -18,7 +18,7 @@ class MahasiswaTerdaftarResource extends Resource
     protected static ?string $model = MahasiswaTerdaftar::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+protected static ?string $navigationGroup = 'Manajemen Data Pendaftaran';
     public static function form(Form $form): Form
     {
         return $form
@@ -108,4 +108,26 @@ class MahasiswaTerdaftarResource extends Resource
             'edit' => Pages\EditMahasiswaTerdaftar::route('/{record}/edit'),
         ];
     }
+   public static function canViewAny(): bool
+{
+    $user = auth()->user();
+
+    return $user instanceof \App\Models\User && $user->hasRole('admin');
+}
+
+public static function canCreate(): bool
+{
+    return static::canViewAny(); // Admin otomatis bisa create
+}
+
+public static function canEdit($record): bool
+{
+    return static::canViewAny(); // Admin otomatis bisa edit
+}
+
+public static function canDelete($record): bool
+{
+    return static::canViewAny(); // Admin otomatis bisa delete
+}
+
 }

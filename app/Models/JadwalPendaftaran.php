@@ -9,30 +9,30 @@ class JadwalPendaftaran extends Model
 {
     protected $table = 'jadwal_pendaftaran';
 
+    // Field yang bisa diisi
     protected $fillable = [
-        'lokasi',
+        'skema',
         'tgl_buka',
         'tgl_tutup',
         'kuota',
-
-
-        'tgl_buka',
-        'tgl_tutup',
+        'keterangan',
     ];
 
+    // Relasi: satu jadwal bisa memiliki banyak pendaftar
     public function pendaftar()
     {
         return $this->hasMany(Pendaftaran::class, 'jadwal_id');
     }
 
+    // Akses format tanggal buka yang sudah diformat
     public function getTanggalMulaiFormattedAttribute()
     {
-        return Carbon::parse($this->tgl_buka)->format('d F Y');
+        return Carbon::parse($this->tgl_buka)->translatedFormat('d F Y');
     }
 
+    // Akses format tanggal tutup yang sudah diformat
     public function getTanggalAkhirFormattedAttribute()
     {
-        return Carbon::parse($this->tgl_tutup)->format('d F Y');
+        return Carbon::parse($this->tgl_tutup)->translatedFormat('d F Y');
     }
-
 }
