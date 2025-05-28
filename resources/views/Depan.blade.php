@@ -278,29 +278,33 @@ function showCategory(id) {
         <table class="table table-hover table-striped">
             <thead class="thead-dark">
                 <tr>
-                    <th>Lokasi</th>
-                    <th>Tanggal Pendaftaran</th>
+                    <th>Skema</th>
+                    <th>Periode Pendaftaran</th>
                     <th>Kuota</th>
+                    <th>Keterangan</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($JadwalPendaftaran as $item)
                     <tr>
-                        <td>{{ $item->lokasi }}</td>
+                        <td>{{ ucfirst($item->skema) }}</td>
                         <td>
                             {{ \Carbon\Carbon::parse($item->tgl_buka)->translatedFormat('j F Y') }}
                             -
                             {{ \Carbon\Carbon::parse($item->tgl_tutup)->translatedFormat('j F Y') }}
+                            <br>
+                            <small class="text-muted">{{ $item->periode_pendaftaran }}</small>
                         </td>
                         <td>
                             <span class="badge {{ $item->kuota > 0 ? 'bg-success' : 'bg-danger' }}">
                                 {{ $item->kuota > 0 ? number_format($item->kuota, 0, ',', '.') . ' Kuota' : 'Penuh' }}
                             </span>
                         </td>
+                        <td>{{ $item->keterangan }}</td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="3" class="text-center">Tidak ada jadwal pendaftaran tersedia</td>
+                        <td colspan="4" class="text-center">Tidak ada jadwal pendaftaran tersedia</td>
                     </tr>
                 @endforelse
             </tbody>

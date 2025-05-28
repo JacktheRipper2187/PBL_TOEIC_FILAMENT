@@ -11,13 +11,14 @@ class JadwalPendaftaranTableSeeder extends Seeder
     {
         DB::table('jadwal_pendaftaran')->insert([
             [
-                'lokasi' => 'POLITEKNIK NEGRI MALANG',
+                'skema' => 'gratis',
                 'tgl_buka' => '2025-05-19',
                 'tgl_tutup' => '2025-05-24',
                 'kuota' => 300,
-                'created_at' => '2025-05-19 13:45:43',
-                'updated_at' => null,
-            ],
+                'keterangan' => 'Online',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
         ]);
     }
 }

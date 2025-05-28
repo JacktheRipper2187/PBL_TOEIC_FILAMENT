@@ -15,21 +15,36 @@ class JadwalPendaftaranResource extends Resource
     protected static ?string $model = JadwalPendaftaran::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-calendar';
-protected static ?string $navigationGroup = 'Manajemen Jadwal';
+    protected static ?string $navigationGroup = 'Manajemen Jadwal';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('lokasi')
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\Select::make('skema')
+                    ->label('Skema')
+                    ->options([
+                        'gratis' => 'Gratis',
+                        'berbayar' => 'Berbayar',
+                    ])
+                    ->required(),
+
                 Forms\Components\DatePicker::make('tgl_buka')
+                    ->label('Tanggal Buka')
                     ->required(),
+
                 Forms\Components\DatePicker::make('tgl_tutup')
+                    ->label('Tanggal Tutup')
                     ->required(),
+
                 Forms\Components\TextInput::make('kuota')
                     ->required()
                     ->numeric(),
+
+                Forms\Components\Textarea::make('keterangan')
+                    ->maxLength(500)
+                    ->label('Keterangan')
+                    ->rows(3),
             ]);
     }
 
@@ -37,10 +52,11 @@ protected static ?string $navigationGroup = 'Manajemen Jadwal';
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('lokasi')->label('Lokasi'),
+                Tables\Columns\TextColumn::make('skema')->label('Skema'),
                 Tables\Columns\TextColumn::make('tgl_buka')->date('d F Y')->label('Tanggal Buka'),
                 Tables\Columns\TextColumn::make('tgl_tutup')->date('d F Y')->label('Tanggal Tutup'),
                 Tables\Columns\TextColumn::make('kuota')->label('Kuota'),
+                Tables\Columns\TextColumn::make('keterangan')->label('Keterangan')->limit(30),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -59,26 +75,26 @@ protected static ?string $navigationGroup = 'Manajemen Jadwal';
             'edit' => Pages\EditJadwalPendaftaran::route('/{record}/edit'),
         ];
     }
-  public static function canViewAny(): bool
-{
-    $user = auth()->user();
 
-    return $user instanceof \App\Models\User && $user->hasRole('admin');
-}
+    // Role-based akses
+    public static function canViewAny(): bool
+    {
+        $user = auth()->user();
+        return $user instanceof \App\Models\User && $user->hasRole('admin');
+    }
 
-public static function canCreate(): bool
-{
-    return static::canViewAny(); // Admin otomatis bisa create
-}
+    public static function canCreate(): bool
+    {
+        return static::canViewAny();
+    }
 
-public static function canEdit($record): bool
-{
-    return static::canViewAny(); // Admin otomatis bisa edit
-}
+    public static function canEdit($record): bool
+    {
+        return static::canViewAny();
+    }
 
-public static function canDelete($record): bool
-{
-    return static::canViewAny(); // Admin otomatis bisa delete
-}
-
+    public static function canDelete($record): bool
+    {
+        return static::canViewAny();
+    }
 }
