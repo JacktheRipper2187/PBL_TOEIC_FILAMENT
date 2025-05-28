@@ -18,7 +18,7 @@ class SettingResource extends Resource
     protected static ?string $model = Setting::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-exclamation-circle';
-
+protected static ?string $navigationGroup = 'Manajemen Tampilan';
     public static function form(Form $form): Form
     {
         return $form
@@ -87,4 +87,28 @@ class SettingResource extends Resource
             'edit' => Pages\EditSetting::route('/{record}/edit'),
         ];
     }
+
+    
+public static function canViewAny(): bool
+{
+    $user = auth()->user();
+
+    return $user instanceof \App\Models\User && $user->hasRole('admin');
+}
+
+public static function canCreate(): bool
+{
+    return static::canViewAny(); // Admin otomatis bisa create
+}
+
+public static function canEdit($record): bool
+{
+    return static::canViewAny(); // Admin otomatis bisa edit
+}
+
+public static function canDelete($record): bool
+{
+    return static::canViewAny(); // Admin otomatis bisa delete
+}
+
 }

@@ -41,7 +41,11 @@ return [
             'provider' => 'users',
         ],
     ],
-
+    // config/permission.php
+    'models' => [
+        'role' => Spatie\Permission\Models\Role::class,
+        'permission' => Spatie\Permission\Models\Permission::class,
+    ],
     /*
     |--------------------------------------------------------------------------
     | User Providers

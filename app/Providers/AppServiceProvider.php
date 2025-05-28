@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Filament\Facades\Filament;
 use Filament\Navigation\UserMenuItem;
-use App\Filament\Pages\EditProfile; // Tambahkan ini
+use App\Filament\Pages\EditProfile;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
             Filament::registerUserMenuItems([
                 'profile' => UserMenuItem::make()
                     ->label('Edit Profile')
-                    ->url(EditProfile::getUrl()) // Ganti di sini!
+                    ->url(EditProfile::getUrl())
                     ->icon('heroicon-o-user'),
             ]);
         });

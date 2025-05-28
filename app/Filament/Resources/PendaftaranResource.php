@@ -19,7 +19,7 @@ class PendaftaranResource extends Resource
     protected static ?string $model = Pendaftaran::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document';
-
+protected static ?string $navigationGroup = 'Manajemen Data Pendaftaran';
     public static function form(Form $form): Form
     {
          return $form
@@ -83,4 +83,28 @@ class PendaftaranResource extends Resource
             'edit' => Pages\EditPendaftaran::route('/{record}/edit'),
         ];
     }
+
+  public static function canViewAny(): bool
+{
+    $user = auth()->user();
+
+    return $user instanceof \App\Models\User && $user->hasRole('admin');
+}
+
+
+public static function canCreate(): bool
+{
+    return static::canViewAny(); // Admin otomatis bisa create
+}
+
+public static function canEdit($record): bool
+{
+    return static::canViewAny(); // Admin otomatis bisa edit
+}
+
+public static function canDelete($record): bool
+{
+    return static::canViewAny(); // Admin otomatis bisa delete
+}
+
 }
