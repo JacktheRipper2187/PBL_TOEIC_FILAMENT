@@ -12,6 +12,7 @@ return [
     'about' => 'About the Site',
     'issue' => 'If There Are Any Issues',
     'exam' => 'Exam',
+    'exam_result' => 'Exam Result',
     'certificate' => 'Certificate Collection',
     'program' => 'Exam Program',
     'period' => 'Registration Period',
