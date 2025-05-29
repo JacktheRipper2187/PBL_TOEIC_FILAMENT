@@ -24,5 +24,11 @@ class AppServiceProvider extends ServiceProvider
                     ->icon('heroicon-o-user'),
             ]);
         });
+        Filament::serving(function () {
+            Filament::registerRenderHook(
+                'panels::body.end',
+                fn(): string => '<footer class="text-center py-4 text-sm text-gray-500">© ' . date('Y') . ' Upa Bahasa Polinema. All rights reserved.</footer>'
+            );
+        });
     }
 }
