@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
@@ -35,4 +36,22 @@ class JadwalPendaftaran extends Model
     {
         return Carbon::parse($this->tgl_tutup)->translatedFormat('d F Y');
     }
+    protected static function boot()
+{
+    parent::boot();
+
+    static::updating(function ($model) {
+        if ($model->isDirty('thumbnail') && $model->getOriginal('thumbnail') !== null) {
+            Storage::disk('public')->delete($model->getOriginal('thumbnail'));
+        }
+    });
+
+    // ⬇ Tambahkan ini
+    static::deleting(function ($pendaftar) {
+        if ($pendaftar->jadwal) {
+            $pendaftar->jadwal->increment('kuota');
+        }
+    });
+}
+
 }

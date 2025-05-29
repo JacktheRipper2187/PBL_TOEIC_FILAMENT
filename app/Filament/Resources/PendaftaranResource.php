@@ -14,6 +14,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
+
 class PendaftaranResource extends Resource
 {
     protected static ?string $model = Pendaftaran::class;
@@ -105,6 +106,16 @@ public static function canEdit($record): bool
 public static function canDelete($record): bool
 {
     return static::canViewAny(); // Admin otomatis bisa delete
+}
+public static function getEloquentQuery(): Builder
+{
+    $query = parent::getEloquentQuery();
+
+    if (request()->has('jadwal_id')) {
+        $query->where('jadwal_id', request('jadwal_id'));
+    }
+
+    return $query;
 }
 
 }

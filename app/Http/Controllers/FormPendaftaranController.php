@@ -94,7 +94,7 @@ class FormPendaftaranController extends Controller
             }
                     // Cek kuota pendaftaran
             $jumlahPendaftar = Pendaftar::count();
-            $batasPendaftaran = env('KUOTA_PENDAFTARAN_TOEIC', 3); // atau bisa 3 untuk testing
+            $batasPendaftaran = env('KUOTA_PENDAFTARAN_TOEIC', 3000); // atau bisa 3 untuk testing
             
             if ($jumlahPendaftar >= $batasPendaftaran) {
             return response()->json([
@@ -141,7 +141,7 @@ class FormPendaftaranController extends Controller
         }
          // Cek apakah jumlah pendaftar sudah mencapai batas maksimal
         $jumlahPendaftar = Pendaftar::count();
-        $batasPendaftaran = 3;
+        $batasPendaftaran = 3000;
         
         if ($jumlahPendaftar >= $batasPendaftaran) {
             return response()->json([

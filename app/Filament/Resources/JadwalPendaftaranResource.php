@@ -9,6 +9,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Tables\Actions\Action;
+
 
 class JadwalPendaftaranResource extends Resource
 {
@@ -48,24 +50,31 @@ class JadwalPendaftaranResource extends Resource
             ]);
     }
 
-    public static function table(Table $table): Table
-    {
-        return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('skema')->label('Skema'),
-                Tables\Columns\TextColumn::make('tgl_buka')->date('d F Y')->label('Tanggal Buka'),
-                Tables\Columns\TextColumn::make('tgl_tutup')->date('d F Y')->label('Tanggal Tutup'),
-                Tables\Columns\TextColumn::make('kuota')->label('Kuota'),
-                Tables\Columns\TextColumn::make('keterangan')->label('Keterangan')->limit(30),
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()->icon('heroicon-o-trash'),
-            ])
-            ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
-            ]);
-    }
+
+public static function table(Table $table): Table
+{
+    return $table
+        ->columns([
+            Tables\Columns\TextColumn::make('skema')->label('Skema'),
+            Tables\Columns\TextColumn::make('tgl_buka')->date('d F Y')->label('Tanggal Buka'),
+            Tables\Columns\TextColumn::make('tgl_tutup')->date('d F Y')->label('Tanggal Tutup'),
+            Tables\Columns\TextColumn::make('kuota')->label('Kuota'),
+            Tables\Columns\TextColumn::make('keterangan')->label('Keterangan')->limit(30),
+        ])
+        ->actions([
+            Tables\Actions\EditAction::make(),
+            Tables\Actions\DeleteAction::make()->icon('heroicon-o-trash'),
+            Action::make('lihat_pendaftar')
+                ->label('Lihat Pendaftar')
+                ->icon('heroicon-o-user-group')
+                ->url(fn ($record) => route('filament.admin.resources.pendaftars.index', ['jadwal_id' => $record->id]))
+                ->openUrlInNewTab(), // agar buka tab baru
+        ])
+        ->bulkActions([
+            Tables\Actions\DeleteBulkAction::make(),
+        ]);
+}
+
 
     public static function getPages(): array
     {
