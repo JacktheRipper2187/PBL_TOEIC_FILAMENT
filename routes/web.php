@@ -11,6 +11,9 @@ use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\Admin\PendaftarController;
 use App\Http\Controllers\JadwalPendaftaranController;
 use App\Http\Controllers\ProfileController;
+use App\Models\JadwalPendaftaran;
+use App\Http\Controllers\Auth\LoginController;
+
 
 
 /*
@@ -24,12 +27,19 @@ use App\Http\Controllers\ProfileController;
 |
 */
 
+
+
+
+// DENGAN ini (pakai controller)    
+// Route::get('/', [JadwalController::class, 'index']);
+
 Route::get('/', function () {
-    return view('Depan');
+    $JadwalPendaftaran = JadwalPendaftaran::all(); // atau query sesuai kebutuhan
+    // variabel lain juga bisa dikirim di sini
+    return view('guest', compact('JadwalPendaftaran'));
 });
 
-// DENGAN ini (pakai controller)
-Route::get('/', [JadwalController::class, 'index']);
+Route::get('/mahasiswa/depan', [JadwalController::class, 'index'])->name('mahasiswa.depan');
 
 // Ganti bahasa
 Route::get('/change-language/{locale}', function ($locale) {
@@ -50,7 +60,7 @@ Route::post('/formpendaftaran/check-nim', [FormPendaftaranController::class, 'ch
 
 //hasil
 // Route::get('/hasilini', [HasilDepanController::class, 'index'])->name('hasil.index');          // halaman form cari sesi
-Route::get('/hasil/cari', [HasilController::class, 'cari'])->name('hasil.cari');       // proses pencarian hasil
+Route::get('/hasil/cari', [HasilController::class, 'cari'])->name('hasil.cari');      
 Route::get('/hasil/download/{id}', [HasilController::class, 'download'])->name('hasil.download'); // download file hasil
 // Route::get('/hasil', [HasilDepanController::class, 'index'])->name('hasil.index');
 
@@ -62,7 +72,7 @@ Route::get('/admin/pendaftar/export-excel', [PendaftarController::class, 'export
 Route::get('/admin/pendaftar/export-pdf', [PendaftarController::class, 'exportPdf'])->name('admin.pendaftar.export-pdf');
 
 // Halaman depan
-Route::get('/', [JadwalController::class, 'index']);
+// Route::get('/', [JadwalController::class, 'index']);
 
 // Admin: CRUD Jadwal Pendaftaran
 Route::prefix('admin/jadwal')->group(function () {
@@ -74,14 +84,32 @@ Route::prefix('admin/jadwal')->group(function () {
     Route::delete('/delete/{id}', [JadwalController::class, 'destroy'])->name('admin.jadwal.destroy');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/login', function () {
+    return view('login');
+})->middleware(['auth', 'verified'])->name('login');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+// routes/web.php
+
+Route::middleware(['auth'])->group(function () {
+    // Jika mahasiswa sudah login, tetap bisa akses halaman depan
+    Route::get('/beranda', function () {
+        return view('mahasiswa.depan');
+    })->name('mahasiswa.depan');
+});
+
 
 require __DIR__.'/auth.php';
+// routes/web.php
+
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/beranda', [JadwalController::class, 'index'])->name('mahasiswa.depan');
+});
