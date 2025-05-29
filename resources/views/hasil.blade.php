@@ -125,7 +125,7 @@
 
     {{-- Tombol Kembali --}}
     <div class="d-flex justify-content-center">
-        <a href="{{ url('/') }}" class="btn btn-secondary">
+        <a href="{{ url('/beranda') }}" class="btn btn-secondary">
             <i class="bi bi-arrow-left"></i> Kembali
         </a>
     </div>
