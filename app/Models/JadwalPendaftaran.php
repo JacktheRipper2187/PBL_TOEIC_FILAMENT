@@ -16,7 +16,9 @@ class JadwalPendaftaran extends Model
         'tgl_buka',
         'tgl_tutup',
         'kuota',
+        'kuota_asli',
         'keterangan',
+        
     ];
 
     // Relasi: satu jadwal bisa memiliki banyak pendaftar
@@ -37,24 +39,23 @@ class JadwalPendaftaran extends Model
         return Carbon::parse($this->tgl_tutup)->translatedFormat('d F Y');
     }
     protected static function boot()
-    {
-        parent::boot();
+{
+    parent::boot();
 
-        static::updating(function ($model) {
-            if ($model->isDirty('thumbnail') && $model->getOriginal('thumbnail') !== null) {
-                Storage::disk('public')->delete($model->getOriginal('thumbnail'));
-            }
-        });
+    static::updating(function ($model) {
+        if ($model->isDirty('thumbnail') && $model->getOriginal('thumbnail') !== null) {
+            Storage::disk('public')->delete($model->getOriginal('thumbnail'));
+        }
+    });
 
-        // ⬇ Tambahkan ini
-        static::deleting(function ($pendaftar) {
-            if ($pendaftar->jadwal) {
-                $pendaftar->jadwal->increment('kuota');
-            }
-        });
-    }
-
-    public function getIsPendaftaranDibukaAttribute()
+    // ⬇ Tambahkan ini
+    static::deleting(function ($pendaftar) {
+        if ($pendaftar->jadwal) {
+            $pendaftar->jadwal->increment('kuota');
+        }
+    });
+}
+public function getIsPendaftaranDibukaAttribute()
     {
         $today = now()->format('Y-m-d');
 
@@ -65,4 +66,5 @@ class JadwalPendaftaran extends Model
         // default logika berdasarkan tanggal
         return $today >= $this->tgl_buka && $today <= $this->tgl_tutup;
     }
+
 }

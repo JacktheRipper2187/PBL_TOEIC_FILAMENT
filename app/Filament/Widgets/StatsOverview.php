@@ -12,7 +12,7 @@ class StatsOverview extends BaseWidget
 {
     protected function getCards(): array
     {
-        $totalKuota = JadwalPendaftaran::sum('kuota');
+        $totalKuota = JadwalPendaftaran::sum('kuota_asli');
         $totalTerdaftar = Pendaftar::count();
         $kuotaTersedia = $totalKuota - $totalTerdaftar;
 

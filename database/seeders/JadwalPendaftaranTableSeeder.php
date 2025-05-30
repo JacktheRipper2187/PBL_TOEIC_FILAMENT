@@ -15,6 +15,7 @@ class JadwalPendaftaranTableSeeder extends Seeder
                 'tgl_buka' => '2025-05-19',
                 'tgl_tutup' => '2025-05-24',
                 'kuota' => 300,
+                'kuota_asli' => 300,
                 'keterangan' => 'Online',
                 'created_at' => now(),
                 'updated_at' => now(),
