@@ -20,6 +20,8 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Facades\Filament;
+use App\Filament\Widgets\TogglePendaftaranWidget;
+use App\Filament\Widgets\StatsOverview;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -43,6 +45,8 @@ public function panel(Panel $panel): Panel
         ->widgets([
             Widgets\AccountWidget::class,
             Widgets\FilamentInfoWidget::class,
+            TogglePendaftaranWidget::class, // Tambahkan ini
+            StatsOverview::class,
         ])
         ->middleware([
             EncryptCookies::class,
