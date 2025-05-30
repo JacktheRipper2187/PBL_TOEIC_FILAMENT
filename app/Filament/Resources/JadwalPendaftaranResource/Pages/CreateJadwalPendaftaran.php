@@ -31,4 +31,11 @@ class CreateJadwalPendaftaran extends CreateRecord
             ->icon('heroicon-o-x-mark')
             ->color('gray');
     }
+protected function mutateFormDataBeforeCreate(array $data): array
+{
+    $data['kuota_asli'] = $data['kuota'];
+    return $data;
+}
+
+
 }
