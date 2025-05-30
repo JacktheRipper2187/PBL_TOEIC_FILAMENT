@@ -113,8 +113,7 @@
             <div class="px-8 py-4 bg-gray-50 border-t border-gray-200 text-center">
                 <p class="text-gray-600">
                     Belum punya akun?
-                    <a href="{{ route('register') }}" class="font-medium" style="color: #007bff;"
-                        onmouseover="this.style.color='#0056b3'" onmouseout="this.style.color='#007bff'">
+                    <a href="{{ route('register') }}" class="font-medium text-blue-600 hover:text-blue-500">
                         Daftar disini
                     </a>
 

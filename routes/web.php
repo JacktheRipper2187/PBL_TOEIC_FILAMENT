@@ -13,6 +13,7 @@ use App\Http\Controllers\JadwalPendaftaranController;
 use App\Http\Controllers\ProfileController;
 use App\Models\JadwalPendaftaran;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 
 
 
@@ -26,13 +27,6 @@ use App\Http\Controllers\Auth\LoginController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-
-
-
-// DENGAN ini (pakai controller)    
-// Route::get('/', [JadwalController::class, 'index']);
-
 Route::get('/', function () {
     $JadwalPendaftaran = JadwalPendaftaran::all(); // atau query sesuai kebutuhan
     // variabel lain juga bisa dikirim di sini
@@ -71,9 +65,6 @@ Route::get('/template/mahasiswa-terdaftar', [TemplateController::class, 'mahasis
 Route::get('/admin/pendaftar/export-excel', [PendaftarController::class, 'exportExcel'])->name('admin.pendaftar.export-excel');
 Route::get('/admin/pendaftar/export-pdf', [PendaftarController::class, 'exportPdf'])->name('admin.pendaftar.export-pdf');
 
-// Halaman depan
-// Route::get('/', [JadwalController::class, 'index']);
-
 // Admin: CRUD Jadwal Pendaftaran
 Route::prefix('admin/jadwal')->group(function () {
     Route::get('/', [JadwalController::class, 'adminIndex'])->name('admin.jadwal.index');
@@ -93,7 +84,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-// routes/web.php
 
 Route::middleware(['auth'])->group(function () {
     // Jika mahasiswa sudah login, tetap bisa akses halaman depan
@@ -102,9 +92,17 @@ Route::middleware(['auth'])->group(function () {
     })->name('mahasiswa.depan');
 });
 
-
 require __DIR__.'/auth.php';
-// routes/web.php
+
+Route::middleware('guest')->group(function () {
+    Route::get('/register', [RegisteredUserController::class, 'create'])
+         ->name('register');
+    
+    Route::post('/register', [RegisteredUserController::class, 'store']);
+});
+Route::post('/logout', [LoginController::class, 'logout'])
+     ->name('logout')
+     ->middleware('auth');
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);

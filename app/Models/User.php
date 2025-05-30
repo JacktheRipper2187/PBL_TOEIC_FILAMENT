@@ -26,13 +26,16 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    // Pastikan method ini selalu return string valid
+    public function mahasiswa()
+    {
+        return $this->hasOne(Mahasiswa::class);
+    }
+
     public function getFilamentName(): string
     {
         return $this->username ?? 'User';
     }
 
-    // Jika Filament mengharapkan properti `name`, buat accessor ini
     public function getNameAttribute(): string
     {
         return $this->username ?? 'User';

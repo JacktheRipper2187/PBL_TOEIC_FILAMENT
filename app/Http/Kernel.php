@@ -66,6 +66,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'admin.only' => \App\Http\Middleware\AdminOnly::class,
-        'Depan' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+         'mahasiswa.depan' => \App\Http\Middleware\RedirectIfAuthenticated::class,
     ];
 }

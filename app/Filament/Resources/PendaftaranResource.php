@@ -20,7 +20,7 @@ class PendaftaranResource extends Resource
     protected static ?string $model = Pendaftaran::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document';
-protected static ?string $navigationGroup = 'Manajemen Data Pendaftaran';
+protected static ?string $navigationGroup = 'Manajemen Tampilan';
     public static function form(Form $form): Form
     {
          return $form
