@@ -74,7 +74,7 @@ class FormPendaftaranController extends Controller
 
             // ❗Cek apakah pendaftaran sudah ditutup atau belum dibuka
             $now = now();
-            if ($now->lt($jadwal->tgl_buka) || $now->gt($jadwal->tgl_tutup)) {
+            if (!$jadwal->is_pendaftaran_dibuka) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Pendaftaran belum dibuka atau sudah ditutup.',
