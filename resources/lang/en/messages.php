@@ -21,5 +21,8 @@ return [
     'no_registration' => 'No Registration Schedule Available',
     'regis' => 'Register Now',
     'close' => 'Close',
+    'schedule_1' => 'Registration Schedule',
+    'scheme' => 'Scheme',
+    'description' => 'Description',
   
 ];

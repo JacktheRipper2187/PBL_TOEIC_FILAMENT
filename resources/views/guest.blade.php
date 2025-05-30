@@ -213,15 +213,15 @@
     <!-- Jadwal Section -->
     <section class="page-section bg-primary text-white mb-0" id="jadwal pendaftaran">
         <div class="container">
-            <h2 class="page-section-heading text-center text-uppercase text-white mb-4">Jadwal Pendaftaran</h2>
+            <h2 class="page-section-heading text-center text-uppercase text-white mb-4">{{ __('messages.schedule_1') }}</h2>
             <div class="table-responsive">
                 <table class="table table-hover table-striped">
                     <thead class="thead-dark">
                         <tr>
-                            <th>Skema</th>
-                            <th>Periode Pendaftaran</th>
-                            <th>Kuota</th>
-                            <th>Keterangan</th>
+                            <th>{{ __('messages.scheme') }}</th>
+                            <th>{{ __('messages.period') }}</th>
+                            <th>{{ __('messages.quota') }}</th>
+                            <th>{{ __('messages.description') }}</th>
                         </tr>
                     </thead>
                     <tbody>

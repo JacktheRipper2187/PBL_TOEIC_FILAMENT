@@ -22,4 +22,7 @@ return [
      'no_registration' => 'Tidak ada jadwal pendaftaran tersedia',
      'regis' => 'Daftar Sekarang',
      'close' => 'Tutup',
+     'schedule_1' => 'Jadwal Pendaftaran',
+     'scheme' => 'Skema',
+     'description' => 'Keterangan',
 ];

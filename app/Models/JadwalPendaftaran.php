@@ -37,21 +37,32 @@ class JadwalPendaftaran extends Model
         return Carbon::parse($this->tgl_tutup)->translatedFormat('d F Y');
     }
     protected static function boot()
-{
-    parent::boot();
+    {
+        parent::boot();
 
-    static::updating(function ($model) {
-        if ($model->isDirty('thumbnail') && $model->getOriginal('thumbnail') !== null) {
-            Storage::disk('public')->delete($model->getOriginal('thumbnail'));
+        static::updating(function ($model) {
+            if ($model->isDirty('thumbnail') && $model->getOriginal('thumbnail') !== null) {
+                Storage::disk('public')->delete($model->getOriginal('thumbnail'));
+            }
+        });
+
+        // ⬇ Tambahkan ini
+        static::deleting(function ($pendaftar) {
+            if ($pendaftar->jadwal) {
+                $pendaftar->jadwal->increment('kuota');
+            }
+        });
+    }
+
+    public function getIsPendaftaranDibukaAttribute()
+    {
+        $today = now()->format('Y-m-d');
+
+        if (!is_null($this->status_manual)) {
+            return $this->status_manual; // manual override
         }
-    });
 
-    // ⬇ Tambahkan ini
-    static::deleting(function ($pendaftar) {
-        if ($pendaftar->jadwal) {
-            $pendaftar->jadwal->increment('kuota');
-        }
-    });
-}
-
+        // default logika berdasarkan tanggal
+        return $today >= $this->tgl_buka && $today <= $this->tgl_tutup;
+    }
 }
