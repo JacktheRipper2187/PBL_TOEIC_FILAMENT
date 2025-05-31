@@ -182,37 +182,40 @@
     </section>
 
     <!-- Pendaftaran Section-->
-   <section class="page-section portfolio" id="pendaftaran">
-    <div class="container">
-        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-4">{{ __('messages.pendaftar') }}</h2>
-        <div class="divider-custom">
-            <div class="divider-custom-line"></div>
-            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-            <div class="divider-custom-line"></div>
-        </div>
-        <div class="row justify-content-center">
-            @foreach ($pendaftaran as $item)
-            <div class="col-md-6 col-lg-4 mb-5">
-                <a href="{{ $item->link ? $item->link : route('login') }}" 
-                   class="portfolio-item mx-auto d-block" 
-                   target="{{ $item->link ? '_blank' : '_self' }}">
-                    <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                        <div class="portfolio-item-caption-content text-center text-white">
-                            <i class="fas fa-plus fa-3x"></i>
-                        </div>
-                    </div>
-                    <img class="img-fluid" src="{{ asset('uploads/' . $item->thumbnail) }}" alt="..." />
-                </a>
+    <section class="page-section portfolio" id="pendaftaran">
+        <div class="container">
+            <h2 class="page-section-heading text-center text-uppercase text-secondary mb-4">
+                {{ __('messages.pendaftar') }}</h2>
+            <div class="divider-custom">
+                <div class="divider-custom-line"></div>
+                <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                <div class="divider-custom-line"></div>
             </div>
-            @endforeach
+            <div class="row justify-content-center">
+                @foreach ($pendaftaran as $item)
+                    <div class="col-md-6 col-lg-4 mb-5">
+                        <a href="{{ $item->link ? $item->link : route('login') }}"
+                            class="portfolio-item mx-auto d-block" target="{{ $item->link ? '_blank' : '_self' }}">
+                            <div
+                                class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
+                                <div class="portfolio-item-caption-content text-center text-white">
+                                    <i class="fas fa-plus fa-3x"></i>
+                                </div>
+                            </div>
+                            <img class="img-fluid" src="{{ asset('uploads/' . $item->thumbnail) }}"
+                                alt="..." />
+                        </a>
+                    </div>
+                @endforeach
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
     <!-- Jadwal Section -->
     <section class="page-section bg-primary text-white mb-0" id="jadwal pendaftaran">
         <div class="container">
-            <h2 class="page-section-heading text-center text-uppercase text-white mb-4">{{ __('messages.schedule_1') }}</h2>
+            <h2 class="page-section-heading text-center text-uppercase text-white mb-4">
+                {{ __('messages.schedule_1') }}</h2>
             <div class="table-responsive">
                 <table class="table table-hover table-striped">
                     <thead class="thead-dark">
@@ -395,6 +398,48 @@
     <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
     <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
     <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault(); // Cegah aksi default anchor
+
+                    // Ambil ID target dari href, misalnya "#syarat" menjadi "syarat"
+                    const targetId = this.getAttribute('href').substring(1);
+
+                    // Sembunyikan semua section terlebih dahulu
+                    document.querySelectorAll('.section').forEach(section => {
+                        section.style.display = 'none';
+                    });
+
+                    // Tampilkan section yang sesuai
+                    const targetSection = document.getElementById(targetId);
+                    if (targetSection) {
+                        targetSection.style.display = 'block';
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+
+                    // Atur kelas aktif di nav-link
+                    navLinks.forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Jika halaman pertama kali tidak ada hash di URL, simulasikan klik pada "beranda"
+            if (!window.location.hash) {
+                const defaultLink = document.querySelector('.nav-link[href="#beranda"]');
+                if (defaultLink) {
+                    defaultLink.click();
+                }
+            }
+        });
+    </script>
+
 </body>
 
 
