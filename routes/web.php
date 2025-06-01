@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PesertaController;
 use App\Http\Controllers\PendaftaranController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\ProfileController;
 use App\Models\JadwalPendaftaran;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\MahasiswaController;
 
 
 
@@ -27,6 +29,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
 Route::get('/', function () {
     $JadwalPendaftaran = JadwalPendaftaran::all(); // atau query sesuai kebutuhan
     // variabel lain juga bisa dikirim di sini
@@ -54,7 +57,7 @@ Route::post('/formpendaftaran/check-nim', [FormPendaftaranController::class, 'ch
 
 //hasil
 // Route::get('/hasilini', [HasilDepanController::class, 'index'])->name('hasil.index');          // halaman form cari sesi
-Route::get('/hasil/cari', [HasilController::class, 'cari'])->name('hasil.cari');      
+Route::get('/hasil/cari', [HasilController::class, 'cari'])->name('hasil.cari');
 Route::get('/hasil/download/{id}', [HasilController::class, 'download'])->name('hasil.download'); // download file hasil
 // Route::get('/hasil', [HasilDepanController::class, 'index'])->name('hasil.index');
 
@@ -90,19 +93,23 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/beranda', function () {
         return view('mahasiswa.depan');
     })->name('mahasiswa.depan');
+    Route::get('/mahasiswa/profile', [MahasiswaController::class, 'profil'])->name('mahasiswa.profile');
+    Route::post('/profile/update-password', [MahasiswaController::class, 'updatePassword'])->name('mahasiswa.update-password');
+    Route::post('/mahasiswa/update-foto', [MahasiswaController::class, 'updateFoto'])->name('mahasiswa.update-foto');
+
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisteredUserController::class, 'create'])
-         ->name('register');
-    
+        ->name('register');
+
     Route::post('/register', [RegisteredUserController::class, 'store']);
 });
 Route::post('/logout', [LoginController::class, 'logout'])
-     ->name('logout')
-     ->middleware('auth');
+    ->name('logout')
+    ->middleware('auth');
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);

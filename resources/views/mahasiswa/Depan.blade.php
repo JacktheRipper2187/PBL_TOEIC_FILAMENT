@@ -11,6 +11,7 @@
     $jadwalPendaftaran = get_JadwalPendaftaran_value();
     $ujian = get_JadwalUjian_value();
     $pengambilan = get_JadwalSertifikat_value();
+    $mahasiswa = Auth::user()->mahasiswa;
 @endphp
 <!DOCTYPE html>
 <html lang="en">
@@ -97,8 +98,8 @@
                     <li class="nav-item dropdown ms-auto">
                         <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown"
                             role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="{{ asset('storage/img/profile.png') }}" alt="Profile" width="40"
-                                height="40" class="rounded-circle">
+                            <img src="{{ $mahasiswa && $mahasiswa->foto ? asset('storage/' . $mahasiswa->foto) : asset('storage/img/profile.png') }}"
+                            alt="Foto Profil" width="40" height="40" class="rounded-circle">
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="navbarDropdown">
                             <li>

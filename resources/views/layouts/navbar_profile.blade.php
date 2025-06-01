@@ -12,10 +12,9 @@
         </a>
 
         <!-- Tombol navbar untuk perangkat kecil -->
-        <button
-            class="navbar-toggler navbar-toggler-right text-uppercase font-weight-bold bg-primary text-white rounded"
-            type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
-            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler navbar-toggler-right text-uppercase font-weight-bold bg-primary text-white rounded"
+            type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive"
+            aria-expanded="false" aria-label="Toggle navigation">
             Menu
             <i class="fas fa-bars"></i>
         </button>
@@ -76,31 +75,31 @@
 
 <!-- JavaScript untuk Highlight Menu Aktif -->
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const sections = document.querySelectorAll('section');
-        const navLinks = document.querySelectorAll('.nav-link');
+    // document.addEventListener('DOMContentLoaded', function () {
+    //     const sections = document.querySelectorAll('section');
+    //     const navLinks = document.querySelectorAll('.nav-link');
 
-        window.addEventListener('scroll', function () {
-            let current = '';
+    //     window.addEventListener('scroll', function () {
+    //         let current = '';
 
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
+    //         sections.forEach(section => {
+    //             const sectionTop = section.offsetTop;
+    //             const sectionHeight = section.clientHeight;
 
-                if (pageYOffset >= (sectionTop - 100)) {
-                    current = section.getAttribute('id');
-                }
-            });
+    //             if (pageYOffset >= (sectionTop - 100)) {
+    //                 current = section.getAttribute('id');
+    //             }
+    //         });
 
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${current}`) {
-                    link.classList.add('active');
-                }
-            });
-        });
-    });
 
+    //         navLinks.forEach(link => {
+    //             link.classList.remove('active');
+    //             if (link.getAttribute('href') === `#${current}`) {
+    //                 link.classList.add('active');
+    //             }
+    //         });
+    //     });
+    // });
     document.addEventListener('DOMContentLoaded', function () {
         const navbar = document.getElementById('mainNav');
 
