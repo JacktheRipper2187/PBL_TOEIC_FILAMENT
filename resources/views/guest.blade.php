@@ -399,46 +399,117 @@
     <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
     <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const navLinks = document.querySelectorAll('.nav-link');
-
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(event) {
-                    event.preventDefault(); // Cegah aksi default anchor
-
-                    // Ambil ID target dari href, misalnya "#syarat" menjadi "syarat"
-                    const targetId = this.getAttribute('href').substring(1);
-
-                    // Sembunyikan semua section terlebih dahulu
-                    document.querySelectorAll('.section').forEach(section => {
-                        section.style.display = 'none';
-                    });
-
-                    // Tampilkan section yang sesuai
-                    const targetSection = document.getElementById(targetId);
-                    if (targetSection) {
-                        targetSection.style.display = 'block';
-                        targetSection.scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                    }
-
-                    // Atur kelas aktif di nav-link
-                    navLinks.forEach(nav => nav.classList.remove('active'));
-                    this.classList.add('active');
+ <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section[id]');
+        
+        // Fungsi untuk menangani klik pada nav-link
+        function handleNavClick(event) {
+            event.preventDefault();
+            
+            const targetId = this.getAttribute('href').substring(1);
+            const targetSection = document.getElementById(targetId);
+            
+            if (targetSection) {
+                window.scrollTo({
+                    top: targetSection.offsetTop - 70, // Sesuaikan dengan tinggi navbar
+                    behavior: 'smooth'
                 });
-            });
-
-            // Jika halaman pertama kali tidak ada hash di URL, simulasikan klik pada "beranda"
-            if (!window.location.hash) {
-                const defaultLink = document.querySelector('.nav-link[href="#beranda"]');
-                if (defaultLink) {
-                    defaultLink.click();
-                }
+                
+                history.replaceState(null, null, '#' + targetId);
+                updateActiveNav(targetId);
             }
+        }
+        
+        // Fungsi untuk mengupdate nav-link aktif
+        function updateActiveNav(targetId) {
+            navLinks.forEach(nav => {
+                const navHref = nav.getAttribute('href').substring(1);
+                nav.classList.toggle('active', navHref === targetId);
+            });
+        }
+        
+        // Fungsi untuk menangani scroll
+        function handleScroll() {
+            let currentSection = '';
+            const scrollPosition = window.scrollY + 100; // Offset yang lebih kecil
+            
+            // Cek khusus untuk beranda (harus di atas semua section lain)
+            const berandaSection = document.getElementById('beranda');
+            if (berandaSection && scrollPosition < berandaSection.offsetTop + berandaSection.clientHeight - 200) {
+                currentSection = 'beranda';
+            } else {
+                // Cek section lainnya
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionBottom = sectionTop + section.clientHeight;
+                    
+                    if (scrollPosition >= sectionTop - 100 && scrollPosition < sectionBottom - 100) {
+                        currentSection = section.id;
+                    }
+                });
+            }
+            
+            if (currentSection) {
+                updateActiveNav(currentSection);
+            }
+        }
+        
+        // Throttle function untuk optimasi performance
+        function throttle(func, limit = 100) {
+            let lastFunc;
+            let lastRan;
+            return function() {
+                const context = this;
+                const args = arguments;
+                if (!lastRan) {
+                    func.apply(context, args);
+                    lastRan = Date.now();
+                } else {
+                    clearTimeout(lastFunc);
+                    lastFunc = setTimeout(function() {
+                        if ((Date.now() - lastRan) >= limit) {
+                            func.apply(context, args);
+                            lastRan = Date.now();
+                        }
+                    }, limit - (Date.now() - lastRan));
+                }
+            };
+        }
+        
+        // Tambahkan event listener
+        navLinks.forEach(link => {
+            link.addEventListener('click', handleNavClick);
         });
-    </script>
+        
+        window.addEventListener('scroll', throttle(handleScroll));
+        
+        // Inisialisasi halaman pertama kali
+        function initializePage() {
+            // Jika ada hash di URL
+            if (window.location.hash) {
+                const hash = window.location.hash.substring(1);
+                const targetSection = document.getElementById(hash);
+                if (targetSection) {
+                    setTimeout(() => {
+                        window.scrollTo({
+                            top: targetSection.offsetTop - 70,
+                            behavior: 'auto'
+                        });
+                        updateActiveNav(hash);
+                    }, 100);
+                }
+            } else {
+                // Default ke beranda
+                updateActiveNav('beranda');
+                window.scrollTo(0, 0);
+            }
+        }
+        
+        initializePage();
+    });
+</script>
 
 </body>
 
