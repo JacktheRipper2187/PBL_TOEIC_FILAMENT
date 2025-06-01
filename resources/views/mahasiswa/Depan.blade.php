@@ -7,7 +7,7 @@
     $email = get_setting_value('_email');
     $whatsapp = get_setting_value('_whatsapp');
     $pendaftaran = get_pendaftaran_value();
-        // Ambil data dari model yang sesuai dengan kategori
+    // Ambil data dari model yang sesuai dengan kategori
     $jadwalPendaftaran = get_JadwalPendaftaran_value();
     $ujian = get_JadwalUjian_value();
     $pengambilan = get_JadwalSertifikat_value();
@@ -31,6 +31,9 @@
         type="text/css" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
+    <!-- CDN Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
 </head>
 <style>
     body {
@@ -65,9 +68,10 @@
                 <i class="fas fa-bars"></i>
             </button>
 
-            <!-- Menu navbar utama -->
+            <!-- Navbar Menu -->
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto">
+                    <!-- Main Menu Items -->
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded"
                             href="#beranda">{{ __('messages.home') }}</a></li>
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded"
@@ -76,18 +80,42 @@
                             href="#pendaftaran">{{ __('messages.registration') }}</a></li>
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded"
                             href="#jadwal">{{ __('messages.schedule') }}</a></li>
-                    <!-- Menambahkan dropdown untuk pilihan bahasa -->
+
+                    <!-- Language Dropdown -->
                     <li class="nav-item dropdown mx-0 mx-lg-1">
                         <a class="nav-link dropdown-toggle py-3 px-0 px-lg-3 rounded" href="#" id="navbarDropdown"
                             role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             {{ __('messages.select_language') }}
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="{{ route('change.language', 'id') }}">{{ __('messages.indonesian') }}</a></li>
-                            <li><a class="dropdown-item" href="{{ route('change.language', 'en') }}">{{ __('messages.english') }}</a></li>
+                            <li><a class="dropdown-item"
+                                    href="{{ route('change.language', 'id') }}">{{ __('messages.indonesian') }}</a></li>
+                            <li><a class="dropdown-item"
+                                    href="{{ route('change.language', 'en') }}">{{ __('messages.english') }}</a></li>
                         </ul>
                     </li>
-                </ul>
+                    <li class="nav-item dropdown ms-auto">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown"
+                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="{{ asset('storage/img/profile.png') }}" alt="Profile" width="40"
+                                height="40" class="rounded-circle">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="navbarDropdown">
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center text-primary"
+                                    href="{{ route('mahasiswa.profile') }}">
+                                    <i class="bi bi-person me-2"></i> Profile
+                                </a>
+                            </li>
+                            <li>
+                                <form action="{{ route('logout') }}" method="POST" class="dropdown-item m-0 p-0">
+                                    @csrf
+                                    <button class="dropdown-item d-flex align-items-center text-danger" type="submit">
+                                        <i class="bi bi-box-arrow-left me-2"></i> Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
             </div>
         </div>
     </nav>
@@ -108,7 +136,8 @@
                     <div style="text-align: left; width: 100%;">
                         <h2 class="masthead-subheading mb-2.5" style="font-size: 1rem; font-weight: 600;">
                             {{ $section['Beranda']->title }}</h2>
-                        <h1 class="masthead-title mb-4" style="font-size: 3rem; font-weight: 800; letter-spacing: 3px;">
+                        <h1 class="masthead-title mb-4"
+                            style="font-size: 3rem; font-weight: 800; letter-spacing: 3px;">
                             {{ $section['Beranda']->thumbnail }}
                         </h1>
                         <!-- Deskripsi -->
@@ -127,31 +156,32 @@
     <script>
         const locale = "{{ session('locale', 'id') }}"; // Default ke 'id' (Indonesia)
         function updateCurrentDate() {
-        const now = new Date();
-        const options = {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            timeZone: 'Asia/Jakarta'
-        };
+            const now = new Date();
+            const options = {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                timeZone: 'Asia/Jakarta'
+            };
 
-        // Format tanggal sesuai locale
-        document.getElementById('current-date').textContent =
-            now.toLocaleDateString(locale, options).replace('pukul', '').trim() + ' WIB';
-    }
+            // Format tanggal sesuai locale
+            document.getElementById('current-date').textContent =
+                now.toLocaleDateString(locale, options).replace('pukul', '').trim() + ' WIB';
+        }
 
-    // Update setiap menit (60000ms)
-    updateCurrentDate();
-    setInterval(updateCurrentDate, 60000);
+        // Update setiap menit (60000ms)
+        updateCurrentDate();
+        setInterval(updateCurrentDate, 60000);
     </script>
 
     <!-- Syarat dan Ketentuan Section-->
     <section class="page-section" id="syarat">
         <div class="container">
             <!-- Section Heading -->
-            <h2 class="text-center text-uppercase text-secondary mb-4">{{ $section['SyaratKetentuan']->thumbnail }}</h2>
+            <h2 class="text-center text-uppercase text-secondary mb-4">{{ $section['SyaratKetentuan']->thumbnail }}
+            </h2>
 
             <!-- Divider -->
             <div class="divider-custom divider-dark mb-5">
@@ -171,295 +201,394 @@
         </div>
     </section>
 
-   <!-- Pendaftaran Section-->
-<section class="page-section portfolio" id="pendaftaran">
-    <div class="container">
-        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-4">{{ __('messages.pendaftar') }}</h2>
-        <div class="divider-custom">
-            <div class="divider-custom-line"></div>
-            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-            <div class="divider-custom-line"></div>
-        </div>
-        <div class="row justify-content-center">
-            @foreach ($pendaftaran as $item)
-            <div class="col-md-6 col-lg-4 mb-5">
-                <a href="{{ $item->link ? $item->link : route('formpendaftaran') }}" 
-                   class="portfolio-item mx-auto d-block" 
-                   target="{{ $item->link ? '_blank' : '_self' }}">
-                    <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                        <div class="portfolio-item-caption-content text-center text-white">
-                            <i class="fas fa-plus fa-3x"></i>
-                        </div>
-                    </div>
-                    <img class="img-fluid" src="{{ asset('uploads/' . $item->thumbnail) }}" alt="..." />
-                </a>
+    <!-- Pendaftaran Section-->
+    <section class="page-section portfolio" id="pendaftaran">
+        <div class="container">
+            <h2 class="page-section-heading text-center text-uppercase text-secondary mb-4">
+                {{ __('messages.pendaftar') }}</h2>
+            <div class="divider-custom">
+                <div class="divider-custom-line"></div>
+                <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                <div class="divider-custom-line"></div>
             </div>
-            @endforeach
+            <div class="row justify-content-center">
+                @foreach ($pendaftaran as $item)
+                    <div class="col-md-6 col-lg-4 mb-5">
+                        <a href="{{ $item->link ? $item->link : route('formpendaftaran') }}"
+                            class="portfolio-item mx-auto d-block" target="{{ $item->link ? '_blank' : '_self' }}">
+                            <div
+                                class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
+                                <div class="portfolio-item-caption-content text-center text-white">
+                                    <i class="fas fa-plus fa-3x"></i>
+                                </div>
+                            </div>
+                            <img class="img-fluid" src="{{ asset('uploads/' . $item->thumbnail) }}"
+                                alt="..." />
+                        </a>
+                    </div>
+                @endforeach
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
 
-<!-- Jadwal Section -->
-<section class="page-section bg-primary text-white mb-0" id="jadwal">
-    <div class="container">
-        <!-- Heading Section -->
-        <h2 class="page-section-heading text-center text-uppercase text-white mb-4">{{ __('messages.schedule') }}</h2>
+    <!-- Jadwal Section -->
+    <section class="page-section bg-primary text-white mb-0" id="jadwal">
+        <div class="container">
+            <!-- Heading Section -->
+            <h2 class="page-section-heading text-center text-uppercase text-white mb-4">{{ __('messages.schedule') }}
+            </h2>
+
+            <!-- Tombol Kategori -->
+            <div class="text-center mb-4">
+                <button type="button" class="btn btn-outline-light mx-2 active"
+                    data-target="jadwal_pendaftaran">{{ __('messages.registration') }}</button>
+                <button type="button" class="btn btn-outline-light mx-2"
+                    data-target="ujian">{{ __('messages.exam') }}</button>
+                <button type="button" class="btn btn-outline-light mx-2"
+                    data-target="pengambilan">{{ __('messages.certificate') }}</button>
+                <button type="button" class="btn btn-outline-light mx-2"
+                    data-target="hasil_ujian">{{ __('messages.exam_result') }}</button>
+            </div>
+
+            <!-- Data Hasil Ujian -->
+            <!-- Data Hasil Ujian -->
+            <div id="hasil_ujian" class="category-table" style="display:none;">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <form action="{{ route('hasil.cari') }}" method="GET" class="d-flex">
+                            <select name="sesi" class="form-select me-2" required>
+                                <option value="" disabled selected>Pilih sesi ujian...</option>
+                                @foreach ($sesiList as $sesi)
+                                    <option value="{{ $sesi }}">{{ $sesi }}</option>
+                                @endforeach
+                            </select>
+                            <button type="submit" class="btn btn-success">Cari</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                // Fungsi ini untuk tombol kategori lain, kalau kamu sudah punya di JS, pakai fungsi ini.
+                function showCategory(category) {
+                    // sembunyikan semua category-table dulu
+                    document.querySelectorAll('.category-table').forEach(div => {
+                        div.style.display = 'none';
+                    });
+                    // tampilkan sesuai category yg dipilih
+                    const selected = document.getElementById(category);
+                    if (selected) selected.style.display = 'block';
+                }
+
+                // Tombol Hasil Ujian toggle tampilkan dropdown sesi
+                document.getElementById('btnHasil').addEventListener('click', function() {
+                    const hasilDiv = document.getElementById('hasil');
+                    if (hasilDiv.style.display === 'none' || hasilDiv.style.display === '') {
+                        // sembunyikan kategori lain supaya tidak bentrok (opsional)
+                        document.querySelectorAll('.category-table').forEach(div => {
+                            div.style.display = 'none';
+                        });
+                        hasilDiv.style.display = 'block';
+                    } else {
+                        hasilDiv.style.display = 'none';
+                    }
+                });
+            </script>
+
+
+
+            <script>
+                function showCategory(id) {
+                    // sembunyikan semua category-table
+                    document.querySelectorAll('.category-table').forEach(div => div.style.display = 'none');
+                    // tampilkan yang dipilih
+                    document.getElementById(id).style.display = 'block';
+                }
+            </script>
+
+            <!-- Konten Kategori -->
+            <div class="category-content">
+                <!-- Data Pendaftaran -->
+                <div id="jadwal_pendaftaran" class="category-table">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Skema</th>
+                                    <th>Periode Pendaftaran</th>
+                                    <th>Kuota</th>
+                                    <th>Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($jadwalPendaftaran as $item)
+                                    <tr>
+                                        <td>{{ ucfirst($item->skema) }}</td>
+                                        <td>
+                                            {{ \Carbon\Carbon::parse($item->tgl_buka)->translatedFormat('j F Y') }}
+                                            -
+                                            {{ \Carbon\Carbon::parse($item->tgl_tutup)->translatedFormat('j F Y') }}
+                                            <br>
+                                            <small class="text-muted">{{ $item->periode_pendaftaran }}</small>
+                                        </td>
+                                        <td>
+                                            <span class="badge {{ $item->kuota > 0 ? 'bg-success' : 'bg-danger' }}">
+                                                {{ $item->kuota > 0 ? number_format($item->kuota, 0, ',', '.') . ' Kuota' : 'Penuh' }}
+                                            </span>
+                                        </td>
+                                        <td>{{ $item->keterangan }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="text-center">Tidak ada jadwal pendaftaran tersedia
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Data Ujian -->
+                <div id="ujian" class="category-table" style="display:none;">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Hari, Tanggal</th>
+                                    <th>Jam</th>
+                                    <th>Lokasi</th>
+                                    <th>Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($ujian as $item)
+                                    <tr>
+                                        <td>{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('l, j F Y') }}
+                                        </td>
+                                        <td>{{ $item->jam }}</td>
+                                        <td>{{ $item->kampus_cabang }}</td>
+                                        <td>{{ $item->jurusan }} - {{ $item->program_studi }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="text-center">Tidak ada jadwal ujian saat ini</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Data Pengambilan Sertifikat -->
+                <div id="pengambilan" class="category-table" style="display:none;">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Hari, Tanggal</th>
+                                    <th>Jam</th>
+                                    <th>Lokasi</th>
+                                    <th>Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($pengambilan as $item)
+                                    <tr>
+                                        <td>{{ \Carbon\Carbon::parse($item->hari_tanggal)->translatedFormat('l, j F Y') }}
+                                        </td>
+                                        <td>{{ $item->waktu }}</td>
+                                        <td>{{ $item->lokasi }}</td>
+                                        <td>{{ $item->keterangan }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="text-center">Tidak ada jadwal pengambilan sertifikat
+                                            saat ini</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Script Toggle -->
+ <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section[id]');
         
-       <!-- Tombol Kategori -->
-<div class="text-center mb-4">
-    <button type="button" class="btn btn-outline-light mx-2 active" data-target="jadwal_pendaftaran">{{ __('messages.registration') }}</button>
-    <button type="button" class="btn btn-outline-light mx-2" data-target="ujian">{{ __('messages.exam') }}</button>
-    <button type="button" class="btn btn-outline-light mx-2" data-target="pengambilan">{{ __('messages.certificate') }}</button>
-    <button type="button" class="btn btn-outline-light mx-2" data-target="hasil_ujian">{{ __('messages.exam_result') }}</button>
-</div>
-
-<!-- Data Hasil Ujian -->
-<!-- Data Hasil Ujian -->
-<div id="hasil_ujian" class="category-table" style="display:none;">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <form action="{{ route('hasil.cari') }}" method="GET" class="d-flex">
-                <select name="sesi" class="form-select me-2" required>
-                    <option value="" disabled selected>Pilih sesi ujian...</option>
-                    @foreach($sesiList as $sesi)
-                        <option value="{{ $sesi }}">{{ $sesi }}</option>
-                    @endforeach
-                </select>
-                <button type="submit" class="btn btn-success">Cari</button>
-            </form>
-        </div>
-    </div>
-</div>
-
-<script>
-    // Fungsi ini untuk tombol kategori lain, kalau kamu sudah punya di JS, pakai fungsi ini.
-    function showCategory(category) {
-        // sembunyikan semua category-table dulu
-        document.querySelectorAll('.category-table').forEach(div => {
-            div.style.display = 'none';
-        });
-        // tampilkan sesuai category yg dipilih
-        const selected = document.getElementById(category);
-        if(selected) selected.style.display = 'block';
-    }
-
-    // Tombol Hasil Ujian toggle tampilkan dropdown sesi
-    document.getElementById('btnHasil').addEventListener('click', function() {
-        const hasilDiv = document.getElementById('hasil');
-        if(hasilDiv.style.display === 'none' || hasilDiv.style.display === '') {
-            // sembunyikan kategori lain supaya tidak bentrok (opsional)
-            document.querySelectorAll('.category-table').forEach(div => {
-                div.style.display = 'none';
-            });
-            hasilDiv.style.display = 'block';
-        } else {
-            hasilDiv.style.display = 'none';
+        // Fungsi untuk menangani klik pada nav-link
+        function handleNavClick(event) {
+            event.preventDefault();
+            
+            const targetId = this.getAttribute('href').substring(1);
+            const targetSection = document.getElementById(targetId);
+            
+            if (targetSection) {
+                window.scrollTo({
+                    top: targetSection.offsetTop - 70, // Sesuaikan dengan tinggi navbar
+                    behavior: 'smooth'
+                });
+                
+                history.replaceState(null, null, '#' + targetId);
+                updateActiveNav(targetId);
+            }
         }
-    });
-</script>
-
-
-
-<script>
-function showCategory(id) {
-    // sembunyikan semua category-table
-    document.querySelectorAll('.category-table').forEach(div => div.style.display = 'none');
-    // tampilkan yang dipilih
-    document.getElementById(id).style.display = 'block';
-}
-</script>
-
-<!-- Konten Kategori -->
-<div class="category-content">
-<!-- Data Pendaftaran -->
-<div id="jadwal_pendaftaran" class="category-table">
-    <div class="table-responsive">
-        <table class="table table-hover table-striped">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Skema</th>
-                    <th>Periode Pendaftaran</th>
-                    <th>Kuota</th>
-                    <th>Keterangan</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($jadwalPendaftaran as $item)
-                    <tr>
-                        <td>{{ ucfirst($item->skema) }}</td>
-                        <td>
-                            {{ \Carbon\Carbon::parse($item->tgl_buka)->translatedFormat('j F Y') }}
-                            -
-                            {{ \Carbon\Carbon::parse($item->tgl_tutup)->translatedFormat('j F Y') }}
-                            <br>
-                            <small class="text-muted">{{ $item->periode_pendaftaran }}</small>
-                        </td>
-                        <td>
-                            <span class="badge {{ $item->kuota > 0 ? 'bg-success' : 'bg-danger' }}">
-                                {{ $item->kuota > 0 ? number_format($item->kuota, 0, ',', '.') . ' Kuota' : 'Penuh' }}
-                            </span>
-                        </td>
-                        <td>{{ $item->keterangan }}</td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="4" class="text-center">Tidak ada jadwal pendaftaran tersedia</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
-</div>
-
-    <!-- Data Ujian -->
-    <div id="ujian" class="category-table" style="display:none;">
-        <div class="table-responsive">
-            <table class="table table-hover table-striped">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Hari, Tanggal</th>
-                        <th>Jam</th>
-                        <th>Lokasi</th>
-                        <th>Keterangan</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($ujian as $item)
-                        <tr>
-                            <td>{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('l, j F Y') }}</td>
-                            <td>{{ $item->jam }}</td>
-                            <td>{{ $item->kampus_cabang }}</td>
-                            <td>{{ $item->jurusan }} - {{ $item->program_studi }}</td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="4" class="text-center">Tidak ada jadwal ujian saat ini</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- Data Pengambilan Sertifikat -->
-    <div id="pengambilan" class="category-table" style="display:none;">
-        <div class="table-responsive">
-            <table class="table table-hover table-striped">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Hari, Tanggal</th>
-                        <th>Jam</th>
-                        <th>Lokasi</th>
-                        <th>Keterangan</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($pengambilan as $item)
-                        <tr>
-                            <td>{{ \Carbon\Carbon::parse($item->hari_tanggal)->translatedFormat('l, j F Y') }}</td>
-                            <td>{{ $item->waktu }}</td>
-                            <td>{{ $item->lokasi }}</td>
-                            <td>{{ $item->keterangan }}</td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="4" class="text-center">Tidak ada jadwal pengambilan sertifikat saat ini</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<!-- Script Toggle -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const buttons = document.querySelectorAll('[data-target]');
-    const categoryTables = document.querySelectorAll('.category-table');
-
-    buttons.forEach(button => {
-        button.addEventListener('click', function() {
-            // Remove active class from all buttons
-            buttons.forEach(btn => btn.classList.remove('active'));
-            // Add active class to clicked button
-            this.classList.add('active');
-
-            // Hide all category tables
-            categoryTables.forEach(table => {
-                table.style.display = 'none';
+        
+        // Fungsi untuk mengupdate nav-link aktif
+        function updateActiveNav(targetId) {
+            navLinks.forEach(nav => {
+                const navHref = nav.getAttribute('href').substring(1);
+                nav.classList.toggle('active', navHref === targetId);
             });
-
-            // Show target category table
-            const target = this.getAttribute('data-target');
-            const targetTable = document.getElementById(target);
-            if (targetTable) targetTable.style.display = 'block';
-        });
-    });
-
-    // Show pendaftaran by default and set its button active
-    categoryTables.forEach(table => table.style.display = 'none');
-    document.getElementById('pendaftaran').style.display = 'block';
-    // Set active class on the Pendaftaran button
-    buttons.forEach(btn => {
-        if(btn.getAttribute('data-target') === 'pendaftaran') {
-            btn.classList.add('active');
         }
+        
+        // Fungsi untuk menangani scroll
+        function handleScroll() {
+            let currentSection = '';
+            const scrollPosition = window.scrollY + 100; // Offset yang lebih kecil
+            
+            // Cek khusus untuk beranda (harus di atas semua section lain)
+            const berandaSection = document.getElementById('beranda');
+            if (berandaSection && scrollPosition < berandaSection.offsetTop + berandaSection.clientHeight - 200) {
+                currentSection = 'beranda';
+            } else {
+                // Cek section lainnya
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionBottom = sectionTop + section.clientHeight;
+                    
+                    if (scrollPosition >= sectionTop - 100 && scrollPosition < sectionBottom - 100) {
+                        currentSection = section.id;
+                    }
+                });
+            }
+            
+            if (currentSection) {
+                updateActiveNav(currentSection);
+            }
+        }
+        
+        // Throttle function untuk optimasi performance
+        function throttle(func, limit = 100) {
+            let lastFunc;
+            let lastRan;
+            return function() {
+                const context = this;
+                const args = arguments;
+                if (!lastRan) {
+                    func.apply(context, args);
+                    lastRan = Date.now();
+                } else {
+                    clearTimeout(lastFunc);
+                    lastFunc = setTimeout(function() {
+                        if ((Date.now() - lastRan) >= limit) {
+                            func.apply(context, args);
+                            lastRan = Date.now();
+                        }
+                    }, limit - (Date.now() - lastRan));
+                }
+            };
+        }
+        
+        // Tambahkan event listener
+        navLinks.forEach(link => {
+            link.addEventListener('click', handleNavClick);
+        });
+        
+        window.addEventListener('scroll', throttle(handleScroll));
+        
+        // Inisialisasi halaman pertama kali
+        function initializePage() {
+            // Jika ada hash di URL
+            if (window.location.hash) {
+                const hash = window.location.hash.substring(1);
+                const targetSection = document.getElementById(hash);
+                if (targetSection) {
+                    setTimeout(() => {
+                        window.scrollTo({
+                            top: targetSection.offsetTop - 70,
+                            behavior: 'auto'
+                        });
+                        updateActiveNav(hash);
+                    }, 100);
+                }
+            } else {
+                // Default ke beranda
+                updateActiveNav('beranda');
+                window.scrollTo(0, 0);
+            }
+        }
+        
+        initializePage();
     });
-
-    // OPTIONAL: Debug $Pendaftaran data existence
-    // console.log(@json($jadwalPendaftaran));
-});
 </script>
 
-<!-- Styling -->
-<style>
-.btn-outline-light.active {
-    background-color: rgba(255,255,255,0.2);
-    color: white;
-}
-.table {
-    background-color: white;
-    color: #212529;
-}
-.thead-dark th {
-    background-color: #343a40;
-    color: white;
-}
-.badge {
-    font-size: 0.95rem;
-    padding: 0.5em 0.8em;
-    border-radius: 8px;
-}
-.card-title {
-    font-size: 1.1rem;
-}
-.card {
-    border-width: 2px;
-    border-radius: 12px;
-}
-</style>
+            <!-- Styling -->
+            <style>
+                .btn-outline-light.active {
+                    background-color: rgba(255, 255, 255, 0.2);
+                    color: white;
+                }
 
-<!--footer bg style-->
-<style>
-    .btn-outline-light.active {
-        background-color: rgba(255,255,255,0.2);
-        color: white;
-    }
-    .table {
-        background-color: white;
-        color: #212529;
-    }
-    .thead-dark th {
-        background-color: #343a40;
-        color: white;
-    }
-    .badge {
-        font-size: 0.9em;
-        padding: 0.35em 0.65em;
-    }
-</style>
+                .table {
+                    background-color: white;
+                    color: #212529;
+                }
+
+                .thead-dark th {
+                    background-color: #343a40;
+                    color: white;
+                }
+
+                .badge {
+                    font-size: 0.95rem;
+                    padding: 0.5em 0.8em;
+                    border-radius: 8px;
+                }
+
+                .card-title {
+                    font-size: 1.1rem;
+                }
+
+                .card {
+                    border-width: 2px;
+                    border-radius: 12px;
+                }
+
+                .dropdown-menu {
+                    min-width: 160px;
+                    margin-top: 0.5rem;
+                    border-radius: 10px;
+                }
+                
+            </style>
+
+            <!--footer bg style-->
+            <style>
+                .btn-outline-light.active {
+                    background-color: rgba(255, 255, 255, 0.2);
+                    color: white;
+                }
+
+                .table {
+                    background-color: white;
+                    color: #212529;
+                }
+
+                .thead-dark th {
+                    background-color: #343a40;
+                    color: white;
+                }
+
+                .badge {
+                    font-size: 0.9em;
+                    padding: 0.35em 0.65em;
+                }
+            </style>
     </section>
 
     <!-- Footer-->
@@ -513,62 +642,67 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="container"><small>Copyright &copy; {{ $site_name }} 2025</small></div>
     </div>
 
- <!-- pendaftaran Modals-->
-@php
-    $i=1;
-@endphp
-@foreach ($pendaftaran as $item)
-<!-- pendaftaran Modal {{$i}}-->
-<div class="portfolio-modal modal fade" id="portfolioModal{{$i}}" tabindex="-1" aria-labelledby="portfolioModal{{$i}}Label" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header border-0">
-                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-center pb-5">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-8">
-                            <!-- pendaftaran Modal - Title-->
-                            <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">{{$item->title}}</h2>
-                            <!-- Icon Divider-->
-                            <div class="divider-custom">
-                                <div class="divider-custom-line"></div>
-                                <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-                                <div class="divider-custom-line"></div>
-                            </div>
-                            <!-- pendaftaran Modal - Image-->
-                            <img class="img-fluid rounded mb-5" src="{{ asset('uploads/' . $item->thumbnail) }}" alt="..." />
-                            {!! $item->content !!}
-                            
-                            <!-- Tombol Daftar Sekarang -->
-                            <div class="mt-4">
-                                @if($item->link)
-                                    <a href="{{ $item->link }}" class="btn btn-primary btn-lg" target="_blank">
-                                        {{ __('messages.regis') }}
-                                    </a>
-                                @else
-                                   <a href="{{ route('formpendaftaran') }}" class="btn btn-primary btn-lg">
-                                        Daftar Sekarang7
-                                    </a>
-                                @endif
-                                
-                                <button class="btn btn-outline-secondary btn-lg ms-2" data-bs-dismiss="modal">
-                                    <i class="fas fa-xmark fa-fw"></i>
-                                    {{ __('messages.close') }}
-                                </button>
+    <!-- pendaftaran Modals-->
+    @php
+        $i = 1;
+    @endphp
+    @foreach ($pendaftaran as $item)
+        <!-- pendaftaran Modal {{ $i }}-->
+        <div class="portfolio-modal modal fade" id="portfolioModal{{ $i }}" tabindex="-1"
+            aria-labelledby="portfolioModal{{ $i }}Label" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <button class="btn-close" type="button" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center pb-5">
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-8">
+                                    <!-- pendaftaran Modal - Title-->
+                                    <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">
+                                        {{ $item->title }}</h2>
+                                    <!-- Icon Divider-->
+                                    <div class="divider-custom">
+                                        <div class="divider-custom-line"></div>
+                                        <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                                        <div class="divider-custom-line"></div>
+                                    </div>
+                                    <!-- pendaftaran Modal - Image-->
+                                    <img class="img-fluid rounded mb-5"
+                                        src="{{ asset('uploads/' . $item->thumbnail) }}" alt="..." />
+                                    {!! $item->content !!}
+
+                                    <!-- Tombol Daftar Sekarang -->
+                                    <div class="mt-4">
+                                        @if ($item->link)
+                                            <a href="{{ $item->link }}" class="btn btn-primary btn-lg"
+                                                target="_blank">
+                                                {{ __('messages.regis') }}
+                                            </a>
+                                        @else
+                                            <a href="{{ route('formpendaftaran') }}" class="btn btn-primary btn-lg">
+                                                Daftar Sekarang7
+                                            </a>
+                                        @endif
+
+                                        <button class="btn btn-outline-secondary btn-lg ms-2" data-bs-dismiss="modal">
+                                            <i class="fas fa-xmark fa-fw"></i>
+                                            {{ __('messages.close') }}
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-@php
-    $i++;
-@endphp
-@endforeach
+        @php
+            $i++;
+        @endphp
+    @endforeach
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
