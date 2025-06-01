@@ -43,6 +43,28 @@
                                 href="{{ route('change.language', 'en') }}">{{ __('messages.english') }}</a></li>
                     </ul>
                 </li>
+                <li class="nav-item dropdown ms-auto">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown"
+                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="{{ asset('storage/img/profile.png') }}" alt="Profile" width="40"
+                                height="40" class="rounded-circle">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-user dropdown-menu-end shadow" aria-labelledby="navbarDropdown">
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center text-primary"
+                                    href="{{ route('mahasiswa.profile') }}">
+                                    <i class="bi bi-person me-2"></i> Profile
+                                </a>
+                            </li>
+                            <li>
+                                <form action="{{ route('logout') }}" method="POST" class="dropdown-item m-0 p-0">
+                                    @csrf
+                                    <button class="dropdown-item d-flex align-items-center text-danger" type="submit">
+                                        <i class="bi bi-box-arrow-left me-2"></i> Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
             </ul>
         </div>
     </div>
@@ -121,6 +143,28 @@
         margin: 0;
         padding: 0;
     }
+
+    /* Dropdown Menu Custom untuk User/Profile */
+.dropdown-menu-user {
+    background-color: #ffffff !important;  /* putih */
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1); /* lembut seperti gambar pertama */
+    padding: 0.5rem 0;
+}
+
+.dropdown-menu-user .dropdown-item {
+    color: #20c997 !important; /* warna hijau tosca untuk Profile */
+    font-weight: 500;
+}
+
+.dropdown-menu-user .dropdown-item.text-danger {
+    color: #dc3545 !important; /* warna merah untuk Logout */
+}
+
+.dropdown-menu-user .dropdown-item:hover {
+    background-color: #f1f1f1 !important;
+}
+
 </style>
 
 <!-- JavaScript untuk Highlight Menu Aktif -->

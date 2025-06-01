@@ -203,32 +203,38 @@
                                         @enderror
                                     </div>
                                 </div>
-                                @if(count($jadwalList) === 1 && isset($jadwalList[0]))
-    @php $jadwal = $jadwalList[0]; @endphp
-    <input type="hidden" name="jadwal_pendaftaran_id" value="{{ $jadwal->id }}">
-@elseif(count($jadwalList) > 1)
-    <div class="mb-4">
-        <label for="jadwal_pendaftaran_id" class="block font-semibold text-gray-700">Pilih Jadwal</label>
-        <select name="jadwal_pendaftaran_id" id="jadwal_pendaftaran_id  " class="w-full p-2 border rounded-md" required>
-            <option value="" disabled selected>Pilih Jadwal</option>
-            @foreach ($jadwalList as $jadwal)
-                <option value="{{ $jadwal->id }}">
-                    {{ $jadwal->tanggal_mulai_formatted }} - {{ $jadwal->tanggal_akhir_formatted }} (Kuota: {{ $jadwal->kuota }})
-                </option>
-            @endforeach
-        </select>
-    </div>
-@endif
-                                 {{-- menampilkan contoh gambar --}}
-                                        <div class="mt-2">
-                                            <p class="text-muted mb-1">Contoh Foto Formal</p>
-                                            <img src="{{ asset('storage/img/contoh_foto_formal.jpg') }}" alt="Contoh Foto Formal 1"
-                                            style="max-width: 150px; border: 1px solid #ccc; padding: 3px; border-radius: 4px;">
-                                            <img src="{{ asset('storage/img/foto_formal_hijab.jpg') }}" alt="Contoh Foto Formal 2"
-                                            style="max-width: 150px; border: 1px solid #ccc; padding: 3px; border-radius: 4px;">
-                                            <img src="{{ asset('storage/img/foto_formal_non_hijab.jpg') }}" alt="Contoh Foto Formal 3"
-                                            style="max-width: 150px; border: 1px solid #ccc; padding: 3px; border-radius: 4px;">
-                                        </div>
+                                @if (count($jadwalList) === 1 && isset($jadwalList[0]))
+                                    @php $jadwal = $jadwalList[0]; @endphp
+                                    <input type="hidden" name="jadwal_pendaftaran_id" value="{{ $jadwal->id }}">
+                                @elseif(count($jadwalList) > 1)
+                                    <div class="mb-4">
+                                        <label for="jadwal_pendaftaran_id" class="block font-semibold text-gray-700">Pilih
+                                            Jadwal</label>
+                                        <select name="jadwal_pendaftaran_id" id="jadwal_pendaftaran_id  "
+                                            class="w-full p-2 border rounded-md" required>
+                                            <option value="" disabled selected>Pilih Jadwal</option>
+                                            @foreach ($jadwalList as $jadwal)
+                                                <option value="{{ $jadwal->id }}">
+                                                    {{ $jadwal->tanggal_mulai_formatted }} -
+                                                    {{ $jadwal->tanggal_akhir_formatted }} (Kuota: {{ $jadwal->kuota }})
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @endif
+                                {{-- menampilkan contoh gambar --}}
+                                <div class="mt-2">
+                                    <p class="text-muted mb-1">Contoh Foto Formal</p>
+                                    <img src="{{ asset('storage/img/contoh_foto_formal.jpg') }}"
+                                        alt="Contoh Foto Formal 1"
+                                        style="max-width: 150px; border: 1px solid #ccc; padding: 3px; border-radius: 4px;">
+                                    <img src="{{ asset('storage/img/foto_formal_hijab.jpg') }}"
+                                        alt="Contoh Foto Formal 2"
+                                        style="max-width: 150px; border: 1px solid #ccc; padding: 3px; border-radius: 4px;">
+                                    <img src="{{ asset('storage/img/foto_formal_non_hijab.jpg') }}"
+                                        alt="Contoh Foto Formal 3"
+                                        style="max-width: 150px; border: 1px solid #ccc; padding: 3px; border-radius: 4px;">
+                                </div>
                                 <div class="mb-3 row">
                                     <label for="foto_formal" class="col-md-3 col-form-label">Foto Formal</label>
                                     <div class="col-md-9">
@@ -270,7 +276,7 @@
                                             <i class="bi bi-check-circle me-1"></i>
                                             Daftar Sekarang
                                         </button>
-                                        <a href="{{ url('/') }}" class="btn btn-secondary ms-2">
+                                        <a href="{{ url('/beranda') }}" class="btn btn-secondary ms-2">
                                             {{-- Icon panah kiri (Bootstrap Icons arrow-left) --}}
                                             <i class="bi bi-arrow-left me-1"></i>
                                             Kembali
@@ -526,11 +532,11 @@
 
         // Redirect ke landing page setelah modal sukses ditutup
         $('#successModal').on('hidden.bs.modal', function() {
-            window.location.href = '/'; // Ganti '/' dengan route landing page kamu jika perlu
+            window.location.href = '/beranda'; // Ganti '/' dengan route landing page kamu jika perlu
         });
 
         $('#successCloseBtn').on('click', function() {
-            window.location.href = '/'; // Ganti '/' dengan route landing page kamu jika perlu
+            window.location.href = '/beranda'; // Ganti '/' dengan route landing page kamu jika perlu
         });
     </script>
 @endpush
