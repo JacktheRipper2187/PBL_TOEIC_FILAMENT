@@ -18,6 +18,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\MahasiswaController;
 
 
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -117,4 +118,5 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/beranda', [JadwalController::class, 'index'])->name('mahasiswa.depan');
+    Route::get('/mahasiswa/depan', [JadwalController::class, 'index'])->name('mahasiswa.depan');
 });

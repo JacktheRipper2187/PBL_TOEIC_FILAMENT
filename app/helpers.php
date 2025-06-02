@@ -1,6 +1,7 @@
 
 <?php
 
+use App\Models\HasilToeic;
 use App\Models\JadwalPendaftaran;
 use App\Models\JadwalSertifikat;
 use App\Models\Section;
@@ -59,6 +60,14 @@ if (!function_exists('get_JadwalSertifikat_value')) {
     function get_JadwalSertifikat_value()
     {
         $data = JadwalSertifikat::all();
+        return $data;
+    }
+}
+
+if (!function_exists('get_HasilToeic_value')) {
+    function get_HasilToeic_value()
+    {
+        $data = HasilToeic::all();
         return $data;
     }
 }

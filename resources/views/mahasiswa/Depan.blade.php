@@ -363,21 +363,78 @@
             </div>
 
             <!-- Data Hasil Ujian -->
-            <div id="hasil_ujian" class="category-table" style="display:none;">
-                <div class="row justify-content-center">
-                    <div class="col-md-6">
-                        <form action="{{ route('hasil.cari') }}" method="GET" class="d-flex">
-                            <select name="sesi" class="form-select me-2" required>
-                                <option value="" disabled selected>Pilih sesi ujian...</option>
-                                @foreach ($sesiList as $sesi)
-                                    <option value="{{ $sesi }}">{{ $sesi }}</option>
-                                @endforeach
-                            </select>
-                            <button type="submit" class="btn btn-success">Cari</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+    <!-- Form Cari Sesi Ujian, awalnya disembunyikan -->
+<div id="hasil_ujian" class="category-table mt-4" style="display:none;">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form action="{{ route('hasil.cari') }}" method="GET" class="d-flex">
+                <select name="sesi" class="form-select me-2" required>
+                    <option value="" disabled selected>Pilih sesi ujian...</option>
+                    @foreach ($sesiList as $sesi)
+                        <option value="{{ $sesi }}">{{ $sesi }}</option>
+                    @endforeach
+                </select>
+                <button type="submit" class="btn btn-success">Cari</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Tabel Hasil TOEIC -->
+<div id="hasil_toeic_pribadi" class="category-table mt-4" style="display:none;">
+    <div class="container">
+        @if($hasilToeic->isNotEmpty())
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Nama</th>
+                        <th>NIM</th>
+                        <th>Listening</th>
+                        <th>Reading</th>
+                        <th>Total</th>
+                        <th>Tanggal Tes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($hasilToeic as $hasil)
+                        <tr>
+                            <td>{{ $hasil->name }}</td>
+                            <td>{{ $hasil->nim }}</td>
+                            <td>{{ $hasil->l }}</td>
+                            <td>{{ $hasil->r }}</td>
+                            <td>{{ $hasil->tot }}</td>
+                            <td>{{ $hasil->test_date }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @else
+           <div class="alert alert-warning text-center">Belum ada hasil TOEIC untuk anda.
+</div>
+
+        @endif
+    </div>
+</div>
+
+<!-- Script JavaScript untuk tombol -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const btnLihatHasil = document.querySelector('button[data-target="hasil_ujian"]');
+
+        btnLihatHasil.addEventListener('click', function() {
+            // Tampilkan div hasil ujian dan hasil TOEIC
+            document.getElementById('hasil_ujian').style.display = 'block';
+            document.getElementById('hasil_toeic_pribadi').style.display = 'block';
+
+            // Scroll ke bagian hasil ujian
+            window.scrollTo({
+                top: document.getElementById('hasil_ujian').offsetTop,
+                behavior: 'smooth'
+            });
+        });
+    });
+</script>
+    </div>
 
            <script>
     function showCategory(id) {
