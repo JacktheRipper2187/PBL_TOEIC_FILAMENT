@@ -99,7 +99,7 @@
                         <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown"
                             role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="{{ $mahasiswa && $mahasiswa->foto ? asset('storage/' . $mahasiswa->foto) : asset('storage/img/profile.png') }}"
-                            alt="Foto Profil" width="40" height="40" class="rounded-circle">
+                                alt="Foto Profil" width="40" height="40" class="rounded-circle">
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="navbarDropdown">
                             <li>
@@ -242,73 +242,20 @@
 
             <!-- Tombol Kategori -->
             <div class="text-center mb-4">
-                <button type="button" class="btn btn-outline-light mx-2 active"
-                    data-target="jadwal_pendaftaran">{{ __('messages.registration') }}</button>
-                <button type="button" class="btn btn-outline-light mx-2"
-                    data-target="ujian">{{ __('messages.exam') }}</button>
-                <button type="button" class="btn btn-outline-light mx-2"
-                    data-target="pengambilan">{{ __('messages.certificate') }}</button>
-                <button type="button" class="btn btn-outline-light mx-2"
-                    data-target="hasil_ujian">{{ __('messages.exam_result') }}</button>
+                <button type="button" class="btn btn-outline-light mx-2 active" data-target="jadwal_pendaftaran">
+                    {{ __('messages.registration') }}
+                </button>
+                <button type="button" class="btn btn-outline-light mx-2" data-target="ujian">
+                    {{ __('messages.exam') }}
+                </button>
+                <button type="button" class="btn btn-outline-light mx-2" data-target="pengambilan">
+                    {{ __('messages.certificate') }}
+                </button>
+                <button type="button" class="btn btn-outline-light mx-2" data-target="hasil_ujian">
+                    {{ __('messages.exam_result') }}
+                </button>
             </div>
-
-            <!-- Data Hasil Ujian -->
-            <!-- Data Hasil Ujian -->
-            <div id="hasil_ujian" class="category-table" style="display:none;">
-                <div class="row justify-content-center">
-                    <div class="col-md-6">
-                        <form action="{{ route('hasil.cari') }}" method="GET" class="d-flex">
-                            <select name="sesi" class="form-select me-2" required>
-                                <option value="" disabled selected>Pilih sesi ujian...</option>
-                                @foreach ($sesiList as $sesi)
-                                    <option value="{{ $sesi }}">{{ $sesi }}</option>
-                                @endforeach
-                            </select>
-                            <button type="submit" class="btn btn-success">Cari</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <script>
-                // Fungsi ini untuk tombol kategori lain, kalau kamu sudah punya di JS, pakai fungsi ini.
-                function showCategory(category) {
-                    // sembunyikan semua category-table dulu
-                    document.querySelectorAll('.category-table').forEach(div => {
-                        div.style.display = 'none';
-                    });
-                    // tampilkan sesuai category yg dipilih
-                    const selected = document.getElementById(category);
-                    if (selected) selected.style.display = 'block';
-                }
-
-                // Tombol Hasil Ujian toggle tampilkan dropdown sesi
-                document.getElementById('btnHasil').addEventListener('click', function() {
-                    const hasilDiv = document.getElementById('hasil');
-                    if (hasilDiv.style.display === 'none' || hasilDiv.style.display === '') {
-                        // sembunyikan kategori lain supaya tidak bentrok (opsional)
-                        document.querySelectorAll('.category-table').forEach(div => {
-                            div.style.display = 'none';
-                        });
-                        hasilDiv.style.display = 'block';
-                    } else {
-                        hasilDiv.style.display = 'none';
-                    }
-                });
-            </script>
-
-
-
-            <script>
-                function showCategory(id) {
-                    // sembunyikan semua category-table
-                    document.querySelectorAll('.category-table').forEach(div => div.style.display = 'none');
-                    // tampilkan yang dipilih
-                    document.getElementById(id).style.display = 'block';
-                }
-            </script>
-
-            <!-- Konten Kategori -->
+          <!-- Konten Kategori -->
             <div class="category-content">
                 <!-- Data Pendaftaran -->
                 <div id="jadwal_pendaftaran" class="category-table">
@@ -415,118 +362,156 @@
                 </div>
             </div>
 
-            <!-- Script Toggle -->
- <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const navLinks = document.querySelectorAll('.nav-link');
-        const sections = document.querySelectorAll('section[id]');
-        
-        // Fungsi untuk menangani klik pada nav-link
-        function handleNavClick(event) {
-            event.preventDefault();
-            
-            const targetId = this.getAttribute('href').substring(1);
-            const targetSection = document.getElementById(targetId);
-            
-            if (targetSection) {
-                window.scrollTo({
-                    top: targetSection.offsetTop - 70, // Sesuaikan dengan tinggi navbar
-                    behavior: 'smooth'
-                });
-                
-                history.replaceState(null, null, '#' + targetId);
-                updateActiveNav(targetId);
-            }
-        }
-        
-        // Fungsi untuk mengupdate nav-link aktif
-        function updateActiveNav(targetId) {
-            navLinks.forEach(nav => {
-                const navHref = nav.getAttribute('href').substring(1);
-                nav.classList.toggle('active', navHref === targetId);
-            });
-        }
-        
-        // Fungsi untuk menangani scroll
-        function handleScroll() {
-            let currentSection = '';
-            const scrollPosition = window.scrollY + 100; // Offset yang lebih kecil
-            
-            // Cek khusus untuk beranda (harus di atas semua section lain)
-            const berandaSection = document.getElementById('beranda');
-            if (berandaSection && scrollPosition < berandaSection.offsetTop + berandaSection.clientHeight - 200) {
-                currentSection = 'beranda';
-            } else {
-                // Cek section lainnya
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    const sectionBottom = sectionTop + section.clientHeight;
-                    
-                    if (scrollPosition >= sectionTop - 100 && scrollPosition < sectionBottom - 100) {
-                        currentSection = section.id;
-                    }
-                });
-            }
-            
-            if (currentSection) {
-                updateActiveNav(currentSection);
-            }
-        }
-        
-        // Throttle function untuk optimasi performance
-        function throttle(func, limit = 100) {
-            let lastFunc;
-            let lastRan;
-            return function() {
-                const context = this;
-                const args = arguments;
-                if (!lastRan) {
-                    func.apply(context, args);
-                    lastRan = Date.now();
-                } else {
-                    clearTimeout(lastFunc);
-                    lastFunc = setTimeout(function() {
-                        if ((Date.now() - lastRan) >= limit) {
-                            func.apply(context, args);
-                            lastRan = Date.now();
-                        }
-                    }, limit - (Date.now() - lastRan));
-                }
-            };
-        }
-        
-        // Tambahkan event listener
-        navLinks.forEach(link => {
-            link.addEventListener('click', handleNavClick);
+            <!-- Data Hasil Ujian -->
+            <div id="hasil_ujian" class="category-table" style="display:none;">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <form action="{{ route('hasil.cari') }}" method="GET" class="d-flex">
+                            <select name="sesi" class="form-select me-2" required>
+                                <option value="" disabled selected>Pilih sesi ujian...</option>
+                                @foreach ($sesiList as $sesi)
+                                    <option value="{{ $sesi }}">{{ $sesi }}</option>
+                                @endforeach
+                            </select>
+                            <button type="submit" class="btn btn-success">Cari</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+           <script>
+    function showCategory(id) {
+        document.querySelectorAll('.category-table').forEach(div => div.style.display = 'none');
+        const selected = document.getElementById(id);
+        if (selected) selected.style.display = 'block';
+    }
+
+    // Pasang event click pada semua tombol yang punya data-target
+    document.querySelectorAll('button[data-target]').forEach(button => {
+        button.addEventListener('click', () => {
+            const target = button.getAttribute('data-target');
+            showCategory(target);
+
+            // Update kelas active supaya tombol yang diklik tampil aktif
+            document.querySelectorAll('button[data-target]').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
         });
-        
-        window.addEventListener('scroll', throttle(handleScroll));
-        
-        // Inisialisasi halaman pertama kali
-        function initializePage() {
-            // Jika ada hash di URL
-            if (window.location.hash) {
-                const hash = window.location.hash.substring(1);
-                const targetSection = document.getElementById(hash);
-                if (targetSection) {
-                    setTimeout(() => {
-                        window.scrollTo({
-                            top: targetSection.offsetTop - 70,
-                            behavior: 'auto'
-                        });
-                        updateActiveNav(hash);
-                    }, 100);
-                }
-            } else {
-                // Default ke beranda
-                updateActiveNav('beranda');
-                window.scrollTo(0, 0);
-            }
-        }
-        
-        initializePage();
     });
 </script>
+
+            <!-- Script Toggle -->
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    const navLinks = document.querySelectorAll('.nav-link');
+                    const sections = document.querySelectorAll('section[id]');
+
+                    // Fungsi untuk menangani klik pada nav-link
+                    function handleNavClick(event) {
+                        event.preventDefault();
+
+                        const targetId = this.getAttribute('href').substring(1);
+                        const targetSection = document.getElementById(targetId);
+
+                        if (targetSection) {
+                            window.scrollTo({
+                                top: targetSection.offsetTop - 70, // Sesuaikan dengan tinggi navbar
+                                behavior: 'smooth'
+                            });
+
+                            history.replaceState(null, null, '#' + targetId);
+                            updateActiveNav(targetId);
+                        }
+                    }
+
+                    // Fungsi untuk mengupdate nav-link aktif
+                    function updateActiveNav(targetId) {
+                        navLinks.forEach(nav => {
+                            const navHref = nav.getAttribute('href').substring(1);
+                            nav.classList.toggle('active', navHref === targetId);
+                        });
+                    }
+
+                    // Fungsi untuk menangani scroll
+                    function handleScroll() {
+                        let currentSection = '';
+                        const scrollPosition = window.scrollY + 100; // Offset yang lebih kecil
+
+                        // Cek khusus untuk beranda (harus di atas semua section lain)
+                        const berandaSection = document.getElementById('beranda');
+                        if (berandaSection && scrollPosition < berandaSection.offsetTop + berandaSection.clientHeight -
+                            200) {
+                            currentSection = 'beranda';
+                        } else {
+                            // Cek section lainnya
+                            sections.forEach(section => {
+                                const sectionTop = section.offsetTop;
+                                const sectionBottom = sectionTop + section.clientHeight;
+
+                                if (scrollPosition >= sectionTop - 100 && scrollPosition < sectionBottom - 100) {
+                                    currentSection = section.id;
+                                }
+                            });
+                        }
+
+                        if (currentSection) {
+                            updateActiveNav(currentSection);
+                        }
+                    }
+
+                    // Throttle function untuk optimasi performance
+                    function throttle(func, limit = 100) {
+                        let lastFunc;
+                        let lastRan;
+                        return function() {
+                            const context = this;
+                            const args = arguments;
+                            if (!lastRan) {
+                                func.apply(context, args);
+                                lastRan = Date.now();
+                            } else {
+                                clearTimeout(lastFunc);
+                                lastFunc = setTimeout(function() {
+                                    if ((Date.now() - lastRan) >= limit) {
+                                        func.apply(context, args);
+                                        lastRan = Date.now();
+                                    }
+                                }, limit - (Date.now() - lastRan));
+                            }
+                        };
+                    }
+
+                    // Tambahkan event listener
+                    navLinks.forEach(link => {
+                        link.addEventListener('click', handleNavClick);
+                    });
+
+                    window.addEventListener('scroll', throttle(handleScroll));
+
+                    // Inisialisasi halaman pertama kali
+                    function initializePage() {
+                        // Jika ada hash di URL
+                        if (window.location.hash) {
+                            const hash = window.location.hash.substring(1);
+                            const targetSection = document.getElementById(hash);
+                            if (targetSection) {
+                                setTimeout(() => {
+                                    window.scrollTo({
+                                        top: targetSection.offsetTop - 70,
+                                        behavior: 'auto'
+                                    });
+                                    updateActiveNav(hash);
+                                }, 100);
+                            }
+                        } else {
+                            // Default ke beranda
+                            updateActiveNav('beranda');
+                            window.scrollTo(0, 0);
+                        }
+                    }
+
+                    initializePage();
+                });
+            </script>
 
             <!-- Styling -->
             <style>
@@ -565,7 +550,6 @@
                     margin-top: 0.5rem;
                     border-radius: 10px;
                 }
-                
             </style>
 
             <!--footer bg style-->
