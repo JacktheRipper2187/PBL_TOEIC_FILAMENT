@@ -97,7 +97,7 @@
                 <button type="submit" style="background-color: #007bff;"
                     onmouseover="this.style.backgroundColor='#0056b3'" onmouseout="this.style.backgroundColor='#007bff'"
                     class="w-full text-white font-bold py-2 px-4 rounded-md transition duration-300 flex items-center justify-center">
-                    <i class="fas fa-sign-in-alt mr-2"></i> Masuk
+                    <i class="fas fa-sign-in-alt mr-2"></i> Log In
                 </button>
 
 
@@ -107,6 +107,13 @@
                         <i class="fas fa-exclamation-circle mr-2"></i> {{ $errors->first() }}
                     </div>
                 @endif
+
+                <!-- Kembali Button -->
+<div class="mt-4 text-center">
+    <a href="/" class="text-sm text-gray-600 hover:text-gray-800">
+        <i class="fas fa-arrow-left mr-1"></i> Kembali ke Beranda
+    </a>
+</div>
             </form>
 
             <!-- Registration Link -->

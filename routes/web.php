@@ -58,6 +58,11 @@ Route::post('/formpendaftaran', [FormPendaftaranController::class, 'submitForm']
 // Route untuk validasi NIM
 Route::post('/formpendaftaran/check-nim', [FormPendaftaranController::class, 'checkNim'])->name('pendaftaran.checkNim');
 
+//Route pendaftaran di tutup
+Route::get('/pendaftaran', [FormPendaftaranController::class, 'showForm'])->name('pendaftaran.form');
+Route::get('/pendaftaranTutup', function() {
+    return view('mahasiswa.pendaftaranTutup');
+})->name('mahasiswa.pendaftaranTutup'); // Keep as fallback
 //hasil
 // Route::get('/hasilini', [HasilDepanController::class, 'index'])->name('hasil.index');          // halaman form cari sesi
 Route::get('/hasil/cari', [HasilController::class, 'cari'])->name('hasil.cari');
