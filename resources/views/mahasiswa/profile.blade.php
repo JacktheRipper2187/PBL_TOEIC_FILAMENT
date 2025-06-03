@@ -7,7 +7,6 @@
     $email = get_setting_value('_email');
     $whatsapp = get_setting_value('_whatsapp');
     $pendaftaran = get_pendaftaran_value();
-    // Ambil data dari model yang sesuai dengan kategori
     $jadwalPendaftaran = get_JadwalPendaftaran_value();
     $ujian = get_JadwalUjian_value();
     $pengambilan = get_JadwalSertifikat_value();
@@ -27,111 +26,37 @@
                 <div class="divider-custom-line"></div>
             </div>
 
-            <!-- Card Informasi Mahasiswa -->
-<div class="row justify-content-center">
-    <div class="col-md-8 col-lg-6">
-        <div class="card shadow p-4 mb-5 bg-white rounded">
-            <h4 class="mb-3">Informasi Mahasiswa</h4>
-            <div class="info-container">
-                <div class="info-row">
-                    <span class="info-label">Nama</span>
-                    <span class="info-value">{{ $mahasiswa->nama_lengkap ?? '-' }}</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">NIM</span>
-                    <span class="info-value">{{ $mahasiswa->nim ?? '-' }}</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Email</span>
-                    <span class="info-value">{{ $mahasiswa->email ?? '-' }}</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">No. Telp</span>
-                    <span class="info-value">{{ $mahasiswa->no_telp ?? '-' }}</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Kampus</span>
-                    <span class="info-value">{{ $mahasiswa->kampus ?? '-' }}</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Jurusan</span>
-                    <span class="info-value">{{ $mahasiswa->jurusan ?? '-' }}</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Prodi</span>
-                    <span class="info-value">{{ $mahasiswa->prodi ?? '-' }}</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Username</span>
-                    <span class="info-value">{{ $user->username }}</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<style>
-    .info-container {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-    .info-row {
-        display: flex;
-        align-items: baseline;
-    }
-    .info-label {
-        font-weight: bold;
-        min-width: 100px; /* Lebar minimum untuk label */
-        position: relative;
-        padding-right: 15px;
-    }
-    .info-label::after {
-        content: ":";
-        position: absolute;
-        right: 5px;
-    }
-    .info-value {
-        flex: 1;
-        word-break: break-word;
-    }
-</style>
-
-            <!-- Card Ubah Foto Profil (Letakkan di urutan pertama) -->
-            <div class="row justify-content-center">
-                <div class="col-md-8 col-lg-6">
-                    <div class="card shadow p-4 mb-5 bg-white rounded">
-                        <h4 class="mb-3">Ubah Foto Profil</h4>
+            <div class="row">
+                <!-- Kolom Kiri - Informasi yang bisa diubah -->
+                <div class="col-md-6 order-md-1">
+                    <!-- Card Ubah Foto Profil -->
+                    <div class="card shadow p-4 mb-4 bg-white rounded">
+                        <h4 class="mb-3"><i class="bi bi-person-circle me-2"></i>Ubah Foto Profil</h4>
                         @if (session('foto_success'))
                             <div class="alert alert-success">{{ session('foto_success') }}</div>
                         @endif
-                        <div class="mb-3 text-center">
+                        <div class="text-center mb-3">
                             <img src="{{ $mahasiswa && $mahasiswa->foto ? asset('storage/' . $mahasiswa->foto) : asset('storage/img/profile.png') }}"
-                                alt="Foto Profil" class="rounded-circle" width="150" height="150">
+                                alt="Foto Profil" class="rounded-circle shadow-sm" width="150" height="150">
                         </div>
                         <form action="{{ route('mahasiswa.update-foto') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="mb-3">
-                                <label for="foto" class="form-label">Pilih Foto</label>
+                                <label for="foto" class="form-label">Upload Foto Baru</label>
                                 <input type="file" name="foto" class="form-control" required>
                                 @error('foto')
-                                    <div class="text-danger">{{ $message }}</div>
+                                    <div class="text-danger small mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <button type="submit" class="btn btn-success">
-                                <i class="bi bi-upload me-1"></i>
-                                Simpan Perubahan
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="bi bi-upload me-1"></i> Update Foto
                             </button>
                         </form>
                     </div>
-                </div>
-            </div>
 
-            <!-- Card Ubah Password -->
-            <div class="row justify-content-center">
-                <div class="col-md-8 col-lg-6">
+                    <!-- Card Ubah Password -->
                     <div class="card shadow p-4 bg-white rounded">
-                        <h4 class="mb-3">Ubah Password</h4>
+                        <h4 class="mb-3"><i class="bi bi-shield-lock me-2"></i>Keamanan Akun</h4>
                         @if (session('success'))
                             <div class="alert alert-success">{{ session('password_success') }}</div>
                         @endif
@@ -139,35 +64,131 @@
                         <form action="{{ route('mahasiswa.update-password') }}" method="POST">
                             @csrf
                             <div class="mb-3">
-                                <label for="current_password" class="form-label">Password Lama</label>
-                                <input type="password" name="current_password" class="form-control" required>
+                                <label for="current_password" class="form-label">Password Saat Ini</label>
+                                <input type="password" name="current_password" class="form-control" placeholder="Masukkan password lama" required>
                                 @error('current_password')
-                                    <div class="text-danger">{{ $message }}</div>
+                                    <div class="text-danger small mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password Baru</label>
-                                <input type="password" name="password" class="form-control" required>
+                                <input type="password" name="password" class="form-control" placeholder="Minimal 8 karakter" required>
                                 @error('password')
-                                    <div class="text-danger">{{ $message }}</div>
+                                    <div class="text-danger small mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
-                                <input type="password" name="password_confirmation" class="form-control" required>
+                                <input type="password" name="password_confirmation" class="form-control" placeholder="Ketik ulang password baru" required>
                             </div>
-                            <button type="submit" class="btn btn-success">
-                                <i class="bi bi-check-circle me-1"></i>
-                                Simpan Password Baru
+                            <button type="submit" class="btn btn-primary w-100 mb-2">
+                                <i class="bi bi-check-circle me-1"></i> Perbarui Password
                             </button>
-                            <a href="{{ url('/beranda') }}" class="btn btn-secondary ms-2">
-                                <i class="bi bi-arrow-left me-1"></i>
-                                Kembali
-                            </a>
                         </form>
+                    </div>
+                </div>
+
+                <!-- Kolom Kanan - Informasi mahasiswa (read-only) -->
+                <div class="col-md-6 order-md-2">
+                    <div class="card shadow p-4 h-100 bg-white rounded">
+                        <h4 class="mb-3"><i class="bi bi-person-lines-fill me-2"></i>Informasi Mahasiswa</h4>
+                        <div class="profile-info">
+                            <div class="info-item">
+                                <span class="info-label">Nama Lengkap</span>
+                                <span class="info-value">{{ $mahasiswa->nama_lengkap ?? '-' }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">NIM</span>
+                                <span class="info-value">{{ $mahasiswa->nim ?? '-' }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Email</span>
+                                <span class="info-value">{{ $mahasiswa->email ?? '-' }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">No. Telepon</span>
+                                <span class="info-value">{{ $mahasiswa->no_telp ?? '-' }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Kampus</span>
+                                <span class="info-value">{{ $mahasiswa->kampus ?? '-' }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Jurusan</span>
+                                <span class="info-value">{{ $mahasiswa->jurusan ?? '-' }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Program Studi</span>
+                                <span class="info-value">{{ $mahasiswa->prodi ?? '-' }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Username</span>
+                                <span class="info-value">{{ $user->username }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4 pt-3 border-top text-center">
+                            <a href="{{ url('/beranda') }}" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-1"></i> Kembali ke Beranda
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 @endsection
+
+<style>
+    /* Profile Info Styling */
+    .profile-info {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .info-item {
+        display: flex;
+        align-items: flex-start;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid #eee;
+    }
+    .info-label {
+        font-weight: 600;
+        color: #555;
+        min-width: 140px;
+        padding-right: 10px;
+    }
+    .info-label::after {
+        content: ":";
+        margin-left: auto;
+    }
+    .info-value {
+        flex: 1;
+        color: #333;
+        word-break: break-word;
+    }
+    
+    /* Card Styling */
+    .card {
+        border: none;
+        border-radius: 10px;
+        transition: transform 0.2s;
+    }
+    .card:hover {
+        transform: translateY(-2px);
+    }
+    .card h4 {
+        color: #2c3e50;
+        font-weight: 600;
+    }
+    
+    /* Responsive Adjustment */
+    @media (max-width: 768px) {
+        .order-md-1, .order-md-2 {
+            order: 0;
+        }
+        .info-label {
+            min-width: 120px;
+        }
+    }
+</style>
