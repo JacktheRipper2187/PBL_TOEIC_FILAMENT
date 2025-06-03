@@ -9,6 +9,6 @@ class HasilToeic extends Model
     protected $table = 'hasil_toeic';
 
     protected $fillable = [
-        'name', 'nim', 'l', 'r', 'tot', 'group', 'position', 'category', 'test_date',
+        'name', 'nim', 'l', 'r', 'tot', 'group', 'position', 'category', 'test_date', 'keterangan',
     ];
 }

@@ -19,6 +19,7 @@ class CreateHasilToeicsTable extends Migration
             $table->string('position')->nullable();
             $table->string('category')->nullable();
             $table->date('test_date')->nullable();
+            $table->string('keterangan')->nullable();  
             $table->timestamps();
         });
     }

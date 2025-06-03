@@ -23,8 +23,8 @@ class ListHasilToeics extends ListRecords
                     FileUpload::make('file')
                         ->label('File Excel')
                         ->required()
-                        ->disk('local') // <- Tambahan penting
-                        ->directory('imports') // <- Temp folder penyimpanan
+                        ->disk('local')
+                        ->directory('imports')
                         ->acceptedFileTypes([
                             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                             'application/vnd.ms-excel',

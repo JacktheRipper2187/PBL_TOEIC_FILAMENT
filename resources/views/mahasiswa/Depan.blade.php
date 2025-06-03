@@ -393,6 +393,7 @@
                         <th>Reading</th>
                         <th>Total</th>
                         <th>Tanggal Tes</th>
+                        <th>Keterangan</th> 
                     </tr>
                 </thead>
                 <tbody>
@@ -403,15 +404,14 @@
                             <td>{{ $hasil->l }}</td>
                             <td>{{ $hasil->r }}</td>
                             <td>{{ $hasil->tot }}</td>
-                            <td>{{ $hasil->test_date }}</td>
+                            <td>{{ date('d-m-Y', strtotime($hasil->test_date)) }}</td>
+                            <td>{{ $hasil->keterangan }}</td> 
                         </tr>
                     @endforeach
                 </tbody>
             </table>
         @else
-           <div class="alert alert-warning text-center">Belum ada hasil TOEIC untuk anda.
-</div>
-
+            <p>Data hasil TOEIC tidak ditemukan.</p>
         @endif
     </div>
 </div>
