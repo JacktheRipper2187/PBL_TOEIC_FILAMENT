@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
         $admin = User::firstOrCreate(
             ['username' => 'adminuser'],
             [
+                'email' => 'admin@example.com',
                 'password' => Hash::make('NazwaAdmin1'),
             ]
         );
@@ -39,13 +40,14 @@ class DatabaseSeeder extends Seeder
         // 3. Assign Role Admin ke User Admin
         if (!$admin->hasRole($adminRole)) {
             $admin->assignRole($adminRole);
-            echo "Assigned admin role to: ".$admin->username.PHP_EOL;
+            echo "Assigned admin role to: " . $admin->username . PHP_EOL;
         }
 
         // 4. Buat User Mahasiswa
         $mahasiswa = User::firstOrCreate(
             ['username' => 'mahasiswa1'],
             [
+                'email' => 'mahasiswa1@example.com',
                 'password' => Hash::make('passwordMahasiswa'),
             ]
         );
@@ -53,7 +55,7 @@ class DatabaseSeeder extends Seeder
         // 5. Assign Role Mahasiswa ke User Mahasiswa
         if (!$mahasiswa->hasRole($mahasiswaRole)) {
             $mahasiswa->assignRole($mahasiswaRole);
-            echo "Assigned mahasiswa role to: ".$mahasiswa->username.PHP_EOL;
+            echo "Assigned mahasiswa role to: " . $mahasiswa->username . PHP_EOL;
         }
 
         // 6. Verifikasi langsung

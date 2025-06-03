@@ -11,18 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-       Schema::create('mahasiswas', function (Blueprint $table) {
-    $table->id();
-    $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-    $table->string('nama_lengkap');
-    $table->string('nim')->unique();
-    $table->string('no_telp');
-    $table->string('kampus');
-    $table->string('jurusan');
-    $table->string('prodi');
-    $table->string('email')->nullable();
-    $table->timestamps();
-});
+        Schema::create('mahasiswas', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->string('nama_lengkap');
+            $table->string('nim')->unique();
+            $table->string('no_telp');
+            $table->string('kampus');
+            $table->string('jurusan');
+            $table->string('prodi');
+            $table->string('email'); // Hapus nullable dan duplikasi
+            $table->timestamps();
+
+            // Tambahkan indeks untuk performa
+            $table->index('email');
+        });
     }
 
     /**

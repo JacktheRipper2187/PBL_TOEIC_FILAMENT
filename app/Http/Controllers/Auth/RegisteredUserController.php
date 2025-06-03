@@ -52,7 +52,7 @@ class RegisteredUserController extends Controller
             'username' => ['required', 'string', 'max:20', 'unique:users'],
             'nama_lengkap' => ['required', 'string', 'max:100'],
             'nim' => ['required', 'string', 'max:20', 'unique:mahasiswas'],
-            'email' => ['required', 'string', 'email', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email','unique:mahasiswas,email'],
             'no_telp' => ['required', 'string', 'max:15'],
             'kampus' => ['required', 'string', 'in:' . implode(',', $validKampus)],
             'jurusan' => ['required', 'string', function ($attribute, $value, $fail) use ($request, $validJurusan) {
@@ -71,6 +71,7 @@ class RegisteredUserController extends Controller
         // Create user
         $user = User::create([
             'username' => $request->username,
+            'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
