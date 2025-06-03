@@ -43,13 +43,24 @@
         padding-top: 100px;
         /* Jarak tambahan setelah navbar */
     }
+    
+    /* Navbar modifications */
+    .navbar-brand {
+        margin-right: 0;
+    }
+    .navbar-nav {
+        margin-left: auto;
+    }
+    .nav-item {
+        white-space: nowrap;
+    }
 </style>
 
 <body id="page-top">
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
-        <div class="container">
-            <!-- Logo and Site Name -->
+        <div class="container-fluid px-4">
+            <!-- Logo and Site Name - Left aligned -->
             <a class="navbar-brand d-flex align-items-center" href="#page-top">
                 <img src="assets/img/Logo Polinema.png" alt="Logo" class="mr-2" style="width: 65px;">
                 {{ $site_name }}
@@ -64,9 +75,9 @@
                 <i class="fas fa-bars"></i>
             </button>
 
-            <!-- Navbar Menu -->
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ms-auto">
+            <!-- Navbar Menu - Right aligned -->
+            <div class="collapse navbar-collapse justify-content-end" id="navbarResponsive">
+                <ul class="navbar-nav">
                     <!-- Main Menu Items -->
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded"
                             href="#beranda">{{ __('messages.home') }}</a></li>
@@ -512,6 +523,4 @@
 </script>
 
 </body>
-
-
 </html>
