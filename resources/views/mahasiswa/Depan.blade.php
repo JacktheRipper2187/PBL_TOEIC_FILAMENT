@@ -368,14 +368,36 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <form action="{{ route('hasil.cari') }}" method="GET" class="d-flex">
-                <select name="sesi" class="form-select me-2" required>
-                    <option value="" disabled selected>Pilih sesi ujian...</option>
-                    @foreach ($sesiList as $sesi)
-                        <option value="{{ $sesi }}">{{ $sesi }}</option>
-                    @endforeach
-                </select>
-                <button type="submit" class="btn btn-success">Cari</button>
-            </form>
+    <select name="tanggal" id="tanggal" class="form-select me-2" required>
+        <option value="" disabled selected>Pilih tanggal ujian...</option>
+        @foreach ($tanggalList as $tanggal)
+            <option value="{{ $tanggal }}">{{ \Carbon\Carbon::parse($tanggal)->format('d M Y') }}</option>
+        @endforeach
+    </select>
+
+    <select name="sesi" id="sesi" class="form-select me-2" required>
+        <option value="">Pilih sesi...</option>
+    </select>
+
+    <button type="submit" class="btn btn-success">Cari</button>
+</form>
+<script>
+    document.getElementById('tanggal').addEventListener('change', function () {
+        let tanggal = this.value;
+        let sesiSelect = document.getElementById('sesi');
+        sesiSelect.innerHTML = '<option>Memuat sesi...</option>';
+
+        fetch(`/get-sesi/${tanggal}`)
+            .then(response => response.json())
+            .then(data => {
+                sesiSelect.innerHTML = '<option value="">Pilih sesi...</option>';
+                data.forEach(sesi => {
+                    sesiSelect.innerHTML += `<option value="${sesi}">${sesi}</option>`;
+                });
+            });
+    });
+</script>
+
         </div>
     </div>
 </div>

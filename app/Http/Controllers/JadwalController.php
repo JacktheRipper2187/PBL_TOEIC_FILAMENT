@@ -18,7 +18,8 @@ class JadwalController extends Controller
         $pengambilan = JadwalSertifikat::orderBy('hari_tanggal')->get();
 
         // Ambil daftar sesi unik dari tabel hasil
-        $sesiList = Hasil::select('sesi')->distinct()->orderBy('sesi')->pluck('sesi');
+        // Ambil daftar tanggal_ujian unik dari tabel hasil
+        $tanggalList = Hasil::select('tanggal_ujian')->distinct()->orderBy('tanggal_ujian')->pluck('tanggal_ujian');
 
         // Ambil user yang sedang login
         $user = auth()->user();
@@ -30,12 +31,12 @@ class JadwalController extends Controller
         $hasilToeic = HasilToeic::where('nim', $nim)->get();
 
         return view('mahasiswa.depan', compact(
-            'JadwalPendaftaran',
-            'ujian',
-            'pengambilan',
-            'sesiList',
-            'hasilToeic'
-        ));
+        'JadwalPendaftaran',
+        'ujian',
+        'pengambilan',
+        'tanggalList',
+        'hasilToeic'
+));
     }
 
     // Catatan: Ini bukan method controller yang tepat, perlu revisi jika ingin dipakai

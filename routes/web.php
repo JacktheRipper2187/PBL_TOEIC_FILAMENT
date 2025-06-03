@@ -63,11 +63,21 @@ Route::get('/pendaftaran', [FormPendaftaranController::class, 'showForm'])->name
 Route::get('/pendaftaranTutup', function() {
     return view('mahasiswa.pendaftaranTutup');
 })->name('mahasiswa.pendaftaranTutup'); // Keep as fallback
+
 //hasil
 // Route::get('/hasilini', [HasilDepanController::class, 'index'])->name('hasil.index');          // halaman form cari sesi
 Route::get('/hasil/cari', [HasilController::class, 'cari'])->name('hasil.cari');
 Route::get('/hasil/download/{id}', [HasilController::class, 'download'])->name('hasil.download'); // download file hasil
 // Route::get('/hasil', [HasilDepanController::class, 'index'])->name('hasil.index');
+use Illuminate\Support\Facades\DB;
+Route::get('/get-sesi/{tanggal}', function ($tanggal) {
+    $sesiList = DB::table('hasils')
+        ->where('tanggal_ujian', $tanggal)
+        ->pluck('sesi');
+
+    return response()->json($sesiList);
+});
+
 
 // Route untuk download template Excel MahasiswaTerdaftar
 Route::get('/template/mahasiswa-terdaftar', [TemplateController::class, 'mahasiswaTerdaftar'])->name('template.mahasiswa-terdaftar');
