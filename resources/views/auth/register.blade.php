@@ -292,8 +292,8 @@
 
                         <div class="form-group">
                             <label for="nim">NIM<span class="required">*</span></label>
-                            <input id="nim" type="text" class="@error('nim') error-field @enderror" name="nim"
-                                value="{{ old('nim') }}" required>
+                            <input id="nim" type="text" class="@error('nim') error-field @enderror"
+                                name="nim" value="{{ old('nim') }}" required>
                             @error('nim')
                                 <div class="error-message">{{ $message }}</div>
                             @enderror
@@ -307,132 +307,162 @@
                                 <div class="error-message">{{ $message }}</div>
                             @enderror
                         </div>
-                        <label for="email">Email <span class="required">*</span></label>
-                        <input id="email" type="email" class="@error('email') error-field @enderror" name="email"
-                            value="{{ old('email') }}" required autocomplete="email">
-                        @error('email')
-                            <div class="error-message">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="form-group">
-                        <label for="kampus">Kampus <span class="required">*</span></label>
-                        <select id="kampus" name="kampus" class="@error('kampus') error-field @enderror" required>
-                            <option value="">Pilih Kampus</option>
-                            <option value="utama" {{ old('kampus') == 'utama' ? 'selected' : '' }}>Kampus Utama
-                            </option>
-                            <option value="kediri" {{ old('kampus') == 'kediri' ? 'selected' : '' }}>Kampus Kediri
-                            </option>
-                            <option value="lumajang" {{ old('kampus') == 'lumajang' ? 'selected' : '' }}>Kampus
-                                Lumajang</option>
-                            <option value="pamekasan" {{ old('kampus') == 'pamekasan' ? 'selected' : '' }}>Kampus
-                                Pamekasan</option>
-                        </select>
-                        @error('kampus')
-                            <div class="error-message">{{ $message }}</div>
-                        @enderror
+
+                        <div class="form-group">
+                            <label for="email">Email <span class="required">*</span></label>
+                            <input id="email" type="text" class="@error('email') error-field @enderror"
+                                name="email" value="{{ old('email') }}" required>
+                            @error('email')
+                                <div class="error-message">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="kampus">Kampus <span class="required">*</span></label>
+                            <select id="kampus" name="kampus" class="@error('kampus') error-field @enderror"
+                                required>
+                                <option value="">Pilih Kampus</option>
+                                <option value="utama" {{ old('kampus') == 'utama' ? 'selected' : '' }}>Kampus Utama
+                                </option>
+                                <option value="kediri" {{ old('kampus') == 'kediri' ? 'selected' : '' }}>Kampus Kediri
+                                </option>
+                                <option value="lumajang" {{ old('kampus') == 'lumajang' ? 'selected' : '' }}>Kampus
+                                    Lumajang</option>
+                                <option value="pamekasan" {{ old('kampus') == 'pamekasan' ? 'selected' : '' }}>Kampus
+                                    Pamekasan</option>
+                            </select>
+                            @error('kampus')
+                                <div class="error-message">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="jurusan">Jurusan <span class="required">*</span></label>
+                            <select id="jurusan" name="jurusan" class="@error('jurusan') error-field @enderror"
+                                required>
+                                <option value="">Pilih Jurusan</option>
+                                @if (old('kampus'))
+                                    @php
+                                        $jurusanOptions = [
+                                            'utama' => [
+                                                'TE' => 'Teknik Elektro',
+                                                'TM' => 'Teknik Mesin',
+                                                'TS' => 'Teknik Sipil',
+                                                'AK' => 'Akuntansi',
+                                                'AN' => 'Administrasi Niaga',
+                                                'TK' => 'Teknik Kimia',
+                                                'TI' => 'Teknologi Informasi',
+                                            ],
+                                            'kediri' => [
+                                                'TI' => 'Teknologi Informasi',
+                                                'TM' => 'Teknik Mesin',
+                                                'AK' => 'Akuntansi',
+                                                'TE' => 'Teknik Elektro',
+                                            ],
+                                            'lumajang' => [
+                                                'TI' => 'Teknologi Informasi',
+                                                'TS' => 'Teknik Sipil',
+                                                'AK' => 'Akuntansi',
+                                            ],
+                                            'pamekasan' => [
+                                                'TM' => 'Teknik Mesin',
+                                                'AK' => 'Akuntansi',
+                                                'AN' => 'Administrasi Niaga',
+                                            ],
+                                        ];
+                                    @endphp
+                                    @foreach ($jurusanOptions[old('kampus')] ?? [] as $value => $label)
+                                        <option value="{{ $value }}"
+                                            {{ old('jurusan') == $value ? 'selected' : '' }}>
+                                            {{ $label }}
+                                        </option>
+                                    @endforeach
+                                @endif
+                            </select>
+                            @error('jurusan')
+                                <div class="error-message">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="prodi">Program Studi <span class="required">*</span></label>
+                            <select id="prodi" name="prodi" class="@error('prodi') error-field @enderror"
+                                required>
+                                <option value="">Pilih Program Studi</option>
+                                @if (old('jurusan'))
+                                    @php
+                                        $prodiOptions = [
+                                            'TE' => [
+                                                'D-IV Teknik Elektronika',
+                                                'D-IV Sistem Kelistrikan',
+                                                'D-IV Jaringan Telekomunikasi Digital',
+                                                'D-III Teknik Elektronika',
+                                                'D-III Teknik Listrik',
+                                                'D-III Teknik Telekomunikasi',
+                                            ],
+                                            'TM' => [
+                                                'D-IV Teknik Otomotif Elektronik',
+                                                'D-IV Teknik Mesin Produksi dan Perawatan',
+                                                'D-III Teknik Mesin',
+                                                'D-III Teknologi Pemeliharaan Pesawat Udara',
+                                            ],
+                                            'TS' => [
+                                                'D-IV Manajemen Rekayasa Konstruksi',
+                                                'D-IV Teknologi Rekayasa Konstruksi Jalan dan Jembatan',
+                                                'D-III Teknik Sipil',
+                                                'D-III Teknik Konstruksi Jalan dan Jembatan',
+                                                'D-III Teknologi Pertambangan',
+                                            ],
+                                            'AK' => ['D-IV Akuntansi Manajemen', 'D-IV Keuangan', 'D-III Akuntansi'],
+                                            'AN' => [
+                                                'D-IV Manajemen Pemasaran',
+                                                'D-IV Bahasa Inggris untuk Komunikasi Bisnis dan Profesional',
+                                                'D-IV Pengelolaan Arsip dan Rekaman Informasi',
+                                                'D-IV Usaha Perjalanan Wisata',
+                                                'D-IV Bahasa Inggris untuk Industri Pariwisata',
+                                                'D-III Administrasi Bisnis',
+                                            ],
+                                            'TK' => ['D-IV Teknologi Kimia Industri', 'D-III Teknik Kimia'],
+                                            'TI' => [
+                                                'D-IV Teknik Informatika',
+                                                'D-IV Sistem Informasi Bisnis',
+                                                'D-II Pengembangan Piranti Lunak Situs',
+                                            ],
+                                        ];
+                                    @endphp
+                                    @foreach ($prodiOptions[old('jurusan')] ?? [] as $prodi)
+                                        <option value="{{ $prodi }}"
+                                            {{ old('prodi') == $prodi ? 'selected' : '' }}>
+                                            {{ $prodi }}
+                                        </option>
+                                    @endforeach
+                                @endif
+                            </select>
+                            @error('prodi')
+                                <div class="error-message">{{ $message }}</div>
+                            @enderror
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="jurusan">Jurusan <span class="required">*</span></label>
-                        <select id="jurusan" name="jurusan" class="@error('jurusan') error-field @enderror" required>
-                            <option value="">Pilih Jurusan</option>
-                            @if (old('kampus'))
-                                @php
-                                    $jurusanOptions = [
-                                        'utama' => [
-                                            'TE' => 'Teknik Elektro',
-                                            'TM' => 'Teknik Mesin',
-                                            'TS' => 'Teknik Sipil',
-                                            'AK' => 'Akuntansi',
-                                            'AN' => 'Administrasi Niaga',
-                                            'TK' => 'Teknik Kimia',
-                                            'TI' => 'Teknologi Informasi',
-                                        ],
-                                        'kediri' => [
-                                            'TI' => 'Teknologi Informasi',
-                                            'TM' => 'Teknik Mesin',
-                                            'AK' => 'Akuntansi',
-                                            'TE' => 'Teknik Elektro',
-                                        ],
-                                        'lumajang' => [
-                                            'TI' => 'Teknologi Informasi',
-                                            'TS' => 'Teknik Sipil',
-                                            'AK' => 'Akuntansi',
-                                        ],
-                                        'pamekasan' => [
-                                            'TM' => 'Teknik Mesin',
-                                            'AK' => 'Akuntansi',
-                                            'AN' => 'Administrasi Niaga',
-                                        ],
-                                    ];
-                                @endphp
-                                @foreach ($jurusanOptions[old('kampus')] ?? [] as $value => $label)
-                                    <option value="{{ $value }}" {{ old('jurusan') == $value ? 'selected' : '' }}>
-                                        {{ $label }}
-                                    </option>
-                                @endforeach
-                            @endif
-                        </select>
-                        @error('jurusan')
-                            <div class="error-message">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    <!-- Form Footer with Buttons -->
+                    <div class="form-footer">
+                        <button type="button" class="btn btn-kembali" id="btnKembali">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M7.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H15a1 1 0 110 2H5.414l2.293 2.293a1 1 0 010 1.414z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            Kembali
+                        </button>
 
-                    <div class="form-group">
-                        <label for="prodi">Program Studi <span class="required">*</span></label>
-                        <select id="prodi" name="prodi" class="@error('prodi') error-field @enderror" required>
-                            <option value="">Pilih Program Studi</option>
-                            @if (old('jurusan'))
-                                @php
-                                    $prodiOptions = [
-                                        'TE' => [
-                                            'D-IV Teknik Elektronika',
-                                            'D-IV Sistem Kelistrikan',
-                                            'D-IV Jaringan Telekomunikasi Digital',
-                                            'D-III Teknik Elektronika',
-                                            'D-III Teknik Listrik',
-                                            'D-III Teknik Telekomunikasi',
-                                        ],
-                                        'TM' => [
-                                            'D-IV Teknik Otomotif Elektronik',
-                                            'D-IV Teknik Mesin Produksi dan Perawatan',
-                                            'D-III Teknik Mesin',
-                                            'D-III Teknologi Pemeliharaan Pesawat Udara',
-                                        ],
-                                        'TS' => [
-                                            'D-IV Manajemen Rekayasa Konstruksi',
-                                            'D-IV Teknologi Rekayasa Konstruksi Jalan dan Jembatan',
-                                            'D-III Teknik Sipil',
-                                            'D-III Teknik Konstruksi Jalan dan Jembatan',
-                                            'D-III Teknologi Pertambangan',
-                                        ],
-                                        'AK' => ['D-IV Akuntansi Manajemen', 'D-IV Keuangan', 'D-III Akuntansi'],
-                                        'AN' => [
-                                            'D-IV Manajemen Pemasaran',
-                                            'D-IV Bahasa Inggris untuk Komunikasi Bisnis dan Profesional',
-                                            'D-IV Pengelolaan Arsip dan Rekaman Informasi',
-                                            'D-IV Usaha Perjalanan Wisata',
-                                            'D-IV Bahasa Inggris untuk Industri Pariwisata',
-                                            'D-III Administrasi Bisnis',
-                                        ],
-                                        'TK' => ['D-IV Teknologi Kimia Industri', 'D-III Teknik Kimia'],
-                                        'TI' => [
-                                            'D-IV Teknik Informatika',
-                                            'D-IV Sistem Informasi Bisnis',
-                                            'D-II Pengembangan Piranti Lunak Situs',
-                                        ],
-                                    ];
-                                @endphp
-                                @foreach ($prodiOptions[old('jurusan')] ?? [] as $prodi)
-                                    <option value="{{ $prodi }}" {{ old('prodi') == $prodi ? 'selected' : '' }}>
-                                        {{ $prodi }}
-                                    </option>
-                                @endforeach
-                            @endif
-                        </select>
-                        @error('prodi')
-                            <div class="error-message">{{ $message }}</div>
-                        @enderror
+                        <button type="submit" class="btn btn-register">
+                            Register
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </button>
                     </div>
                 </form>
             </div>
@@ -452,7 +482,8 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
+            // Kampus, Jurusan, Prodi dropdown logic
             const kampusSelect = document.getElementById('kampus');
             const jurusanSelect = document.getElementById('jurusan');
             const prodiSelect = document.getElementById('prodi');
@@ -511,7 +542,7 @@
             };
 
             // Event listener untuk kampus
-            kampusSelect.addEventListener('change', function () {
+            kampusSelect.addEventListener('change', function() {
                 const kampus = this.value;
 
                 // Reset jurusan dan prodi
@@ -536,7 +567,7 @@
             });
 
             // Event listener untuk jurusan
-            jurusanSelect.addEventListener('change', function () {
+            jurusanSelect.addEventListener('change', function() {
                 const jurusan = this.value;
 
                 // Reset prodi
