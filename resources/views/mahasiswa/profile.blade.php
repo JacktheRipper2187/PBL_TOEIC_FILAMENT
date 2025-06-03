@@ -28,21 +28,74 @@
             </div>
 
             <!-- Card Informasi Mahasiswa -->
-            <div class="row justify-content-center">
-                <div class="col-md-8 col-lg-6">
-                    <div class="card shadow p-4 mb-5 bg-white rounded">
-                        <h4 class="mb-3">Informasi Mahasiswa</h4>
-                        <p><strong>Nama:</strong> {{ $mahasiswa->nama_lengkap ?? '-' }}</p>
-                        <p><strong>NIM:</strong> {{ $mahasiswa->nim ?? '-' }}</p>
-                        <p><strong>Email:</strong> {{ $mahasiswa->email ?? '-' }}</p>
-                        <p><strong>No. Telp:</strong> {{ $mahasiswa->no_telp ?? '-' }}</p>
-                        <p><strong>Kampus:</strong> {{ $mahasiswa->kampus ?? '-' }}</p>
-                        <p><strong>Jurusan:</strong> {{ $mahasiswa->jurusan ?? '-' }}</p>
-                        <p><strong>Prodi:</strong> {{ $mahasiswa->prodi ?? '-' }}</p>
-                        <p><strong>Username:</strong> {{ $user->username }}</p>
-                    </div>
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow p-4 mb-5 bg-white rounded">
+            <h4 class="mb-3">Informasi Mahasiswa</h4>
+            <div class="info-container">
+                <div class="info-row">
+                    <span class="info-label">Nama</span>
+                    <span class="info-value">{{ $mahasiswa->nama_lengkap ?? '-' }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">NIM</span>
+                    <span class="info-value">{{ $mahasiswa->nim ?? '-' }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Email</span>
+                    <span class="info-value">{{ $mahasiswa->email ?? '-' }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">No. Telp</span>
+                    <span class="info-value">{{ $mahasiswa->no_telp ?? '-' }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Kampus</span>
+                    <span class="info-value">{{ $mahasiswa->kampus ?? '-' }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Jurusan</span>
+                    <span class="info-value">{{ $mahasiswa->jurusan ?? '-' }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Prodi</span>
+                    <span class="info-value">{{ $mahasiswa->prodi ?? '-' }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Username</span>
+                    <span class="info-value">{{ $user->username }}</span>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .info-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .info-row {
+        display: flex;
+        align-items: baseline;
+    }
+    .info-label {
+        font-weight: bold;
+        min-width: 100px; /* Lebar minimum untuk label */
+        position: relative;
+        padding-right: 15px;
+    }
+    .info-label::after {
+        content: ":";
+        position: absolute;
+        right: 5px;
+    }
+    .info-value {
+        flex: 1;
+        word-break: break-word;
+    }
+</style>
 
             <!-- Card Ubah Foto Profil (Letakkan di urutan pertama) -->
             <div class="row justify-content-center">
