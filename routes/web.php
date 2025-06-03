@@ -16,6 +16,8 @@ use App\Models\JadwalPendaftaran;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 
 
 use Illuminate\Support\Facades\Auth;
@@ -120,3 +122,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/beranda', [JadwalController::class, 'index'])->name('mahasiswa.depan');
     Route::get('/mahasiswa/depan', [JadwalController::class, 'index'])->name('mahasiswa.depan');
 });
+
+Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+
+Route::get('reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::put('reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
