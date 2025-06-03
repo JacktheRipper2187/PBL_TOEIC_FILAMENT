@@ -406,7 +406,7 @@
                                 <tr>
                                     <td>{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('j F Y') }}</td>
                                     <td>{{ $item->waktu }}</td>
-                                    <td>{{ $item->tempat }}</td>
+                                    <td>{{ $item->lokasi }}</td>
                                     <td>{{ $item->keterangan }}</td>
                                 </tr>
                             @empty
