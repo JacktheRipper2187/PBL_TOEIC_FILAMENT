@@ -226,7 +226,8 @@
                         <h2 class="masthead-subheading mb-2.5" style="font-size: 1rem; font-weight: 600;">
                             {{ $section['Beranda']->title }}
                         </h2>
-                        <h1 class="masthead-title mb-4" style="font-size: 3rem; font-weight: 800; letter-spacing: 3px;">
+                        <h1 class="masthead-title mb-4"
+                            style="font-size: 3rem; font-weight: 800; letter-spacing: 3px;">
                             {{ $section['Beranda']->thumbnail }}
                         </h1>
                         <div class="masthead-description lead"
@@ -303,11 +304,10 @@
 
                     <div class="col-md-6 col-lg-4 mb-5">
                         <a href="{{ !$isGratis || $pendaftaranAktif ? ($item->link ?: route('formpendaftaran')) : 'javascript:void(0)' }}"
-                            onclick="{{ !$isGratis || $pendaftaranAktif ? '' : "alert('Pendaftaran gratis sudah ditutup.')" }}"
+                            onclick="{{ !$isGratis || $pendaftaranAktif ? '' : 'showClosedAlert(event)' }}"
                             class="portfolio-item mx-auto d-block position-relative {{ !$isGratis || $pendaftaranAktif ? '' : 'opacity-50 cursor-not-allowed' }}"
                             target="{{ $item->link ? '_blank' : '_self' }}">
 
-                            {{-- Label DITUTUP khusus untuk GRATIS yang nonaktif --}}
                             @if ($isGratis && !$pendaftaranAktif)
                                 <span
                                     class="position-absolute top-0 start-0 bg-danger text-white px-2 py-1 small rounded-end z-10">
@@ -322,7 +322,8 @@
                                 </div>
                             </div>
 
-                            <img class="img-fluid" src="{{ asset('uploads/' . $item->thumbnail) }}" alt="..." />
+                            <img class="img-fluid" src="{{ asset('uploads/' . $item->thumbnail) }}"
+                                alt="..." />
                         </a>
                     </div>
                 @endforeach
@@ -474,12 +475,12 @@
 
     <!-- JavaScript Transisi -->
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             const buttons = document.querySelectorAll(".btn[data-target]");
             const tables = document.querySelectorAll(".category-table");
 
             buttons.forEach(button => {
-                button.addEventListener("click", function () {
+                button.addEventListener("click", function() {
                     // Toggle button active state
                     buttons.forEach(btn => btn.classList.remove("active"));
                     this.classList.add("active");
@@ -576,7 +577,7 @@
                         <button type="submit" class="btn btn-success">Cari</button>
                     </form>
                     <script>
-                        document.getElementById('tanggal').addEventListener('change', function () {
+                        document.getElementById('tanggal').addEventListener('change', function() {
                             let tanggal = this.value;
                             let sesiSelect = document.getElementById('sesi');
                             sesiSelect.innerHTML = '<option>Memuat sesi...</option>';
@@ -635,7 +636,7 @@
 
     <script>
         // Script untuk dropdown tanggal dan sesi
-        document.getElementById('tanggal').addEventListener('change', function () {
+        document.getElementById('tanggal').addEventListener('change', function() {
             let tanggal = this.value;
             let sesiSelect = document.getElementById('sesi');
             sesiSelect.innerHTML = '<option>Memuat sesi...</option>';
@@ -669,92 +670,92 @@
 
         // Script untuk smooth scroll dan active nav
         document.addEventListener('DOMContentLoaded', () => {
-            const navLinks = document.querySelectorAll('.nav-link');
-            const sections = document.querySelectorAll('section[id]');
+                    const navLinks = document.querySelectorAll('.nav-link');
+                    const sections = document.querySelectorAll('section[id]');
 
-            function handleNavClick(event) {
-                event.preventDefault();
-                const targetId = this.getAttribute('href').substring(1);
-                const targetSection = document.getElementById(targetId);
+                    function handleNavClick(event) {
+                        event.preventDefault();
+                        const targetId = this.getAttribute('href').substring(1);
+                        const targetSection = document.getElementById(targetId);
 
-                if (targetSection) {
-                    window.scrollTo({
-                        top: targetSection.offsetTop - 70,
-                        behavior: 'smooth'
-                    });
-                    history.replaceState(null, null, '#' + targetId);
-                    updateActiveNav(targetId);
-                }
-            }
-
-            function updateActiveNav(targetId) {
-                navLinks.forEach(nav => {
-                    const navHref = nav.getAttribute('href').substring(1);
-                    nav.classList.toggle('active', navHref === targetId);
-                });
-            }
-
-            function handleScroll() {
-                let currentSection = '';
-                const scrollPosition = window.scrollY + 100;
-
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    const sectionBottom = sectionTop + section.clientHeight;
-
-                    if (scrollPosition >= sectionTop - 100 && scrollPosition < sectionBottom - 100) {
-                        currentSection = section.id;
-                    }
-                });
-
-                if (currentSection) {
-                    updateActiveNav(currentSection);
-                }
-            }
-
-            function throttle(func, limit = 100) {
-                let lastFunc;
-                let lastRan;
-                return function () {
-                    const context = this;
-                    const args = arguments;
-                    if (!lastRan) {
-                        func.apply(context, args);
-                        lastRan = Date.now();
-                    } else {
-                        clearTimeout(lastFunc);
-                        lastFunc = setTimeout(function () {
-                            if ((Date.now() - lastRan) >= limit) {
-                                func.apply(context, args);
-                                lastRan = Date.now();
-                            }
-                        }, limit - (Date.now() - lastRan));
-                    }
-                }
-
-                navLinks.forEach(link => {
-                    link.addEventListener('click', handleNavClick);
-                });
-
-                window.addEventListener('scroll', throttle(handleScroll));
-
-                // Inisialisasi halaman pertama kali
-                if (window.location.hash) {
-                    const hash = window.location.hash.substring(1);
-                    const targetSection = document.getElementById(hash);
-                    if (targetSection) {
-                        setTimeout(() => {
+                        if (targetSection) {
                             window.scrollTo({
                                 top: targetSection.offsetTop - 70,
-                                behavior: 'auto'
+                                behavior: 'smooth'
                             });
-                            updateActiveNav(hash);
-                        }, 100);
+                            history.replaceState(null, null, '#' + targetId);
+                            updateActiveNav(targetId);
+                        }
                     }
-                } else {
-                    updateActiveNav('beranda');
-                }
-            });
+
+                    function updateActiveNav(targetId) {
+                        navLinks.forEach(nav => {
+                            const navHref = nav.getAttribute('href').substring(1);
+                            nav.classList.toggle('active', navHref === targetId);
+                        });
+                    }
+
+                    function handleScroll() {
+                        let currentSection = '';
+                        const scrollPosition = window.scrollY + 100;
+
+                        sections.forEach(section => {
+                            const sectionTop = section.offsetTop;
+                            const sectionBottom = sectionTop + section.clientHeight;
+
+                            if (scrollPosition >= sectionTop - 100 && scrollPosition < sectionBottom - 100) {
+                                currentSection = section.id;
+                            }
+                        });
+
+                        if (currentSection) {
+                            updateActiveNav(currentSection);
+                        }
+                    }
+
+                    function throttle(func, limit = 100) {
+                        let lastFunc;
+                        let lastRan;
+                        return function() {
+                            const context = this;
+                            const args = arguments;
+                            if (!lastRan) {
+                                func.apply(context, args);
+                                lastRan = Date.now();
+                            } else {
+                                clearTimeout(lastFunc);
+                                lastFunc = setTimeout(function() {
+                                    if ((Date.now() - lastRan) >= limit) {
+                                        func.apply(context, args);
+                                        lastRan = Date.now();
+                                    }
+                                }, limit - (Date.now() - lastRan));
+                            }
+                        }
+
+                        navLinks.forEach(link => {
+                            link.addEventListener('click', handleNavClick);
+                        });
+
+                        window.addEventListener('scroll', throttle(handleScroll));
+
+                        // Inisialisasi halaman pertama kali
+                        if (window.location.hash) {
+                            const hash = window.location.hash.substring(1);
+                            const targetSection = document.getElementById(hash);
+                            if (targetSection) {
+                                setTimeout(() => {
+                                    window.scrollTo({
+                                        top: targetSection.offsetTop - 70,
+                                        behavior: 'auto'
+                                    });
+                                    updateActiveNav(hash);
+                                }, 100);
+                            }
+                        } else {
+                            updateActiveNav('beranda');
+                        }
+                    });
     </script>
 
     <!-- Footer-->
@@ -769,17 +770,20 @@
                     <h4 class="text-uppercase mb-4">{{ __('messages.about') }}</h4>
                     <div class="d-flex justify-content-center">
                         @if ($instagram)
-                            <a class="btn btn-outline-light btn-social mx-1" href="{{ $instagram }}" target="_blank">
+                            <a class="btn btn-outline-light btn-social mx-1" href="{{ $instagram }}"
+                                target="_blank">
                                 <i class="fab fa-fw fa-instagram"></i>
                             </a>
                         @endif
                         @if ($email)
-                            <a class="btn btn-outline-light btn-social mx-1" href="mailto:{{ $email }}" target="_blank">
+                            <a class="btn btn-outline-light btn-social mx-1" href="mailto:{{ $email }}"
+                                target="_blank">
                                 <i class="fas fa-fw fa-envelope"></i>
                             </a>
                         @endif
                         @if ($whatsapp)
-                            <a class="btn btn-outline-light btn-social mx-1" href="{{ $whatsapp }}" target="_blank">
+                            <a class="btn btn-outline-light btn-social mx-1" href="{{ $whatsapp }}"
+                                target="_blank">
                                 <i class="fab fa-fw fa-whatsapp"></i>
                             </a>
                         @endif
@@ -806,7 +810,8 @@
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header border-0">
-                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button class="btn-close" type="button" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
                     <div class="modal-body text-center pb-5">
                         <div class="container">
@@ -820,12 +825,13 @@
                                         <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
                                         <div class="divider-custom-line"></div>
                                     </div>
-                                    <img class="img-fluid rounded mb-5" src="{{ asset('uploads/' . $item->thumbnail) }}"
-                                        alt="..." />
+                                    <img class="img-fluid rounded mb-5"
+                                        src="{{ asset('uploads/' . $item->thumbnail) }}" alt="..." />
                                     {!! $item->content !!}
                                     <div class="mt-4">
                                         @if ($item->link)
-                                            <a href="{{ $item->link }}" class="btn btn-primary btn-lg" target="_blank">
+                                            <a href="{{ $item->link }}" class="btn btn-primary btn-lg"
+                                                target="_blank">
                                                 {{ __('messages.regis') }}
                                             </a>
                                         @else
@@ -854,6 +860,20 @@
     <script src="js/scripts.js"></script>
     <!-- SB Forms JS-->
     <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function showClosedAlert(event) {
+            event.preventDefault(); // Biar gak jalan ke href-nya
+            Swal.fire({
+                icon: 'info',
+                title: 'Pendaftaran Ditutup',
+                text: 'Maaf, pendaftaran gratis sudah ditutup untuk saat ini.',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Mengerti'
+            });
+        }
+    </script>
+
 </body>
 
 </html>
