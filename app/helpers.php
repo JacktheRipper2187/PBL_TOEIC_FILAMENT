@@ -86,3 +86,26 @@ function get_JadwalUjian_value()
   return $data;
 }
 
+if (!function_exists('is_pendaftaran_active')) {
+    function is_pendaftaran_active()
+    {
+        $now = \Carbon\Carbon::now();
+
+        $jadwal = \App\Models\JadwalPendaftaran::where('skema', 'like', '%gratis%')->first();
+
+        if (!$jadwal) {
+            return false;
+        }
+
+        // Jika status_manual tidak null, gunakan nilai manual
+        if (!is_null($jadwal->status_manual)) {
+            return $jadwal->status_manual == '1' || $jadwal->status_manual === 1;
+        }
+
+        // Jika status_manual null → mode otomatis berdasarkan tanggal
+        return $now->between($jadwal->tgl_buka, $jadwal->tgl_tutup);
+    }
+}
+
+
+

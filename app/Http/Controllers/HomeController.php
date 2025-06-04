@@ -14,6 +14,8 @@ class HomeController extends Controller
             'Beranda' => $beranda
         ];
 
-        return view('Depan', compact('section'));
+        $pendaftaranAktif = is_pendaftaran_active(); // ⬅ Tambahkan ini
+
+        return view('Depan', compact('section', 'pendaftaranAktif')); // ⬅ dan kirim ke Blade
     }
 }
