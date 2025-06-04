@@ -31,41 +31,80 @@
         type="text/css" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
-</head>
-<style>
-    body {
-        padding-top: 56px;
-        /* Sesuaikan tinggi navbar (biasanya 56px-70px) */
-    }
+    <style>
+        body {
+            padding-top: 56px;
+            /* Sesuaikan tinggi navbar (biasanya 56px-70px) */
+        }
 
-    /* Jika ingin header punya jarak lebih */
-    .masthead {
-        padding-top: 100px;
-        /* Jarak tambahan setelah navbar */
-    }
-    
-    /* Navbar modifications */
-    .navbar-brand {
-        margin-right: 0;
-    }
-    .navbar-nav {
-        margin-left: auto;
-    }
-    .nav-item {
-        white-space: nowrap;
-    }
-</style>
+        /* Jika ingin header punya jarak lebih */
+        .masthead {
+            padding-top: 100px;
+            /* Jarak tambahan setelah navbar */
+        }
+
+        /* CSS untuk date-box yang fixed */
+        .date-box {
+            background-color: #1abc9c;
+            /* Warna hijau */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 150px;
+            /* Ukuran fixed */
+            height: 150px;
+            /* Ukuran fixed */
+            margin-right: 40px;
+            flex-shrink: 0;
+            /* Agar tidak menyusut */
+        }
+
+        /* CSS untuk teks tanggal di dalam box */
+        #current-date {
+            font-size: 1.2rem;
+            /* Ukuran font yang sesuai */
+            font-weight: 600;
+            text-align: center;
+            padding: 10px;
+            /* Padding untuk teks */
+            color: white;
+        }
+
+        /* NAVBAR CUSTOM STYLES */
+        /* Ensure navbar brand stays on the left */
+        .navbar-brand {
+            margin-right: auto; /* Pushes everything else to the right */
+        }
+        
+        /* Navbar container to allow full width */
+        .navbar-container {
+            width: 100%;
+            padding: 0 15px; /* Match Bootstrap's container padding */
+        }
+        
+        /* Navbar menu alignment */
+        .navbar-nav {
+            margin-left: auto; /* Pushes menu items to the right */
+        }
+        
+        /* Nav item spacing */
+        .nav-item {
+            margin-left: 0.5rem;
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
 
 <body id="page-top">
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
-        <div class="container-fluid px-4">
+        <div class="container-fluid navbar-container"> <!-- Changed to container-fluid for full width -->
             <!-- Logo and Site Name - Left aligned -->
             <a class="navbar-brand d-flex align-items-center" href="#page-top">
                 <img src="assets/img/Logo Polinema.png" alt="Logo" class="mr-2" style="width: 65px;">
                 {{ $site_name }}
             </a>
-
             <!-- Mobile Toggle Button -->
             <button
                 class="navbar-toggler navbar-toggler-right text-uppercase font-weight-bold bg-primary text-white rounded"
@@ -75,21 +114,21 @@
                 <i class="fas fa-bars"></i>
             </button>
 
-            <!-- Navbar Menu - Right aligned -->
-            <div class="collapse navbar-collapse justify-content-end" id="navbarResponsive">
-                <ul class="navbar-nav">
+            <!-- Navbar Menu -->
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto"> <!-- Changed to ml-auto for right alignment -->
                     <!-- Main Menu Items -->
-                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded"
+                    <li class="nav-item"><a class="nav-link py-3 px-0 px-lg-3 rounded"
                             href="#beranda">{{ __('messages.home') }}</a></li>
-                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded"
+                    <li class="nav-item"><a class="nav-link py-3 px-0 px-lg-3 rounded"
                             href="#syarat">{{ __('messages.terms') }}</a></li>
-                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded"
+                    <li class="nav-item"><a class="nav-link py-3 px-0 px-lg-3 rounded"
                             href="#pendaftaran">{{ __('messages.registration') }}</a></li>
-                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded"
+                    <li class="nav-item"><a class="nav-link py-3 px-0 px-lg-3 rounded"
                             href="#jadwal pendaftaran">{{ __('messages.schedule') }}</a></li>
 
                     <!-- Language Dropdown -->
-                    <li class="nav-item dropdown mx-0 mx-lg-1">
+                    <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle py-3 px-0 px-lg-3 rounded" href="#" id="navbarDropdown"
                             role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             {{ __('messages.select_language') }}
@@ -119,9 +158,8 @@
             <!-- Tanggal & Waktu dengan Tulisan di Sebelah Kanan -->
             <div class="d-flex align-items-center mb-5" style="width: 80%; justify-content: flex-start; padding: 30px;">
                 <!-- Tanggal (Background Bulat Utuh) -->
-                <div class="date-box bg-primary rounded-circle d-flex align-items-center justify-content-center mr-4"
-                    style="width: 600px; height: 150px;margin-right: 40px;">
-                    <h3 id="current-date" class="mb-0" style="font-size: 2rem; font-weight: 600;"></h3>
+                <div class="date-box">
+                    <h3 id="current-date" class="mb-0"></h3>
                 </div>
                 <!-- Teks Sebelah Kanan -->
                 <div>
@@ -136,7 +174,6 @@
                             style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 2rem;">
                             {!! $section['Beranda']->content !!}
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -203,10 +240,10 @@
                 <div class="divider-custom-line"></div>
             </div>
             <div class="row justify-content-center">
-                @foreach ($pendaftaran as $item)
+                @foreach ($pendaftaran as $index => $item)
                     <div class="col-md-6 col-lg-4 mb-5">
-                        <a href="{{ $item->link ? $item->link : route('login') }}"
-                            class="portfolio-item mx-auto d-block" target="{{ $item->link ? '_blank' : '_self' }}">
+                        <a href="{{ $index == 0 ? 'https://www.itc-indonesia.com' : route('login') }}"
+                            class="portfolio-item mx-auto d-block" target="{{ $index == 0 ? '_blank' : '_self' }}">
                             <div
                                 class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
                                 <div class="portfolio-item-caption-content text-center text-white">
@@ -349,7 +386,7 @@
     @php
         $i = 1;
     @endphp
-    @foreach ($pendaftaran as $item)
+    @foreach ($pendaftaran as $index => $item)
         <!-- pendaftaran Modal {{ $i }}-->
         <div class="portfolio-modal modal fade" id="portfolioModal{{ $i }}" tabindex="-1"
             aria-labelledby="portfolioModal{{ $i }}Label" aria-hidden="true">
@@ -363,32 +400,28 @@
                         <div class="container">
                             <div class="row justify-content-center">
                                 <div class="col-lg-8">
-                                    <!-- pendaftaran Modal - Title-->
                                     <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">
                                         {{ $item->title }}</h2>
-                                    <!-- Icon Divider-->
                                     <div class="divider-custom">
                                         <div class="divider-custom-line"></div>
                                         <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
                                         <div class="divider-custom-line"></div>
                                     </div>
-                                    <!-- pendaftaran Modal - Image-->
                                     <img class="img-fluid rounded mb-5"
                                         src="{{ asset('uploads/' . $item->thumbnail) }}" alt="..." />
                                     {!! $item->content !!}
 
-                                    <!-- Tombol Daftar Sekarang -->
                                     <div class="mt-4">
-                                        <a href="{{ route('login') }}" class="btn btn-primary btn-lg">
+                                        <a href="{{ $index == 0 ? 'https://itc-indonesia.com/toeic/' : route('login') }}"
+                                            class="btn btn-primary btn-lg"
+                                            target="{{ $index == 0 ? '_blank' : '_self' }}">
                                             {{ __('messages.regis') }}
                                         </a>
-
                                         <button class="btn btn-outline-secondary btn-lg ms-2" data-bs-dismiss="modal">
                                             <i class="fas fa-xmark fa-fw"></i>
                                             {{ __('messages.close') }}
                                         </button>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -410,117 +443,118 @@
     <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
     <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
 
- <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const navLinks = document.querySelectorAll('.nav-link');
-        const sections = document.querySelectorAll('section[id]');
-        
-        // Fungsi untuk menangani klik pada nav-link
-        function handleNavClick(event) {
-            event.preventDefault();
-            
-            const targetId = this.getAttribute('href').substring(1);
-            const targetSection = document.getElementById(targetId);
-            
-            if (targetSection) {
-                window.scrollTo({
-                    top: targetSection.offsetTop - 70, // Sesuaikan dengan tinggi navbar
-                    behavior: 'smooth'
-                });
-                
-                history.replaceState(null, null, '#' + targetId);
-                updateActiveNav(targetId);
-            }
-        }
-        
-        // Fungsi untuk mengupdate nav-link aktif
-        function updateActiveNav(targetId) {
-            navLinks.forEach(nav => {
-                const navHref = nav.getAttribute('href').substring(1);
-                nav.classList.toggle('active', navHref === targetId);
-            });
-        }
-        
-        // Fungsi untuk menangani scroll
-        function handleScroll() {
-            let currentSection = '';
-            const scrollPosition = window.scrollY + 100; // Offset yang lebih kecil
-            
-            // Cek khusus untuk beranda (harus di atas semua section lain)
-            const berandaSection = document.getElementById('beranda');
-            if (berandaSection && scrollPosition < berandaSection.offsetTop + berandaSection.clientHeight - 200) {
-                currentSection = 'beranda';
-            } else {
-                // Cek section lainnya
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    const sectionBottom = sectionTop + section.clientHeight;
-                    
-                    if (scrollPosition >= sectionTop - 100 && scrollPosition < sectionBottom - 100) {
-                        currentSection = section.id;
-                    }
-                });
-            }
-            
-            if (currentSection) {
-                updateActiveNav(currentSection);
-            }
-        }
-        
-        // Throttle function untuk optimasi performance
-        function throttle(func, limit = 100) {
-            let lastFunc;
-            let lastRan;
-            return function() {
-                const context = this;
-                const args = arguments;
-                if (!lastRan) {
-                    func.apply(context, args);
-                    lastRan = Date.now();
-                } else {
-                    clearTimeout(lastFunc);
-                    lastFunc = setTimeout(function() {
-                        if ((Date.now() - lastRan) >= limit) {
-                            func.apply(context, args);
-                            lastRan = Date.now();
-                        }
-                    }, limit - (Date.now() - lastRan));
-                }
-            };
-        }
-        
-        // Tambahkan event listener
-        navLinks.forEach(link => {
-            link.addEventListener('click', handleNavClick);
-        });
-        
-        window.addEventListener('scroll', throttle(handleScroll));
-        
-        // Inisialisasi halaman pertama kali
-        function initializePage() {
-            // Jika ada hash di URL
-            if (window.location.hash) {
-                const hash = window.location.hash.substring(1);
-                const targetSection = document.getElementById(hash);
-                if (targetSection) {
-                    setTimeout(() => {
-                        window.scrollTo({
-                            top: targetSection.offsetTop - 70,
-                            behavior: 'auto'
-                        });
-                        updateActiveNav(hash);
-                    }, 100);
-                }
-            } else {
-                // Default ke beranda
-                updateActiveNav('beranda');
-                window.scrollTo(0, 0);
-            }
-        }
-        
-        initializePage();
-    });
-</script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section[id]');
 
+            // Fungsi untuk menangani klik pada nav-link
+            function handleNavClick(event) {
+                event.preventDefault();
+
+                const targetId = this.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+
+                if (targetSection) {
+                    window.scrollTo({
+                        top: targetSection.offsetTop - 70, // Sesuaikan dengan tinggi navbar
+                        behavior: 'smooth'
+                    });
+
+                    history.replaceState(null, null, '#' + targetId);
+                    updateActiveNav(targetId);
+                }
+            }
+
+            // Fungsi untuk mengupdate nav-link aktif
+            function updateActiveNav(targetId) {
+                navLinks.forEach(nav => {
+                    const navHref = nav.getAttribute('href').substring(1);
+                    nav.classList.toggle('active', navHref === targetId);
+                });
+            }
+
+            // Fungsi untuk menangani scroll
+            function handleScroll() {
+                let currentSection = '';
+                const scrollPosition = window.scrollY + 100; // Offset yang lebih kecil
+
+                // Cek khusus untuk beranda (harus di atas semua section lain)
+                const berandaSection = document.getElementById('beranda');
+                if (berandaSection && scrollPosition < berandaSection.offsetTop + berandaSection.clientHeight -
+                    200) {
+                    currentSection = 'beranda';
+                } else {
+                    // Cek section lainnya
+                    sections.forEach(section => {
+                        const sectionTop = section.offsetTop;
+                        const sectionBottom = sectionTop + section.clientHeight;
+
+                        if (scrollPosition >= sectionTop - 100 && scrollPosition < sectionBottom - 100) {
+                            currentSection = section.id;
+                        }
+                    });
+                }
+
+                if (currentSection) {
+                    updateActiveNav(currentSection);
+                }
+            }
+
+            // Throttle function untuk optimasi performance
+            function throttle(func, limit = 100) {
+                let lastFunc;
+                let lastRan;
+                return function() {
+                    const context = this;
+                    const args = arguments;
+                    if (!lastRan) {
+                        func.apply(context, args);
+                        lastRan = Date.now();
+                    } else {
+                        clearTimeout(lastFunc);
+                        lastFunc = setTimeout(function() {
+                            if ((Date.now() - lastRan) >= limit) {
+                                func.apply(context, args);
+                                lastRan = Date.now();
+                            }
+                        }, limit - (Date.now() - lastRan));
+                    }
+                };
+            }
+
+            // Tambahkan event listener
+            navLinks.forEach(link => {
+                link.addEventListener('click', handleNavClick);
+            });
+
+            window.addEventListener('scroll', throttle(handleScroll));
+
+            // Inisialisasi halaman pertama kali
+            function initializePage() {
+                // Jika ada hash di URL
+                if (window.location.hash) {
+                    const hash = window.location.hash.substring(1);
+                    const targetSection = document.getElementById(hash);
+                    if (targetSection) {
+                        setTimeout(() => {
+                            window.scrollTo({
+                                top: targetSection.offsetTop - 70,
+                                behavior: 'auto'
+                            });
+                            updateActiveNav(hash);
+                        }, 100);
+                    }
+                } else {
+                    // Default ke beranda
+                    updateActiveNav('beranda');
+                    window.scrollTo(0, 0);
+                }
+            }
+
+            initializePage();
+        });
+    </script>
 </body>
+
 </html>
