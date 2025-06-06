@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -10,11 +11,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
         body {
-            background: url('{{ asset("assets/img/graha.png") }}') no-repeat center center fixed;
+            background: url('{{ asset('assets/img/graha.png') }}') no-repeat center center fixed;
             background-size: cover;
             position: relative;
             min-height: 100vh;
         }
+
         .overlay {
             position: fixed;
             top: 0;
@@ -23,15 +25,18 @@
             height: 100%;
             z-index: 0;
         }
+
         .login-container {
             position: relative;
             z-index: 10;
         }
+
         .card-shadow {
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
+
 <body>
     <!-- overlay warna biru transparan -->
     <div class="overlay"></div>
@@ -51,12 +56,23 @@
             <form method="POST" action="{{ route('password.update') }}" class="px-8 py-6">
                 @csrf
                 <input type="hidden" name="token" value="{{ $token }}">
-
-                @if ($errors->any())
-                    <div class="mb-4 p-3 bg-red-50 border-l-4 border-red-500 text-red-700">
-                        <i class="fas fa-exclamation-circle mr-2"></i> Terdapat kesalahan pada input
+                @if (session('status'))
+                    <div class="mb-4 p-3 bg-green-50 border-l-4 border-green-500 text-green-700 rounded">
+                        <i class="fas fa-check-circle mr-2"></i> {{ session('status') }}
                     </div>
                 @endif
+
+                @if ($errors->any())
+                    <div class="mb-4 p-3 bg-red-50 border-l-4 border-red-500 text-red-700 rounded">
+                        @foreach ($errors->all() as $error)
+                            <div class="flex items-center">
+                                <i class="fas fa-exclamation-triangle mr-2"></i>
+                                <span>{{ $error }}</span>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+
 
                 <!-- Email Field -->
                 <div class="mb-4">
@@ -108,4 +124,5 @@
         </div>
     </div>
 </body>
+
 </html>
