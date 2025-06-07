@@ -18,6 +18,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\KonfirmasiSkMahasiswaController;
 
 
 use Illuminate\Support\Facades\Auth;
@@ -143,3 +144,9 @@ Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkE
 
 Route::get('reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::put('reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/konfirmasi-sk', [KonfirmasiSkMahasiswaController::class, 'create'])->name('konfirmasi-sk.create');
+    Route::post('/konfirmasi-sk', [KonfirmasiSkMahasiswaController::class, 'store'])->name('konfirmasi-sk.store');
+});
+

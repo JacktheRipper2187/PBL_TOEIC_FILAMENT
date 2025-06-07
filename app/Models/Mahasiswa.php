@@ -21,4 +21,8 @@ class Mahasiswa extends Model
     {
         return $this->belongsTo(User::class);
     }
+     public function konfirmasiSk()
+    {
+        return $this->hasOne(KonfirmasiSk::class);
+    }
 }

@@ -34,6 +34,9 @@
     <link href="css/styles.css" rel="stylesheet" />
     <!-- CDN Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
             padding-top: 56px;
@@ -214,8 +217,10 @@
     <!-- Masthead -->
     <header class="masthead text-white text-center" id="beranda"
         style="background: url('assets/img/graha.png'); background-size: cover; background-position: center; height: 100vh;">
-        <div class="container d-flex align-items-center flex-column justify-content-center" style="min-height: 100vh;">
-            <div class="d-flex align-items-center mb-5" style="width: 80%; justify-content: flex-start; padding: 30px;">
+        <div class="container d-flex align-items-center flex-column justify-content-center"
+            style="min-height: 100vh;">
+            <div class="d-flex align-items-center mb-5"
+                style="width: 80%; justify-content: flex-start; padding: 30px;">
                 <!-- Tanggal dengan background hijau fixed -->
                 <div class="date-box">
                     <h3 id="current-date" class="mb-0"></h3>
@@ -631,6 +636,124 @@
                     </div>
                 @endif
             </div>
+            <!-- Upload Sertifikat TOEIC -->
+            <h2 class="mt-5 mb-4 text-center fw-bold">
+                <i class="bi bi-file-earmark-text"></i> Upload Sertifikat TOEIC
+            </h2>
+
+            <div class="container">
+                <div class="row">
+                    {{-- Form Upload --}}
+                    <div class="col-md-6">
+                        @if (session('success'))
+                            <div class="alert alert-success text-center animate__animated animate__fadeInDown">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        @php
+                            $status = $konfirmasiSkTerakhir->status ?? null;
+                            $isAktif = !$status || $status === 'ditolak';
+
+                            $statusBadge = match ($status) {
+                                'disetujui' => '<span class="badge bg-success">Disetujui</span>',
+                                'pending' => '<span class="badge bg-warning text-dark">Pending</span>',
+                                'ditolak' => '<span class="badge bg-danger">Ditolak</span>',
+                                default => '<span class="badge bg-secondary">Belum Ada</span>',
+                            };
+                        @endphp
+
+                        <form method="POST" action="{{ route('konfirmasi-sk.store') }}"
+                            enctype="multipart/form-data" class="card p-4 shadow-sm border-primary" id="uploadForm">
+                            @csrf
+
+                            <div class="mb-3">
+                                <label for="sertifikat_1" class="form-label">Sertifikat 1 (PDF)</label>
+                                <input type="file" class="form-control" id="sertifikat_1" name="sertifikat_1"
+                                    accept="application/pdf" {{ $isAktif ? '' : 'disabled' }}>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="sertifikat_2" class="form-label">Sertifikat 2 (PDF)</label>
+                                <input type="file" class="form-control" id="sertifikat_2" name="sertifikat_2"
+                                    accept="application/pdf" {{ $isAktif ? '' : 'disabled' }}>
+                            </div>
+
+                            <button type="submit" class="btn {{ $isAktif ? 'btn-primary' : 'btn-secondary' }} w-100"
+                                {{ $isAktif ? '' : 'disabled' }}>
+                                Kirim
+                            </button>
+
+                            @unless ($isAktif)
+                                <p class="text-muted mt-2 small text-center">
+                                    Tidak bisa upload ulang karena status: {!! $statusBadge !!}
+                                </p>
+                            @endunless
+                        </form>
+                    </div>
+
+                    {{-- Status Info --}}
+                    <div class="col-md-6">
+                        @if ($konfirmasiSkTerakhir)
+                            @php
+                                $borderClass = match ($status) {
+                                    'disetujui' => 'border-success',
+                                    'ditolak' => 'border-danger',
+                                    'pending' => 'border-warning',
+                                    default => 'border-secondary',
+                                };
+                            @endphp
+
+                            <div class="card shadow-sm {{ $borderClass }}">
+                                <div class="card-body bg-light">
+                                    <h5 class="card-title fw-semibold mb-3">
+                                        <i class="bi bi-info-circle text-info"></i>
+                                        Status: {!! $statusBadge !!}
+                                    </h5>
+
+                                    <ul class="mb-3">
+                                        @if ($konfirmasiSkTerakhir->sertifikat_1)
+                                            <li>
+                                                📎 <a
+                                                    href="{{ asset('storage/' . $konfirmasiSkTerakhir->sertifikat_1) }}"
+                                                    target="_blank">Lihat Sertifikat 1</a>
+                                            </li>
+                                        @endif
+                                        @if ($konfirmasiSkTerakhir->sertifikat_2)
+                                            <li>
+                                                📎 <a
+                                                    href="{{ asset('storage/' . $konfirmasiSkTerakhir->sertifikat_2) }}"
+                                                    target="_blank">Lihat Sertifikat 2</a>
+                                            </li>
+                                        @endif
+                                    </ul>
+
+                                    @if ($konfirmasiSkTerakhir->file_sk && $status === 'disetujui')
+                                        <a href="{{ asset('storage/' . $konfirmasiSkTerakhir->file_sk) }}"
+                                            target="_blank" class="btn btn-success">
+                                            <i class="bi bi-download"></i> Unduh File SK Disetujui
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+
+
+
         </div>
     </section>
 
@@ -860,7 +983,6 @@
     <script src="js/scripts.js"></script>
     <!-- SB Forms JS-->
     <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function showClosedAlert(event) {
             event.preventDefault(); // Biar gak jalan ke href-nya
@@ -872,6 +994,35 @@
                 confirmButtonText: 'Mengerti'
             });
         }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('uploadForm');
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                // Cek apakah form aktif (bisa di-submit)
+                const submitButton = form.querySelector('button[type="submit"]');
+                if (submitButton.disabled) {
+                    return;
+                }
+
+                Swal.fire({
+                    title: 'Yakin ingin mengunggah?',
+                    text: "Pastikan file sertifikat sudah benar.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, unggah!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Submit form secara manual
+                        form.submit();
+                    }
+                });
+            });
+        });
     </script>
 
 </body>

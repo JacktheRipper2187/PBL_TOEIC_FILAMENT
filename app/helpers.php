@@ -80,11 +80,6 @@ if (!function_exists('get_JadwalUjian_value')) {
     }
 }
 
-function get_JadwalUjian_value()
-{
-  $data = JadwalUjian::all();
-  return $data;
-}
 
 if (!function_exists('is_pendaftaran_active')) {
     function is_pendaftaran_active()
