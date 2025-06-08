@@ -13,6 +13,7 @@ return [
     'issue' => 'Report an Issue',
     'exam' => 'Examination',
     'exam_result' => 'Exam Results',
+    'result' => 'Exam Result',
     'certificate' => 'Certificate Collection',
     'program' => 'Testing Program',
     'period' => 'Registration Period',
@@ -40,4 +41,5 @@ return [
         'email_trouble' => 'If you’re having trouble clicking the ":action" button, copy and paste the URL below into your web browser.',
     ],
     'regards' => 'Regards, :name',
+
 ];

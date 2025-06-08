@@ -538,6 +538,32 @@
         $('#successCloseBtn').on('click', function() {
             window.location.href = '/beranda'; // Ganti '/' dengan route landing page kamu jika perlu
         });
+
+        $(document).ready(function() {
+            // Fungsi untuk highlight nav link aktif
+            function highlightNav() {
+                const scrollPos = $(document).scrollTop();
+
+                $('section').each(function() {
+                    const sectionTop = $(this).offset().top - 100;
+                    const sectionBottom = sectionTop + $(this).outerHeight();
+
+                    if (scrollPos >= sectionTop && scrollPos < sectionBottom) {
+                        const sectionId = $(this).attr('id');
+                        $('.nav-link').removeClass('active');
+                        $(`.nav-link[href*="${sectionId}"]`).addClass('active');
+                    }
+                });
+            }
+
+            // Jalankan saat load dan scroll
+            $(window).on('load scroll', highlightNav);
+
+            // Untuk form pendaftaran khusus
+            if (window.location.pathname.includes('/pendaftaran')) {
+                $('.nav-link[href*="pendaftaran"]').addClass('active');
+            }
+        });
     </script>
 @endpush
 
