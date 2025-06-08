@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Intervention\Image\Facades\Image;
 use App\Models\Mahasiswa;
 use Illuminate\Support\Facades\Storage;
+use App\Models\KonfirmasiSk;
 
 class MahasiswaController extends Controller
 {
@@ -64,4 +65,21 @@ class MahasiswaController extends Controller
 
         return back()->with('foto_success', 'Foto profil berhasil diperbarui.');
     }
+    public function downloadSk($id)
+{
+    $konfirmasi = KonfirmasiSk::findOrFail($id);
+
+    // Path ke file-nya
+    $path = storage_path('app/public/' . $konfirmasi->file_sk);
+
+    if (!file_exists($path)) {
+        abort(404);
+    }
+
+    // Beri nama file saat diunduh (opsional)
+    $filename = 'SK_TOEIC_' . $konfirmasi->mahasiswa->nama . '.pdf';
+
+    return response()->download($path, $filename);
+}
+
 }

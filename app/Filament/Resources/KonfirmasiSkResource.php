@@ -9,6 +9,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Tables\Actions\Action;
 
 class KonfirmasiSkResource extends Resource
 {
@@ -29,13 +30,10 @@ class KonfirmasiSkResource extends Resource
                 ])
                 ->required(),
 
-            Forms\Components\FileUpload::make('file_sk')
+            Forms\Components\ViewField::make('file_sk')
                 ->label('File SK (PDF)')
-                ->directory('konfirmasi_sk')
-                ->disk('public')
-                ->acceptedFileTypes(['application/pdf'])
-                ->visible(fn ($get) => $get('status') === 'disetujui')
-                ->nullable(),
+                ->view('filament.components.view-file-sk')
+                ->visible(fn($get) => $get('status') === 'disetujui'),
         ]);
     }
 
@@ -48,19 +46,19 @@ class KonfirmasiSkResource extends Resource
 
             Tables\Columns\TextColumn::make('sertifikat_1')
                 ->label('Sertifikat 1')
-                ->formatStateUsing(fn ($state) => $state ? 'Lihat File' : '-')
-                ->url(fn ($record) => $record->sertifikat_1 ? asset('storage/' . $record->sertifikat_1) : null)
+                ->formatStateUsing(fn($state) => $state ? 'Lihat File' : '-')
+                ->url(fn($record) => $record->sertifikat_1 ? asset('storage/' . $record->sertifikat_1) : null)
                 ->openUrlInNewTab(),
 
             Tables\Columns\TextColumn::make('sertifikat_2')
                 ->label('Sertifikat 2')
-                ->formatStateUsing(fn ($state) => $state ? 'Lihat File' : '-')
-                ->url(fn ($record) => $record->sertifikat_2 ? asset('storage/' . $record->sertifikat_2) : null)
+                ->formatStateUsing(fn($state) => $state ? 'Lihat File' : '-')
+                ->url(fn($record) => $record->sertifikat_2 ? asset('storage/' . $record->sertifikat_2) : null)
                 ->openUrlInNewTab(),
 
             Tables\Columns\TextColumn::make('status')
                 ->badge()
-                ->color(fn ($state) => match ($state) {
+                ->color(fn($state) => match ($state) {
                     'pending' => 'warning',
                     'disetujui' => 'success',
                     'ditolak' => 'danger',
@@ -70,12 +68,22 @@ class KonfirmasiSkResource extends Resource
                 ->label('Tanggal Upload')
                 ->dateTime('d M Y H:i'),
         ])
-        ->actions([
-            Tables\Actions\EditAction::make()->label('Validasi'),
-        ])
-        ->bulkActions([
-            Tables\Actions\DeleteBulkAction::make(),
-        ]);
+            ->actions([
+                Tables\Actions\EditAction::make()->label('Validasi'),
+
+                Action::make('kirimSk')
+                    ->label('Kirim SK')
+                    ->icon('heroicon-o-paper-airplane')
+                    ->color('success')
+                    ->visible(fn($record) => $record->status === 'pending') // Kirim jika belum disetujui
+                    ->requiresConfirmation()
+                    ->action(function ($record) {
+                        app(\App\Http\Controllers\KonfirmasiSkMahasiswaController::class)->generateSk($record->id);
+                    }),
+            ])
+            ->bulkActions([
+                Tables\Actions\DeleteBulkAction::make(),
+            ]);
     }
 
     public static function getPages(): array

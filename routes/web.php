@@ -150,3 +150,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/konfirmasi-sk', [KonfirmasiSkMahasiswaController::class, 'store'])->name('konfirmasi-sk.store');
 });
 
+Route::get('/admin/generate-sk/{id}', [KonfirmasiSkMahasiswaController::class, 'generateSk']);
+
+Route::get('/download-sk/{id}', [App\Http\Controllers\MahasiswaController::class, 'downloadSk'])->name('mahasiswa.downloadSk');
+
+
+

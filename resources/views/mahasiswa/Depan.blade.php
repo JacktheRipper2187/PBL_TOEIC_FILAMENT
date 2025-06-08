@@ -739,8 +739,8 @@
                                     </ul>
 
                                     @if ($konfirmasiSkTerakhir->file_sk && $status === 'disetujui')
-                                        <a href="{{ asset('storage/' . $konfirmasiSkTerakhir->file_sk) }}"
-                                            target="_blank" class="btn btn-success">
+                                        <a href="{{ route('mahasiswa.downloadSk', $konfirmasiSkTerakhir->id) }}"
+                                            class="btn btn-success">
                                             <i class="bi bi-download"></i> Unduh File SK Disetujui
                                         </a>
                                     @endif
@@ -750,10 +750,6 @@
                     </div>
                 </div>
             </div>
-
-
-
-
         </div>
     </section>
 
