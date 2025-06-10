@@ -78,7 +78,7 @@ class MahasiswaController extends Controller
     // Jika ada gambar yang diupload
     if ($request->hasFile('image')) {
         // Simpan gambar ke storage/public dan ambil pathnya
-        $imagePath = $request->file('image')->store('images', 'public');
+        $imagePath = $request->file('image')->store('images/sertifikat', 'public');
         
         // Simpan path gambar ke kolom yang sesuai (misalnya `image_path`)
         $mahasiswa->image_path = $imagePath;
