@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('email'); // Hapus nullable dan duplikasi
             $table->string('foto')->nullable();
             $table->string('pengambilan_sertifikat'); // Hapus nullable dan duplikasi
+            $table->string('foto')->nullable();
             $table->timestamps();
 
             // Tambahkan indeks untuk performa
