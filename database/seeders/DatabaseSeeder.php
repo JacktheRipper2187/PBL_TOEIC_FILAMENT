@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Mahasiswa;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
@@ -14,13 +15,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Wajib: Reset cache permission
+        // Reset permission cache
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // 1. Buat Role (jika belum ada)
+        // 1. Buat Role
         $adminRole = Role::firstOrCreate([
             'name' => 'admin',
-            'guard_name' => 'web' // <- Pastikan guard_name sesuai
+            'guard_name' => 'web'
         ]);
 
         $mahasiswaRole = Role::firstOrCreate([
@@ -33,39 +34,78 @@ class DatabaseSeeder extends Seeder
             ['username' => 'adminuser'],
             [
                 'email' => 'admin@example.com',
-                'password' => Hash::make('NazwaAdmin1'),
+                'password' => Hash::make('admin1'),
             ]
         );
 
-        // 3. Assign Role Admin ke User Admin
+        // Assign Role Admin
         if (!$admin->hasRole($adminRole)) {
             $admin->assignRole($adminRole);
             echo "Assigned admin role to: " . $admin->username . PHP_EOL;
         }
 
-        // 4. Buat User Mahasiswa
-        $mahasiswa = User::firstOrCreate(
+        // 3. Buat User Mahasiswa 1
+        $mahasiswaUser1 = User::firstOrCreate(
             ['username' => 'mahasiswa1'],
             [
                 'email' => 'mahasiswa1@example.com',
-                'password' => Hash::make('passwordMahasiswa'),
+                'password' => Hash::make('mahasiswa1'),
             ]
         );
 
-        // 5. Assign Role Mahasiswa ke User Mahasiswa
-        if (!$mahasiswa->hasRole($mahasiswaRole)) {
-            $mahasiswa->assignRole($mahasiswaRole);
-            echo "Assigned mahasiswa role to: " . $mahasiswa->username . PHP_EOL;
+        Mahasiswa::firstOrCreate(
+            [
+                'user_id' => $mahasiswaUser1->id,
+                'nama_lengkap' => 'John Doe',
+                'nim' => '123456789',
+                'no_telp' => '081234567890',
+                'kampus' => 'Universitas Contoh',
+                'jurusan' => 'Teknik Informatika',
+                'prodi' => 'S1',
+                'email' => 'john.doe@example.com',
+                'pengambilan_sertifikat' => 'belum',
+            ]
+        );
+
+        if (!$mahasiswaUser1->hasRole($mahasiswaRole)) {
+            $mahasiswaUser1->assignRole($mahasiswaRole);
+            echo "Assigned mahasiswa role to: " . $mahasiswaUser1->username . PHP_EOL;
         }
 
-        // 6. Verifikasi langsung
-        $freshAdmin = User::with('roles')->find($admin->id);
-        dump($freshAdmin->getRoleNames()); // Harus menampilkan ['admin']
+        // 4. Buat User Mahasiswa 2
+        $mahasiswaUser2 = User::firstOrCreate(
+            ['username' => 'mahasiswa2'],
+            [
+                'email' => 'mahasiswa2@example.com',
+                'password' => Hash::make('mahasiswa2'),
+            ]
+        );
 
-        $freshMahasiswa = User::with('roles')->find($mahasiswa->id);
-        dump($freshMahasiswa->getRoleNames()); // Harus menampilkan ['mahasiswa']
+        Mahasiswa::firstOrCreate(
+            [
+                'user_id' => $mahasiswaUser2->id,
+                'nama_lengkap' => 'Jane Smith',
+                'nim' => '987654321',
+                'no_telp' => '081298765432',
+                'kampus' => 'Politeknik Negeri Malang',
+                'jurusan' => 'Sistem Informasi Bisnis',
+                'prodi' => 'D4',
+                'email' => 'jane.smith@example.com',
+                'pengambilan_sertifikat' => 'belum',
+            ]
+        );
 
-        // 7. Panggil Seeder lainnya
+        if (!$mahasiswaUser2->hasRole($mahasiswaRole)) {
+            $mahasiswaUser2->assignRole($mahasiswaRole);
+            echo "Assigned mahasiswa role to: " . $mahasiswaUser2->username . PHP_EOL;
+        }
+
+        // 5. Verifikasi langsung
+        dump(User::with('roles')->find($admin->id)->getRoleNames());
+        dump(User::with('roles')->find($mahasiswaUser1->id)->getRoleNames());
+        dump(User::with('roles')->find($mahasiswaUser2->id)->getRoleNames());
+
+        // 6. Panggil Seeder Lain
         $this->call([
             SectionsTableSeeder::class,
             PendaftaranTableSeeder::class,

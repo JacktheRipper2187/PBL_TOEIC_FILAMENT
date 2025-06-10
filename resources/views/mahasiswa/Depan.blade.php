@@ -134,6 +134,15 @@
         .profile-dropdown {
             margin-left: 1rem;
         }
+
+        .fade {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .fade.show {
+            opacity: 1;
+        }
     </style>
 </head>
 
@@ -340,214 +349,148 @@
     </section>
 
     <!-- Jadwal Section -->
-    <section class="page-section bg-primary text-white mb-0" id="jadwal">
-        <div class="container">
-            <h2 class="page-section-heading text-center text-uppercase text-white mb-4">
-                {{ __('messages.schedule') }}
-            </h2>
+<section class="page-section bg-primary text-white mb-0" id="jadwal">
+    <div class="container">
+        <h2 class="page-section-heading text-center text-uppercase text-white mb-4">
+            {{ __('messages.schedule') }}
+        </h2>
 
-            <!-- Tombol Navigasi -->
-            <div class="text-center mb-4">
-                <button type="button" class="btn btn-outline-light mx-2 active" data-target="jadwal_pendaftaran">
-                    {{ __('messages.registration') }}
-                </button>
-                <button type="button" class="btn btn-outline-light mx-2" data-target="ujian">
-                    {{ __('messages.exam') }}
-                </button>
-                <button type="button" class="btn btn-outline-light mx-2" data-target="pengambilan">
-                    {{ __('messages.certificate') }}
-                </button>
-            </div>
-
-            <!-- Konten Kategori -->
-            <div class="category-content">
-                <!-- Data Pendaftaran -->
-                <div id="jadwal_pendaftaran" class="category-table fade show" style="display: block;">
-                    <div class="table-responsive">
-                        <table class="table table-hover table-striped">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>Skema</th>
-                                    <th>Periode Pendaftaran</th>
-                                    <th>Kuota</th>
-                                    <th>Keterangan</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($jadwalPendaftaran as $item)
-                                    <tr>
-                                        <td>{{ ucfirst($item->skema) }}</td>
-                                        <td>
-                                            {{ \Carbon\Carbon::parse($item->tgl_buka)->translatedFormat('j F Y') }} -
-                                            {{ \Carbon\Carbon::parse($item->tgl_tutup)->translatedFormat('j F Y') }}
-                                            <br>
-                                            <small class="text-muted">{{ $item->periode_pendaftaran }}</small>
-                                        </td>
-                                        <td>
-                                            <span class="badge {{ $item->kuota > 0 ? 'bg-success' : 'bg-danger' }}">
-                                                {{ $item->kuota > 0 ? number_format($item->kuota, 0, ',', '.') . ' Kuota' : 'Penuh' }}
-                                            </span>
-                                        </td>
-                                        <td>{{ $item->keterangan }}</td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="4" class="text-center">Tidak ada jadwal pendaftaran tersedia
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Data Ujian -->
-                <div id="ujian" class="category-table fade" style="display: none;">
-                    <div class="table-responsive">
-                        <table class="table table-hover table-striped">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>Hari, Tanggal</th>
-                                    <th>Jam</th>
-                                    <th>Lokasi</th>
-                                    <th>Keterangan</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($ujian as $item)
-                                    <tr>
-                                        <td>{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('l, j F Y') }}
-                                        </td>
-                                        <td>{{ $item->jam }}</td>
-                                        <td>{{ $item->kampus_cabang }}</td>
-                                        <td>{{ $item->jurusan }} - {{ $item->program_studi }}</td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="4" class="text-center">Tidak ada jadwal ujian saat ini</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Data Pengambilan Sertifikat -->
-                <div id="pengambilan" class="category-table fade" style="display: none;">
-                    <div class="table-responsive">
-                        <table class="table table-hover table-striped">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>Tanggal</th>
-                                    <th>Waktu</th>
-                                    <th>Tempat</th>
-                                    <th>Keterangan</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($pengambilan as $item)
-                                    <tr>
-                                        <td>{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('j F Y') }}</td>
-                                        <td>{{ $item->waktu }}</td>
-                                        <td>{{ $item->lokasi }}</td>
-                                        <td>{{ $item->keterangan }}</td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="4" class="text-center">Tidak ada jadwal pengambilan sertifikat
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+        <!-- Tombol Navigasi -->
+        <div class="text-center mb-4">
+            <button type="button" class="btn btn-outline-light mx-2 active" data-target="jadwal_pendaftaran">
+                {{ __('messages.registration') }}
+            </button>
+            <button type="button" class="btn btn-outline-light mx-2" data-target="ujian">
+                {{ __('messages.exam') }}
+            </button>
+            <button type="button" class="btn btn-outline-light mx-2" data-target="pengambilan">
+                {{ __('messages.certificate') }}
+            </button>
         </div>
-    </section>
 
-    <!-- CSS Transisi -->
-    <style>
-        .fade {
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-        }
+        <!-- Konten Kategori -->
+        <div class="category-content">
+            <!-- Data Pendaftaran -->
+            <div id="jadwal_pendaftaran" class="category-table fade show" style="display: block;">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Skema</th>
+                                <th>Periode Pendaftaran</th>
+                                <th>Kuota</th>
+                                <th>Keterangan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($jadwalPendaftaran as $item)
+                                <tr>
+                                    <td>{{ ucfirst($item->skema) }}</td>
+                                    <td>
+                                        {{ \Carbon\Carbon::parse($item->tgl_buka)->translatedFormat('j F Y') }} -
+                                        {{ \Carbon\Carbon::parse($item->tgl_tutup)->translatedFormat('j F Y') }}
+                                        <br>
+                                        <small class="text-muted">{{ $item->periode_pendaftaran }}</small>
+                                    </td>
+                                    <td>
+                                        <span class="badge {{ $item->kuota > 0 ? 'bg-success' : 'bg-danger' }}">
+                                            {{ $item->kuota > 0 ? number_format($item->kuota, 0, ',', '.') . ' Kuota' : 'Penuh' }}
+                                        </span>
+                                    </td>
+                                    <td>{{ $item->keterangan }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="text-center">Tidak ada jadwal pendaftaran tersedia</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-        .fade.show {
-            opacity: 1;
-        }
-    </style>
+            <!-- Data Ujian -->
+            <div id="ujian" class="category-table fade" style="display: none;">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Hari, Tanggal</th>
+                                <th>Jam</th>
+                                <th>Lokasi</th>
+                                <th>Keterangan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($ujian as $item)
+                                <tr>
+                                    <td>{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('l, j F Y') }}</td>
+                                    <td>{{ $item->jam }}</td>
+                                    <td>{{ $item->kampus_cabang }}</td>
+                                    <td>{{ $item->jurusan }} - {{ $item->program_studi }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="text-center">Tidak ada jadwal ujian saat ini</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-    <!-- JavaScript Transisi -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const buttons = document.querySelectorAll(".btn[data-target]");
-            const tables = document.querySelectorAll(".category-table");
-
-            buttons.forEach(button => {
-                button.addEventListener("click", function() {
-                    // Toggle button active state
-                    buttons.forEach(btn => btn.classList.remove("active"));
-                    this.classList.add("active");
-
-                    const targetId = this.getAttribute("data-target");
-
-                    // Hide all tables with fade-out
-                    tables.forEach(table => {
-                        table.classList.remove("show");
-                        setTimeout(() => {
-                            table.style.display = "none";
-                        }, 300);
-                    });
-
-                    // Show selected table with fade-in
-                    const targetTable = document.getElementById(targetId);
-                    if (targetTable) {
-                        setTimeout(() => {
-                            targetTable.style.display = "block";
-                            setTimeout(() => {
-                                targetTable.classList.add("show");
-                            }, 10);
-                        }, 300);
-                    }
-                });
-            });
-        });
-    </script>
-
-    <!-- Data Pengambilan Sertifikat -->
-    <div id="pengambilan" class="category-table" style="display:none;">
-        <div class="table-responsive">
-            <table class="table table-hover table-striped">
-                <thead class="thead-dark">
+            <!-- Data Pengambilan Sertifikat -->
+<div id="pengambilan" class="category-table fade" style="display: none;">
+    <div class="table-responsive">
+        <table class="table table-hover table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Waktu</th>
+                    <th>Tempat</th>
+                    <th>Keterangan</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($pengambilan as $item)
                     <tr>
-                        <th>Hari, Tanggal</th>
-                        <th>Jam</th>
-                        <th>Lokasi</th>
-                        <th>Keterangan</th>
+                        <td>{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('j F Y') }}</td>
+                        <td>{{ $item->waktu }}</td>
+                        <td>{{ $item->tempat }}</td>
+                        <td>{{ $item->keterangan }}</td>
                     </tr>
-                </thead>
-                <tbody>
-                    @forelse ($pengambilan as $item)
-                        <tr>
-                            <td>{{ \Carbon\Carbon::parse($item->hari_tanggal)->translatedFormat('l, j F Y') }}</td>
-                            <td>{{ $item->waktu }}</td>
-                            <td>{{ $item->lokasi }}</td>
-                            <td>{{ $item->keterangan }}</td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="4" class="text-center">Tidak ada jadwal pengambilan sertifikat saat ini
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                @empty
+                    <tr>
+                        <td colspan="4" class="text-center">Tidak ada jadwal pengambilan sertifikat</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Tambahan form di bawah tabel -->
+    <div class="mt-4">
+        <form action="{{ route('mahasiswa.update-pengambilan', $mahasiswa->id) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="mt-3">
+                <label for="image" class="form-label">Upload Gambar Sertifikat</label>
+                <input type="file" class="form-control" name="image" id="image">
+            </div>
+    
+            <div class="info-item mb-2">
+                <span class="info-label">Pengambilan Sertifikat</span>
+                <span class="info-value">{{ $mahasiswa->pengambilan_sertifikat ?? '-' }}</span>
+            </div>
+
+            <button type="submit" class="btn btn-success w-100 mt-2">
+                <i class="bi bi-check-circle me-1"></i> Tandai Sebagai Sudah Diambil
+            </button>
+        </form>
+    </div>
+</div>
         </div>
     </div>
-    </div>
-    </div>
-    </section>
+</section>
 
     <!-- Hasil Section -->
     <section class="page-section" id="hasil">
@@ -875,6 +818,39 @@
                             updateActiveNav('beranda');
                         }
                     });
+        document.addEventListener("DOMContentLoaded", function() {
+            const buttons = document.querySelectorAll(".btn[data-target]");
+            const tables = document.querySelectorAll(".category-table");
+
+            buttons.forEach(button => {
+                button.addEventListener("click", function() {
+                    // Toggle button active state
+                    buttons.forEach(btn => btn.classList.remove("active"));
+                    this.classList.add("active");
+
+                    const targetId = this.getAttribute("data-target");
+
+                    // Hide all tables with fade-out
+                    tables.forEach(table => {
+                        table.classList.remove("show");
+                        setTimeout(() => {
+                            table.style.display = "none";
+                        }, 300);
+                    });
+
+                    // Show selected table with fade-in
+                    const targetTable = document.getElementById(targetId);
+                    if (targetTable) {
+                        setTimeout(() => {
+                            targetTable.style.display = "block";
+                            setTimeout(() => {
+                                targetTable.classList.add("show");
+                            }, 10);
+                        }, 300);
+                    }
+                });
+            });
+        });
     </script>
 
     <!-- Footer-->

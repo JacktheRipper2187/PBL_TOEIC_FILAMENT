@@ -37,13 +37,12 @@ class MahasiswaViewResource extends Resource
                 Forms\Components\TextInput::make('jurusan')->required(),
                 Forms\Components\TextInput::make('prodi')->required(),
                 Forms\Components\TextInput::make('pengambilan_sertifikat')->required(),
-                Forms\Components\FileUpload::make('image_path')
-                    ->label('Foto Sertifikat')
+                Forms\Components\FileUpload::make('foto_sertifikat')
+                    ->label('Foto Pengambilan Sertifikat')
                     ->image()
-                    ->directory('images')
+                    ->directory('sertifikat')
                     ->nullable()
                     ->disk('public'),
-                
             ]);
     }
 
@@ -74,15 +73,14 @@ class MahasiswaViewResource extends Resource
                 ->html()
                 ->sortable(),
             // Kolom aksi untuk update pengambilan sertifikat
-
             Tables\Columns\TextColumn::make('image_path')
-                    ->label('Sertifikat')
+                    ->label('Bukti Sertifikat')
                     ->formatStateUsing(fn () => '🖼️ Lihat')
                     ->action(
-                        Tables\Actions\Action::make('preview_sertifikat')
-                            ->modalHeading('Preview Sertifikat')
+                        Tables\Actions\Action::make('Lihat Sertifikat')
+                            ->modalHeading('Preview Pengambilan Sertifikat')
                             ->modalContent(fn ($record) => view('components.preview-image', [
-                                'imageUrl' => Storage::url($record->image_path),
+                            'imageUrl' => Storage::url($record->image_path),
                             ]))
                             ->modalSubmitAction(false)
                             ->modalCancelAction(false)
