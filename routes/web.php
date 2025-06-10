@@ -19,6 +19,7 @@ use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\KonfirmasiSkMahasiswaController;
+use App\Models\Mahasiswa;
 
 
 use Illuminate\Support\Facades\Auth;
@@ -117,6 +118,19 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/mahasiswa/update-foto', [MahasiswaController::class, 'updateFoto'])->name('mahasiswa.update-foto');
 
 });
+Route::post('/mahasiswa/{id}/update-pengambilan', [MahasiswaController::class, 'updatePengambilan'])->name('mahasiswa.update-pengambilan');
+
+Route::get('/update-pengambilan-sertifikat/{id}', function ($id) {
+    // Cari data mahasiswa berdasarkan ID
+    $record = Mahasiswa::find($id);
+    
+    if ($record) {
+        // Tampilkan modal dan pass data record untuk digunakan di dalam modal
+        return view('modals.confirmation-modal', compact('record'));
+    }
+    
+    return redirect()->route('mahasiswa.index'); // Redirect jika data tidak ditemukan
+})->name('show.modal');
 
 require __DIR__ . '/auth.php';
 
@@ -153,6 +167,8 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/admin/generate-sk/{id}', [KonfirmasiSkMahasiswaController::class, 'generateSk']);
 
 Route::get('/download-sk/{id}', [App\Http\Controllers\MahasiswaController::class, 'downloadSk'])->name('mahasiswa.downloadSk');
+Route::get('/update-pengambilan-sertifikat/{id}', [MahasiswaController::class, 'updateStatus']);
+
 
 
 
