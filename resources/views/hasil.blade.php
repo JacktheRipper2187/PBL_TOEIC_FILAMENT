@@ -23,6 +23,7 @@
       position: relative;
       z-index: 0;
     }
+    
     .card {
       border-radius: 15px;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
