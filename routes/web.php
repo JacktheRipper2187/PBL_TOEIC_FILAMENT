@@ -169,6 +169,12 @@ Route::get('/admin/generate-sk/{id}', [KonfirmasiSkMahasiswaController::class, '
 Route::get('/download-sk/{id}', [App\Http\Controllers\MahasiswaController::class, 'downloadSk'])->name('mahasiswa.downloadSk');
 Route::get('/update-pengambilan-sertifikat/{id}', [MahasiswaController::class, 'updateStatus']);
 
-
-
-
+Route::get('/jadwal-pelaksanaan/{id}', function ($id) {
+    $jadwal = \App\Models\JadwalPendaftaran::with('jadwalPelaksanaan')
+        ->findOrFail($id);
+    
+    return response()->json([
+        'skema' => $jadwal->skema,
+        'jadwal_pelaksanaan' => $jadwal->jadwalPelaksanaan
+    ]);
+});

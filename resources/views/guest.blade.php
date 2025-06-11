@@ -9,8 +9,10 @@
     $pendaftaran = get_pendaftaran_value();
     // Ambil data dari model yang sesuai dengan kategori
     $jadwalPendaftaran = get_JadwalPendaftaran_value();
-    $ujian = get_JadwalUjian_value();
+    // $ujian = get_JadwalUjian_value();
     $pengambilan = get_JadwalSertifikat_value();
+    $jadwalPendaftaran = get_JadwalPendaftaran_value();
+    // Contoh cara memanggil yang benar
 @endphp
 <!DOCTYPE html>
 <html lang="en">
@@ -60,6 +62,56 @@
             /* Agar tidak menyusut */
         }
 
+        /* Style untuk tabel */
+        .table {
+            border-collapse: separate;
+            border-spacing: 0;
+            min-width: 800px;
+        }
+
+        .table th {
+            background-color: #2c3e50;
+            color: white;
+            font-weight: 600;
+            padding: 12px;
+        }
+
+        .table td {
+            padding: 10px;
+            vertical-align: middle;
+        }
+
+        .table-bordered {
+            border: 1px solid #dee2e6;
+        }
+
+        .table-bordered th,
+        .table-bordered td {
+            border: 1px solid #dee2e6;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(0, 123, 255, 0.05);
+        }
+
+        /* Style untuk detail jadwal */
+        #schedule-detail {
+            border: 2px solid #3498db;
+            background-color: #f8f9fa;
+        }
+
+        #schedule-title {
+            color: #2c3e50;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Badge kuota */
+        .badge {
+            font-size: 0.85rem;
+            padding: 5px 10px;
+            min-width: 60px;
+        }
+
         /* CSS untuk teks tanggal di dalam box */
         #current-date {
             font-size: 1.2rem;
@@ -74,20 +126,23 @@
         /* NAVBAR CUSTOM STYLES */
         /* Ensure navbar brand stays on the left */
         .navbar-brand {
-            margin-right: auto; /* Pushes everything else to the right */
+            margin-right: auto;
+            /* Pushes everything else to the right */
         }
-        
+
         /* Navbar container to allow full width */
         .navbar-container {
             width: 100%;
-            padding: 0 15px; /* Match Bootstrap's container padding */
+            padding: 0 15px;
+            /* Match Bootstrap's container padding */
         }
-        
+
         /* Navbar menu alignment */
         .navbar-nav {
-            margin-left: auto; /* Pushes menu items to the right */
+            margin-left: auto;
+            /* Pushes menu items to the right */
         }
-        
+
         /* Nav item spacing */
         .nav-item {
             margin-left: 0.5rem;
@@ -112,7 +167,7 @@
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 Menu
                 <i class="fas fa-bars"></i>
-            </button>
+            </button> 
 
             <!-- Navbar Menu -->
             <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -258,79 +313,188 @@
             </div>
         </div>
     </section>
+    
+<!-- Jadwal Pendaftaran TOEIC Section -->
+<section class="page-section bg-primary text-white mb-0" id="jadwal pendaftaran">
+    <div class="container">
+        <!-- Section Heading -->
+        <h2 class="page-section-heading text-center text-uppercase text-white mb-4">
+            Jadwal Pendaftaran TOEIC
+        </h2>
 
-    <!-- Jadwal Section -->
-    <section class="page-section bg-primary text-white mb-0" id="jadwal pendaftaran">
-        <div class="container">
-            <h2 class="page-section-heading text-center text-uppercase text-white mb-4">
-                {{ __('messages.schedule_1') }}</h2>
-            <div class="table-responsive">
-                <table class="table table-hover table-striped">
-                    <thead class="thead-dark">
+        <!-- Divider -->
+        <div class="divider-custom divider-light">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+            <div class="divider-custom-line"></div>
+        </div>
+
+        <!-- Jadwal Table -->
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover bg-white">
+                <thead class="table-dark">
+                    <tr>
+                        <th class="text-center">Skema</th>
+                        <th class="text-center">Periode Pendaftaran</th>
+                        <th class="text-center">Kuota</th>
+                        <th class="text-center">Keterangan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($jadwalPendaftaran as $item)
                         <tr>
-                            <th>{{ __('messages.scheme') }}</th>
-                            <th>{{ __('messages.period') }}</th>
-                            <th>{{ __('messages.quota') }}</th>
-                            <th>{{ __('messages.description') }}</th>
+                            <td class="text-center">
+                                {{ $item->skema == 'gratis' ? 'TOEIC Gratis' : 'TOEIC Berbayar' }}
+                            </td>
+                            <td class="text-center">
+                                {{ \Carbon\Carbon::parse($item->tgl_buka)->translatedFormat('d F Y') }} - 
+                                {{ \Carbon\Carbon::parse($item->tgl_tutup)->translatedFormat('d F Y') }}
+                            </td>
+                            <td class="text-center">
+                                <span class="badge rounded-pill {{ $item->kuota > 0 ? 'bg-success' : 'bg-danger' }}">
+                                    {{ $item->kuota }}
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                {{ $item->keterangan }}
+                                @if($item->jadwalPelaksanaans->count() > 0)
+                                    <button class="btn btn-sm btn-outline-info mt-1" 
+                                            onclick="showScheduleModal({{ $item->id }}, '{{ $item->skema == 'gratis' ? 'TOEIC Gratis' : 'TOEIC Berbayar' }}')">
+                                        <i class="fas fa-calendar-alt me-1"></i> Lihat Jadwal
+                                    </button>
+                                @else
+                                    <span class="text-muted">Akan diinfokan lebih lanjut</span>
+                                @endif
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($jadwalPendaftaran as $item)
+                    @empty
+                        <tr>
+                            <td colspan="4" class="text-center">Tidak ada jadwal pendaftaran tersedia</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- Modal untuk Detail Jadwal -->
+<div class="modal fade" id="scheduleModal" tabindex="-1" aria-labelledby="scheduleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="scheduleModalLabel">Detail Jadwal Pelaksanaan</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-primary">
                             <tr>
-                                <td>{{ ucfirst($item->skema) }}</td>
-                                <td>
-                                    {{ \Carbon\Carbon::parse($item->tgl_buka)->translatedFormat('j F Y') }}
-                                    -
-                                    {{ \Carbon\Carbon::parse($item->tgl_tutup)->translatedFormat('j F Y') }}
-                                    <br>
-                                    <small class="text-muted">{{ $item->periode_pendaftaran }}</small>
-                                </td>
-                                <td>
-                                    <span class="badge {{ $item->kuota > 0 ? 'bg-success' : 'bg-danger' }}">
-                                        {{ $item->kuota > 0 ? number_format($item->kuota, 0, ',', '.') . ' Kuota' : 'Penuh' }}
-                                    </span>
-                                </td>
-                                <td>{{ $item->keterangan }}</td>
+                                <th class="text-center">Hari/Tanggal</th>
+                                <th class="text-center">Sesi</th>
+                                <th class="text-center">Jam</th>
+                                <th class="text-center">Lokasi/Platform</th>
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="4" class="text-center">Tidak ada jadwal pendaftaran tersedia</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody id="modalScheduleBody">
+                            <!-- Data akan diisi oleh JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i> Tutup
+                </button>
             </div>
         </div>
-        <style>
-            .table {
-                background-color: white;
-                color: #212529;
-                border-radius: 8px;
-                overflow: hidden;
-            }
+    </div>
+</div>
 
-            .thead-dark th {
-                background-color: #2c3e50;
-                color: white;
-                font-weight: 600;
-            }
+<style>
+    /* Style untuk tabel di modal */
+    #scheduleModal .table {
+        margin-bottom: 0;
+    }
+    
+    #scheduleModal .table th {
+        background-color: #2c3e50;
+        color: white;
+    }
+    
+    #scheduleModal .table td {
+        vertical-align: middle;
+    }
+    
+    /* Animasi modal */
+    .modal.fade .modal-dialog {
+        transition: transform 0.3s ease-out, opacity 0.3s ease;
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    
+    .modal.show .modal-dialog {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    
+    /* Efek hover pada baris tabel */
+    #modalScheduleBody tr:hover {
+        background-color: rgba(26, 188, 156, 0.1);
+    }
+</style>
 
-            .table-hover tbody tr:hover {
-                background-color: rgba(255, 255, 255, 0.1);
-            }
-
-            .badge {
-                font-size: 0.9rem;
-                padding: 0.5em 0.75em;
-                border-radius: 50px;
-            }
-
-            .text-muted {
-                color: #adb5bd !important;
-            }
-        </style>
-    </section>
-
+<script>
+    // Fungsi untuk menampilkan modal jadwal
+    function showScheduleModal(jadwalId, skema) {
+        // Set judul modal
+        document.getElementById('scheduleModalLabel').textContent = `Jadwal Pelaksanaan ${skema}`;
+        
+        // Kosongkan body modal
+        const modalBody = document.getElementById('modalScheduleBody');
+        modalBody.innerHTML = '';
+        
+        // Cari data jadwal yang sesuai
+        const jadwal = {!! $jadwalPendaftaran->toJson() !!}.find(item => item.id === jadwalId);
+        
+        if (jadwal && jadwal.jadwal_pelaksanaans && jadwal.jadwal_pelaksanaans.length > 0) {
+            // Urutkan jadwal berdasarkan tanggal dan sesi
+            const sortedJadwal = jadwal.jadwal_pelaksanaans.sort((a, b) => {
+                return new Date(a.tanggal) - new Date(b.tanggal) || a.sesi.localeCompare(b.sesi);
+            });
+            
+            // Isi data ke dalam modal
+            sortedJadwal.forEach(pelaksanaan => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${formatTanggal(pelaksanaan.tanggal)}</td>
+                    <td class="text-center">${pelaksanaan.sesi}</td>
+                    <td class="text-center">${formatJam(pelaksanaan.jam_mulai)} - ${formatJam(pelaksanaan.jam_selesai)}</td>
+                    <td class="text-center">${pelaksanaan.lokasi_platform}</td>
+                `;
+                modalBody.appendChild(row);
+            });
+        } else {
+            modalBody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">Tidak ada jadwal pelaksanaan tersedia</td></tr>';
+        }
+        
+        // Tampilkan modal
+        const modal = new bootstrap.Modal(document.getElementById('scheduleModal'));
+        modal.show();
+    }
+    
+    // Fungsi helper untuk format tanggal
+    function formatTanggal(tanggal) {
+        const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+        return new Date(tanggal).toLocaleDateString('id-ID', options);
+    }
+    
+    // Fungsi helper untuk format jam
+    function formatJam(jam) {
+        return jam.substring(0, 5); // Ambil hanya HH:MM
+    }
+</script>
     <!-- Footer-->
     <footer class="footer text-center" id="profile">
         <div class="container">
@@ -554,6 +718,45 @@
 
             initializePage();
         });
+    </script>
+    <script>
+        // Fungsi untuk menampilkan jadwal pelaksanaan
+        function showSchedule(jadwalId) {
+            fetch(`/api/jadwal-pelaksanaan/${jadwalId}`)
+                .then(response => {
+                    if (!response.ok) throw new Error('Gagal mengambil data');
+                    return response.json();
+                })
+                .then(data => {
+                    if (!data.success || data.data.length === 0) {
+                        throw new Error('Tidak ada jadwal tersedia');
+                    }
+
+                    const tbody = document.getElementById('schedule-body');
+                    tbody.innerHTML = '';
+
+                    data.data.forEach(item => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                    <td>${new Date(item.tanggal).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</td>
+                    <td class="text-center">${item.sesi}</td>
+                    <td class="text-center">${item.jam_mulai} - ${item.jam_selesai}</td>
+                    <td class="text-center">${item.lokasi_platform}</td>
+                `;
+                        tbody.appendChild(row);
+                    });
+
+                    document.getElementById('schedule-detail').style.display = 'block';
+                })
+                .catch(error => {
+                    alert(error.message);
+                    console.error('Error:', error);
+                });
+        }
+
+        function hideSchedule() {
+            document.getElementById('schedule-detail').style.display = 'none';
+        }
     </script>
 </body>
 

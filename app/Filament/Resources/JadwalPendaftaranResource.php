@@ -23,6 +23,10 @@ class JadwalPendaftaranResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('nama_jadwal')
+                    ->required()
+                    ->label('Nama Jadwal')
+                    ->placeholder('Contoh: TOEIC Gratis Periode 1 2024'),
                 Forms\Components\Select::make('skema')
                     ->label('Skema')
                     ->options([
@@ -51,29 +55,34 @@ class JadwalPendaftaranResource extends Resource
     }
 
 
-public static function table(Table $table): Table
-{
-    return $table
-        ->columns([
-            Tables\Columns\TextColumn::make('skema')->label('Skema'),
-            Tables\Columns\TextColumn::make('tgl_buka')->date('d F Y')->label('Tanggal Buka'),
-            Tables\Columns\TextColumn::make('tgl_tutup')->date('d F Y')->label('Tanggal Tutup'),
-            Tables\Columns\TextColumn::make('kuota')->label('Kuota'),
-            Tables\Columns\TextColumn::make('keterangan')->label('Keterangan')->limit(30),
-        ])
-        ->actions([
-            Tables\Actions\EditAction::make(),
-            Tables\Actions\DeleteAction::make()->icon('heroicon-o-trash'),
-            Action::make('lihat_pendaftar')
-                ->label('Lihat Pendaftar')
-                ->icon('heroicon-o-user-group')
-                ->url(fn ($record) => route('filament.admin.resources.pendaftars.index', ['jadwal_id' => $record->id]))
-                ->openUrlInNewTab(), // agar buka tab baru
-        ])
-        ->bulkActions([
-            Tables\Actions\DeleteBulkAction::make(),
-        ]);
-}
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('skema')->label('Skema'),
+                Tables\Columns\TextColumn::make('tgl_buka')->date('d F Y')->label('Tanggal Buka'),
+                Tables\Columns\TextColumn::make('tgl_tutup')->date('d F Y')->label('Tanggal Tutup'),
+                Tables\Columns\TextColumn::make('kuota')->label('Kuota'),
+                Tables\Columns\TextColumn::make('keterangan')->label('Keterangan')->limit(30),
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()->icon('heroicon-o-trash'),
+                Action::make('lihat_pendaftar')
+                    ->label('Lihat Pendaftar')
+                    ->icon('heroicon-o-user-group')
+                    ->url(fn($record) => route('filament.admin.resources.pendaftars.index', ['jadwal_id' => $record->id]))
+                    ->openUrlInNewTab(),
+                Action::make('lihat_jadwal')  // PASTIKAN INI MASUK DALAM ARRAY ACTIONS
+                    ->label('Lihat Jadwal')
+                    ->icon('heroicon-o-clock')
+                    ->url(fn($record) => JadwalPelaksanaanResource::getUrl('index', ['jadwal_pendaftaran_id' => $record->id]))
+                    ->openUrlInNewTab(),
+            ])
+            ->bulkActions([
+                Tables\Actions\DeleteBulkAction::make(),
+            ]);
+    }
 
 
     public static function getPages(): array

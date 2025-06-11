@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Models\SesiUjian;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,4 +17,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::get('/jadwal-pelaksanaan/{id}', function ($id) {
+    $data = get_JadwalPelaksanaan_value($id);
+    
+    return response()->json([
+        'success' => true,
+        'data' => $data
+    ]);
 });

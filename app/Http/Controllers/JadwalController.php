@@ -15,7 +15,7 @@ class JadwalController extends Controller
 public function index()
 {
     // Ambil semua data jadwal
-    $JadwalPendaftaran = JadwalPendaftaran::orderBy('tgl_buka')->get();
+    $jadwalPendaftaran = JadwalPendaftaran::with('jadwalPelaksanaans')->get();
     $ujian = JadwalUjian::orderBy('tanggal')->get();
     $pengambilan = JadwalSertifikat::orderBy('hari_tanggal')->get();
 
@@ -40,7 +40,7 @@ public function index()
     }
 
     return view('mahasiswa.depan', compact(
-        'JadwalPendaftaran',
+        'jadwalPendaftaran',
         'ujian',
         'pengambilan',
         'tanggalList',
@@ -50,9 +50,11 @@ public function index()
 }
 
 
+
     // Catatan: Ini bukan method controller yang tepat, perlu revisi jika ingin dipakai
     public function pendaftar()
     {
         return $this->hasMany(PendaftaranController::class, 'jadwal_id');
     }
+
 }

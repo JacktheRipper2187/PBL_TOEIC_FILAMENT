@@ -12,8 +12,6 @@
     $ujian = get_JadwalUjian_value();
     $pengambilan = get_JadwalSertifikat_value();
     $mahasiswa = Auth::user()->mahasiswa;
-    $ujianList = get_JadwalUjian_value();
-
 @endphp
 <!DOCTYPE html>
 <html lang="en">
@@ -343,13 +341,18 @@
                         </a>
                     </div>
                 @endforeach
+
+
+
             </div>
         </div>
-    </section><!-- Jadwal Section - Modified to match guest view but with buttons -->
+    </section>
+
+    <!-- Jadwal Section -->
 <section class="page-section bg-primary text-white mb-0" id="jadwal">
     <div class="container">
         <h2 class="page-section-heading text-center text-uppercase text-white mb-4">
-            Jadwal
+            {{ __('messages.schedule') }}
         </h2>
 
         <!-- Tombol Navigasi -->
@@ -365,261 +368,131 @@
             </button>
         </div>
 
-        <!-- Jadwal Pendaftaran TOEIC Section -->
-        <div id="jadwal_pendaftaran" class="category-table fade show">
-            <div class="container">
+        <!-- Konten Kategori -->
+        <div class="category-content">
+            <!-- Data Pendaftaran -->
+            <div id="jadwal_pendaftaran" class="category-table fade show" style="display: block;">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover bg-white">
-                        <thead class="table-dark">
+                    <table class="table table-hover table-striped">
+                        <thead class="thead-dark">
                             <tr>
-                                <th class="text-center">Skema</th>
-                                <th class="text-center">Periode Pendaftaran</th>
-                                <th class="text-center">Kuota</th>
-                                <th class="text-center">Keterangan</th>
+                                <th>Skema</th>
+                                <th>Periode Pendaftaran</th>
+                                <th>Kuota</th>
+                                <th>Keterangan</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse ($jadwalPendaftaran as $item)
                                 <tr>
-                                    <td class="text-center">
-                                        {{ $item->skema == 'gratis' ? 'TOEIC Gratis' : 'TOEIC Berbayar' }}
+                                    <td>{{ ucfirst($item->skema) }}</td>
+                                    <td>
+                                        {{ \Carbon\Carbon::parse($item->tgl_buka)->translatedFormat('j F Y') }} -
+                                        {{ \Carbon\Carbon::parse($item->tgl_tutup)->translatedFormat('j F Y') }}
+                                        <br>
+                                        <small class="text-muted">{{ $item->periode_pendaftaran }}</small>
                                     </td>
-                                    <td class="text-center">
-                                        {{ \Carbon\Carbon::parse($item->tgl_buka)->translatedFormat('d F Y') }} -
-                                        {{ \Carbon\Carbon::parse($item->tgl_tutup)->translatedFormat('d F Y') }}
-                                    </td>
-                                    <td class="text-center">
-                                        <span
-                                            class="badge rounded-pill {{ $item->kuota > 0 ? 'bg-success' : 'bg-danger' }} ">
-                                            {{ $item->kuota }}
+                                    <td>
+                                        <span class="badge {{ $item->kuota > 0 ? 'bg-success' : 'bg-danger' }}">
+                                            {{ $item->kuota > 0 ? number_format($item->kuota, 0, ',', '.') . ' Kuota' : 'Penuh' }}
                                         </span>
                                     </td>
-                                    <td class="text-center">
-                                        {{ $item->keterangan }}
-                                        @if ($item->jadwalPelaksanaans->count() > 0)
-                                            <button class="btn btn-sm btn-outline-info mt-1"
-                                                onclick="showScheduleModal({{ $item->id }}, '{{ $item->skema == 'gratis' ? 'TOEIC Gratis' : 'TOEIC Berbayar' }}')">
-                                                <i class="fas fa-calendar-alt me-1"></i> Lihat Jadwal
-                                            </button>
-                                        @else
-                                            <span class="text-muted">Akan diinfokan lebih lanjut</span>
-                                        @endif
-                                    </td>
+                                    <td>{{ $item->keterangan }}</td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4" class="text-center">Tidak ada jadwal pendaftaran tersedia
-                                    </td>
+                                    <td colspan="4" class="text-center">Tidak ada jadwal pendaftaran tersedia</td>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
                 </div>
             </div>
-        </div>
 
-        <!-- Modal untuk Detail Jadwal -->
-        <div class="modal fade" id="scheduleModal" tabindex="-1" aria-labelledby="scheduleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header bg-primary text-white">
-                        <h5 class="modal-title" id="scheduleModalLabel">Detail Jadwal Pelaksanaan</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-hover">
-                                <thead class="table-primary">
-                                    <tr>
-                                        <th class="text-center">Hari/Tanggal</th>
-                                        <th class="text-center">Sesi</th>
-                                        <th class="text-center">Jam</th>
-                                        <th class="text-center">Lokasi/Platform</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="modalScheduleBody">
-                                    <!-- Data akan diisi oleh JavaScript -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            <i class="fas fa-times me-1"></i> Tutup
-                        </button>
-                    </div>
+            <!-- Data Ujian -->
+            <div id="ujian" class="category-table fade" style="display: none;">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Hari, Tanggal</th>
+                                <th>Jam</th>
+                                <th>Lokasi</th>
+                                <th>Keterangan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($ujian as $item)
+                                <tr>
+                                    <td>{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('l, j F Y') }}</td>
+                                    <td>{{ $item->jam }}</td>
+                                    <td>{{ $item->kampus_cabang }}</td>
+                                    <td>{{ $item->jurusan }} - {{ $item->program_studi }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="text-center">Tidak ada jadwal ujian saat ini</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div>
 
-        <!-- Data Ujian -->
-        <div id="ujian" class="category-table fade" style="display: none;">
-            <div class="table-responsive">
-                <table class="table table-hover table-striped">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>Hari, Tanggal</th>
-                            <th>Jam</th>
-                            <th>Lokasi</th>
-                            <th>Keterangan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($ujian as $item)
-                            <tr>
-                                <td>{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('l, j F Y') }}
-                                </td>
-                                <td>{{ $item->jam }}</td>
-                                <td>{{ $item->kampus_cabang }}</td>
-                                <td>{{ $item->jurusan }} - {{ $item->program_studi }}</td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="4" class="text-center">Tidak ada jadwal ujian saat ini</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-        </div>
+            <!-- Data Pengambilan Sertifikat -->
+<div id="pengambilan" class="category-table fade" style="display: none;">
+    <div class="table-responsive">
+        <table class="table table-hover table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Waktu</th>
+                    <th>Tempat</th>
+                    <th>Keterangan</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($pengambilan as $item)
+                    <tr>
+                        <td>{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('j F Y') }}</td>
+                        <td>{{ $item->waktu }}</td>
+                        <td>{{ $item->lokasi }}</td>
+                        <td>{{ $item->keterangan }}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="4" class="text-center">Tidak ada jadwal pengambilan sertifikat</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 
-        <!-- Data Pengambilan Sertifikat -->
-        <div id="pengambilan" class="category-table fade" style="display: none;">
-            <div class="table-responsive">
-                <table class="table table-hover table-striped">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>Tanggal</th>
-                            <th>Waktu</th>
-                            <th>Tempat</th>
-                            <th>Keterangan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($pengambilan as $item)
-                            <tr>
-                                <td>{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('j F Y') }}</td>
-                                <td>{{ $item->waktu }}</td>
-                                <td>{{ $item->lokasi }}</td>
-                                <td>{{ $item->keterangan }}</td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="4" class="text-center">Tidak ada jadwal pengambilan sertifikat
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+    <!-- Tambahan form di bawah tabel -->
+    <div class="mt-4">
+        <form action="{{ route('mahasiswa.update-pengambilan', $mahasiswa->id) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="mt-3">
+                <label for="image" class="form-label">Upload Gambar Sertifikat</label>
+                <input type="file" class="form-control" name="image" id="image">
             </div>
+
+            <div class="info-item mb-2">
+                <span class="info-label">Pengambilan Sertifikat</span>
+                <span class="info-value">{{ $mahasiswa->pengambilan_sertifikat ?? '-' }}</span>
+            </div>
+
+            <button type="submit" class="btn btn-success w-100 mt-2">
+                <i class="bi bi-check-circle me-1"></i> Tandai Sebagai Sudah Diambil
+            </button>
+        </form>
+    </div>
+</div>
+
         </div>
     </div>
 </section>
 
-<!-- CSS Transisi -->
-<style>
-    .fade {
-        opacity: 0;
-        transition: opacity 0.3s ease-in-out;
-    }
-
-    .fade.show {
-        opacity: 1;
-    }
-    
-    /* Style untuk tabel di modal */
-    #scheduleModal .table {
-        margin-bottom: 0;
-    }
-
-    #scheduleModal .table th {
-        background-color: #2c3e50;
-        color: white;
-    }
-
-    #scheduleModal .table td {
-        vertical-align: middle;
-    }
-
-    .modal-backdrop.fade {
-        transition-duration: 0.2s;
-        opacity: 0;
-    }
-
-    .modal.show .modal-dialog {
-        transform: translateY(0);
-        opacity: 1;
-    }
-
-    /* Efek hover pada baris tabel */
-    #modalScheduleBody tr:hover {
-        background-color: rgba(26, 188, 156, 0.1);
-    }
-
-    .modal-backdrop {
-        transition: opacity 0.2s ease-out !important;
-        z-index: 1040 !important;
-    }
-
-    .modal-backdrop.show {
-        background-color: rgba(0, 0, 0, 0.3);
-        transition-duration: 0.0s;
-    }
-
-    /* Menjaga latar belakang halaman tetap terlihat */
-    body.modal-open {
-        background-color: #f8f9fa;
-    }
-</style>
-
-<!-- JavaScript Transisi -->
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const buttons = document.querySelectorAll(".btn[data-target]");
-        const tables = document.querySelectorAll(".category-table");
-
-        // Tampilkan jadwal pendaftaran secara default
-        document.getElementById('jadwal_pendaftaran').style.display = 'block';
-        document.getElementById('jadwal_pendaftaran').classList.add('show');
-
-        buttons.forEach(button => {
-            button.addEventListener("click", function() {
-                // Toggle button active state
-                buttons.forEach(btn => btn.classList.remove("active"));
-                this.classList.add("active");
-
-                const targetId = this.getAttribute("data-target");
-
-                // Hide all tables with fade-out
-                tables.forEach(table => {
-                    table.classList.remove("show");
-                    setTimeout(() => {
-                        table.style.display = "none";
-                    }, 300);
-                });
-
-                // Show selected table with fade-in
-                const targetTable = document.getElementById(targetId);
-                if (targetTable) {
-                    setTimeout(() => {
-                        targetTable.style.display = "block";
-                        setTimeout(() => {
-                            targetTable.classList.add("show");
-                        }, 10);
-                    }, 300);
-                }
-            });
-        });
-    });
-
-    function showScheduleModal(id, skema) {
-        // Implementasi fungsi ini sesuai kebutuhan Anda
-        console.log("Show schedule for ID:", id, "Skema:", skema);
-        // Anda perlu mengisi implementasi untuk menampilkan modal dengan jadwal yang sesuai
-    }
-</script>
     <!-- Hasil Section -->
     <section class="page-section" id="hasil">
         <div class="container">
@@ -1126,63 +999,6 @@
             });
         });
     </script>
-                <!-- JavaScript -->
-            <script>
-                // Fungsi untuk menampilkan modal jadwal
-                function showScheduleModal(jadwalId, skema) {
-                    // Set judul modal
-                    document.getElementById('scheduleModalLabel').textContent = `Jadwal Pelaksanaan ${skema}`;
-
-                    // Kosongkan body modal
-                    const modalBody = document.getElementById('modalScheduleBody');
-                    modalBody.innerHTML = '';
-
-                    // Cari data jadwal yang sesuai
-                    const jadwal = {!! $jadwalPendaftaran->toJson() !!}.find(item => item.id === jadwalId);
-
-                    if (jadwal && jadwal.jadwal_pelaksanaans && jadwal.jadwal_pelaksanaans.length > 0) {
-                        // Urutkan jadwal berdasarkan tanggal dan sesi
-                        const sortedJadwal = jadwal.jadwal_pelaksanaans.sort((a, b) => {
-                            return new Date(a.tanggal) - new Date(b.tanggal) || a.sesi.localeCompare(b.sesi);
-                        });
-
-                        // Isi data ke dalam modal
-                        sortedJadwal.forEach(pelaksanaan => {
-                            const row = document.createElement('tr');
-                            row.innerHTML = `
-                    <td>${formatTanggal(pelaksanaan.tanggal)}</td>
-                    <td class="text-center">${pelaksanaan.sesi}</td>
-                    <td class="text-center">${formatJam(pelaksanaan.jam_mulai)} - ${formatJam(pelaksanaan.jam_selesai)}</td>
-                    <td class="text-center">${pelaksanaan.lokasi_platform}</td>
-                `;
-                            modalBody.appendChild(row);
-                        });
-                    } else {
-                        modalBody.innerHTML =
-                            '<tr><td colspan="4" class="text-center text-muted">Tidak ada jadwal pelaksanaan tersedia</td></tr>';
-                    }
-
-                    // Tampilkan modal
-                    const modal = new bootstrap.Modal(document.getElementById('scheduleModal'));
-                    modal.show();
-                }
-
-                // Fungsi helper untuk format tanggal
-                function formatTanggal(tanggal) {
-                    const options = {
-                        weekday: 'long',
-                        day: 'numeric',
-                        month: 'long',
-                        year: 'numeric'
-                    };
-                    return new Date(tanggal).toLocaleDateString('id-ID', options);
-                }
-
-                // Fungsi helper untuk format jam
-                function formatJam(jam) {
-                    return jam.substring(0, 5); // Ambil hanya HH:MM
-                }
-            </script>
 
 </body>
 

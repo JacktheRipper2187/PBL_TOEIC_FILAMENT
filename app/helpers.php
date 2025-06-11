@@ -73,10 +73,15 @@ if (!function_exists('get_HasilToeic_value')) {
 }
 
 if (!function_exists('get_JadwalUjian_value')) {
-    function get_JadwalUjian_value()
+    function get_JadwalUjian_value($distinct = false)
     {
-        $data = JadwalUjian::all();
-        return $data;
+        if ($distinct) {
+            // Get distinct tanggal
+            return JadwalUjian::select('tanggal')->distinct()->get();
+        } else {
+            // Get all jadwal ujian data
+            return JadwalUjian::all();
+        }
     }
 }
 
@@ -104,3 +109,11 @@ if (!function_exists('is_pendaftaran_active')) {
 
 
 
+if (!function_exists('get_JadwalPelaksanaan_value')) {
+    function get_JadwalPelaksanaan_value($jadwal_pendaftaran_id) {
+        return \App\Models\JadwalPelaksanaan::where('jadwal_pendaftaran_id', $jadwal_pendaftaran_id)
+            ->orderBy('tanggal')
+            ->orderBy('jam_mulai')
+            ->get();
+    }
+}

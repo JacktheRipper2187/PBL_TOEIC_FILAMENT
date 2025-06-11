@@ -10,6 +10,7 @@ class CreateJadwalPendaftaranTable extends Migration
     {
         Schema::create('jadwal_pendaftaran', function (Blueprint $table) {
             $table->id();
+            $table->string('nama_jadwal')->nullable(); // Nama jadwal pendaftaran, opsional
             $table->string('skema');                    // Tambahan: nama skema pendaftaran
             $table->date('tgl_buka');                   // tanggal mulai pendaftaran
             $table->date('tgl_tutup');                  // tanggal berakhir pendaftaran
