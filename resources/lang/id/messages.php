@@ -41,5 +41,9 @@
             'email_trouble' => 'Jika Anda mengalami kesulitan mengklik tombol ":action", salin dan tempel URL di bawah ini ke browser Anda.',
         ],
         'regards' => 'Salam, :name',
+        'exam_date' => 'Tanggal Ujian',
+        'view_file' => 'Lihat File',
+        'download_file' => 'Unduh File',
+        'back' => 'Kembali', 
 
     ];

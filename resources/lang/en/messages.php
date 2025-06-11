@@ -41,5 +41,9 @@ return [
         'email_trouble' => 'If you’re having trouble clicking the ":action" button, copy and paste the URL below into your web browser.',
     ],
     'regards' => 'Regards, :name',
+    'exam_date' => 'Exam Date',
+    'view_file' => 'View File',
+    'download_file' => 'Download File',
+    'back' => 'Back', 
 
 ];

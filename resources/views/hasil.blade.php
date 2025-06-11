@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Hasil Ujian - {{ $hasil->sesi }}</title>
+  <title>{{ __('messages.result') }} - {{ $hasil->sesi }}</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link
     rel="stylesheet"
@@ -113,12 +113,12 @@
 </head>
 <body>
   <div class="card">
-    <h2>Hasil Ujian</h2>
+    <h2>{{ __('messages.result') }}</h2>
     <h4>
       <span>{{ $hasil->sesi }}</span>
     </h4>
 
-    <p><strong>Tanggal Ujian:</strong> {{ \Carbon\Carbon::parse($hasil->tanggal_ujian)->translatedFormat('j F Y') }}</p>
+    <p><strong>{{ __('messages.exam_date') }}:</strong> {{ \Carbon\Carbon::parse($hasil->tanggal_ujian)->translatedFormat('j F Y') }}</p>
 
     @if($hasil->keterangan)
     <p class="keterangan">"{{ $hasil->keterangan }}"</p>
@@ -127,17 +127,17 @@
     <div class="btn-group" role="group" aria-label="Aksi file">
       <!-- Tombol Lihat -->
       <a href="{{ asset('storage/' . $hasil->file_path) }}" target="_blank" class="btn-view">
-        <i class="bi bi-eye"></i> Lihat File
+        <i class="bi bi-eye"></i> {{ __('messages.view_file') }}
       </a>
 
       <!-- Tombol Download -->
       <a href="{{ route('hasil.download', $hasil->id) }}" class="btn-download">
-        <i class="bi bi-download"></i> Download File
+        <i class="bi bi-download"></i> {{ __('messages.download_file') }}
       </a>
 
       <!-- Tombol Kembali -->
       <a href="{{ url('/beranda') }}" class="btn-secondary">
-        <i class="bi bi-arrow-left"></i> Kembali
+        <i class="bi bi-arrow-left"></i>{{ __('messages.back') }}
       </a>
     </div>
   </div>
