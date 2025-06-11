@@ -45,5 +45,32 @@ return [
     'view_file' => 'View File',
     'download_file' => 'Download File',
     'back' => 'Back', 
+    'participant_registration' => 'Participant Registration',
+    'success' => 'Registration Successful!',
+    'congratulate' => 'Congratulations! You have successfully registered to take the free TOEIC test. Please wait for further information via WhatsApp from TOEIC regarding the test schedule and procedures. Also make sure to check the test schedule regularly through our official website. Thank you',
+    'understand' => 'Understand',
+    'complete' => 'Please complete or correct the following data:',
+    'fullname' => 'Full Name',
+    'enter_fullname' => 'Enter your full name',
+    'nim' => 'Enter your NIM',
+    'email' => 'Enter your active Email',
+
+    'home_address' => 'Home Address',
+    'current_address' => 'Current Address',
+    
+    'kampus'               => 'Campus',
+    'jurusan'              => 'Major',
+    'program_studi'        => 'Study Program',
+    'contoh_foto_formal'   => 'Sample Formal Photo',
+    'foto_formal'          => 'Formal Photo',
+
+    'pilih_kampus'            => 'Select Campus',
+    'pilih_jurusan'           => 'Select Major',
+    'pilih_program_studi'     => 'Select Study Program',
+    'format_jpg_png_max'      => 'Format: JPG/PNG, maximum 2MB. Recommended size: 3x4 cm (354x472 pixels)',
+    'format_pdf_jpg_png_max'  => 'Format: PDF/JPG/PNG, maximum 2MB',
+    'daftar_sekarang'         => 'Register Now',
+
+
 
 ];
