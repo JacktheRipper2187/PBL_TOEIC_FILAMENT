@@ -26,16 +26,10 @@ class JadwalUjianResource extends Resource
      {
         return $form
             ->schema([
-                TextInput::make('kampus_cabang')
-                    ->required(),
-                TextInput::make('jurusan')
-                    ->required(),
-                TextInput::make('program_studi')
-                    ->required(),
-                DatePicker::make('tanggal')
-                    ->required(),
-                TimePicker::make('jam')
-                    ->required(),
+                Forms\Components\FileUpload::make('jadwal_ujian')
+                    ->required()
+                    ->image() // Gunakan image() di FileUpload untuk memastikan hanya gambar yang bisa di-upload
+                    ->disk('public_folder'), 
             ]);
     }
 
@@ -43,7 +37,8 @@ class JadwalUjianResource extends Resource
     {
         return $table
             ->columns([
-                // // Define table columns here
+                Tables\Columns\TextColumn::make('jadwal_ujian')
+                    ->searchable(),
             ])
             ->filters([
                 //Define filters if needed

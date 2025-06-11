@@ -11,10 +11,6 @@ class JadwalUjian extends Model
 
     protected $table = 'jadwal_ujian';  // Nama tabel di database
     protected $fillable = [
-        'tanggal',
-        'jam',
-        'kampus_cabang',
-        'jurusan',
-        'program_studi',
+        'jadwal_ujian',
     ];
 }

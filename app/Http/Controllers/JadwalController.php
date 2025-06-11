@@ -15,8 +15,13 @@ class JadwalController extends Controller
 public function index()
 {
     // Ambil semua data jadwal
+
     $jadwalPendaftaran = JadwalPendaftaran::with('jadwalPelaksanaans')->get();
     $ujian = JadwalUjian::orderBy('tanggal')->get();
+
+    // $JadwalPendaftaran = JadwalPendaftaran::orderBy('tgl_buka')->get();
+    // $ujian = JadwalUjian::orderBy('jadwal_ujian')->get();
+
     $pengambilan = JadwalSertifikat::orderBy('hari_tanggal')->get();
 
     // Ambil daftar tanggal_ujian unik dari tabel hasil
@@ -45,7 +50,7 @@ public function index()
         'pengambilan',
         'tanggalList',
         'hasilToeic',
-        'konfirmasiSkTerakhir' // ✅ ini dia yang ditambahkan
+        'konfirmasiSkTerakhir', // ✅ ini dia yang ditambahkan
     ));
 }
 

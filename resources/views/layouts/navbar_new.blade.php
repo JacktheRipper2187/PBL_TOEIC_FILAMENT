@@ -1,5 +1,5 @@
 @php
-    $mahasiswa = Auth::user()->mahasiswa;
+    $mahasiswa = Auth::check() ? Auth::user()->mahasiswa : null;
 @endphp
 
 <!-- Navigation-->

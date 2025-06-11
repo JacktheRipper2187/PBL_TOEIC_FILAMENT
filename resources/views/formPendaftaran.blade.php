@@ -242,9 +242,37 @@
                                         @enderror
                                     </div>
                                 </div>
+
+                                <div class="mb-3 row">
+                                    <label for="foto_formal" class="col-md-3 col-form-label">Foto Formal</label>
+                                    <div class="col-md-9">
+                                        <input type="file" id="foto_formal" name="foto_formal" class="form-control" 
+                                               accept="image/jpeg,image/png" required onchange="previewFile(this, 'fotoFormalPreview')">
+                                        <small class="text-muted">Format: JPG/PNG, maksimal 2MB. Ukuran disarankan: 3x4 cm (354x472 pixel)</small>
+                                        <div id="fotoFormalPreview" class="mt-2"></div>
+                                        @error('foto_formal')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
                                 <div class="mb-3 row">
                                     <label for="upload_ktp" class="col-md-3 col-form-label">Upload KTP</label>
                                     <div class="col-md-9">
+                                        <input type="file" id="upload_ktp" name="upload_ktp" class="form-control" 
+                                               accept=".pdf,.jpg,.jpeg,.png" required onchange="previewFile(this, 'ktpPreview')">
+                                        <small class="text-muted">Format: PDF/JPG/PNG, maksimal 2MB</small>
+                                        <div id="ktpPreview" class="mt-2"></div>
+                                        @error('upload_ktp')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 row">
+                                    <label for="upload_ktp" class="col-md-3 col-form-label">Upload KTP</label>
+                                    <div class="col-md-9">
+<<<<<<< Updated upstream
                                         <input type="file" id="upload_ktp" name="upload_ktp" class="form-control"
                                             accept=".pdf,.jpg,.jpeg,.png" required>
                                         <small class="text-muted">Format: PDF/JPG/PNG, maksimal 2MB</small>
@@ -253,12 +281,45 @@
                                         @enderror
                                     </div>
                                 </div>
+
+                                <div class="mb-3 row">
+                                    <label for="foto_formal" class="col-md-3 col-form-label">Foto Formal</label>
+                                    <div class="col-md-9">
+                                        <input type="file" id="foto_formal" name="foto_formal" class="form-control" 
+                                               accept="image/jpeg,image/png" required onchange="previewFile(this, 'fotoFormalPreview')">
+                                        <small class="text-muted">Format: JPG/PNG, maksimal 2MB. Ukuran disarankan: 3x4 cm (354x472 pixel)</small>
+                                        <div id="fotoFormalPreview" class="mt-2"></div>
+                                        @error('foto_formal')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 row">
+                                    <label for="upload_ktp" class="col-md-3 col-form-label">Upload KTP</label>
+                                    <div class="col-md-9">
+                                        <input type="file" id="upload_ktp" name="upload_ktp" class="form-control" 
+                                               accept=".pdf,.jpg,.jpeg,.png" required onchange="previewFile(this, 'ktpPreview')">
+                                        <small class="text-muted">Format: PDF/JPG/PNG, maksimal 2MB</small>
+                                        <div id="ktpPreview" class="mt-2"></div>
+                                        @error('upload_ktp')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
                                 <div class="mb-3 row">
                                     <label for="upload_ktm" class="col-md-3 col-form-label">Upload KTM</label>
                                     <div class="col-md-9">
-                                        <input type="file" id="upload_ktm" name="upload_ktm" class="form-control"
-                                            accept=".pdf,.jpg,.jpeg,.png" required>
+                                        <input type="file" id="upload_ktm" name="upload_ktm" class="form-control" 
+                                               accept=".pdf,.jpg,.jpeg,.png" required onchange="previewFile(this, 'ktmPreview')">
                                         <small class="text-muted">Format: PDF/JPG/PNG, maksimal 2MB</small>
+=======
+                                        <input type="file" id="upload_ktm" name="upload_ktm" class="form-control" 
+                                               accept=".pdf,.jpg,.jpeg,.png" required onchange="previewFile(this, 'ktmPreview')">
+                                        <small class="text-muted">Format: PDF/JPG/PNG, maksimal 2MB</small>
+>>>>>>> Stashed changes
+                                        <div id="ktmPreview" class="mt-2"></div>
                                         @error('upload_ktm')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
@@ -386,6 +447,45 @@
             "TK": ["D-IV Teknologi Kimia Industri", "D-III Teknik Kimia"],
             "TI": ["D-IV Teknik Informatika", "D-IV Sistem Informasi Bisnis", "D-II Pengembangan Piranti Lunak Situs"]
         };
+
+        // Fungsi untuk preview file upload
+        function previewFile(input, previewId) {
+            const preview = document.getElementById(previewId);
+            const file = input.files[0];
+            
+            if (!file) return;
+            
+            preview.innerHTML = '';
+            
+            if (file.type.match('image.*')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `
+                        <div class="border p-2 rounded" style="max-width: 300px;">
+                            <img src="${e.target.result}" class="img-fluid" alt="Preview">
+                            <div class="text-muted small mt-1">${file.name}</div>
+                        </div>
+                    `;
+                }
+                reader.readAsDataURL(file);
+            } else if (file.name.match(/\.(pdf)$/i)) {
+                preview.innerHTML = `
+                    <div class="alert alert-info p-2 d-flex align-items-center">
+                        <i class="bi bi-file-earmark-pdf fs-4 me-2"></i>
+                        <div>
+                            <strong>File PDF:</strong><br>
+                            <small>${file.name}</small>
+                        </div>
+                    </div>
+                `;
+            } else {
+                preview.innerHTML = `
+                    <div class="alert alert-warning p-2">
+                        Format file tidak didukung: ${file.name}
+                    </div>
+                `;
+            }
+        }
 
         // Fungsi untuk update dropdown jurusan
         function updateJurusan() {
@@ -520,7 +620,7 @@
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false);
-                        submitBtn.html('Daftar Sekarang');
+                        submitBtn.html('<i class="bi bi-check-circle me-1"></i> Daftar Sekarang');
                     }
                 });
             });
