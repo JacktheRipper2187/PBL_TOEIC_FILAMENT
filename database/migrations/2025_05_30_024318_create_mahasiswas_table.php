@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('jurusan');
             $table->string('prodi');
             $table->string('email'); // Hapus nullable dan duplikasi
-            $table->string('foto')->nullable();
-            $table->string('pengambilan_sertifikat'); // Hapus nullable dan duplikasi
+            $table->string('image_path')->nullable();
+            $table->string('pengambilan_sertifikat')->nullable(); // Hapus nullable dan duplikasi
             $table->string('foto')->nullable();
             $table->timestamps();
 
