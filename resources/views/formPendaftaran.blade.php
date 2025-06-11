@@ -139,8 +139,7 @@
                                 <div class="mb-3 row">
                                     <label for="alamat_asal" class="col-md-3 col-form-label">Alamat Asal</label>
                                     <div class="col-md-9">
-                                        <textarea id="alamat_asal" name="alamat_asal" class="form-control"
-                                            required>{{ old('alamat_asal') }}</textarea>
+                                        <textarea id="alamat_asal" name="alamat_asal" class="form-control" required>{{ old('alamat_asal') }}</textarea>
                                         @error('alamat_asal')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
@@ -150,8 +149,7 @@
                                 <div class="mb-3 row">
                                     <label for="alamat_sekarang" class="col-md-3 col-form-label">Alamat Sekarang</label>
                                     <div class="col-md-9">
-                                        <textarea id="alamat_sekarang" name="alamat_sekarang" class="form-control"
-                                            required>{{ old('alamat_sekarang') }}</textarea>
+                                        <textarea id="alamat_sekarang" name="alamat_sekarang" class="form-control" required>{{ old('alamat_sekarang') }}</textarea>
                                         @error('alamat_sekarang')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
@@ -168,8 +166,8 @@
                                                 Utama</option>
                                             <option value="kediri" {{ old('kampus') == 'kediri' ? 'selected' : '' }}>PSDKU
                                                 Kediri</option>
-                                            <option value="pamekasan" {{ old('kampus') == 'pamekasan' ? 'selected' : '' }}>
-                                                PSDKU Pamekasan
+                                            <option value="pamekasan"
+                                                {{ old('kampus') == 'pamekasan' ? 'selected' : '' }}>PSDKU Pamekasan
                                             </option>
                                             <option value="lumajang" {{ old('kampus') == 'lumajang' ? 'selected' : '' }}>
                                                 PSDKU Lumajang</option>
@@ -228,10 +226,31 @@
                                 <div class="mt-2">
                                     <p class="text-muted mb-2">Contoh Foto Formal</p>
                                     <div class="d-flex justify-content-center">
-                                        <img src="{{ asset('storage/img/contoh_foto_formal.jpg') }}"
+                                        <img src="{{ asset('storage/img/contoh_foto_formal.jpg') }}"Add commentMore actions
                                             alt="Contoh Foto Formal" class="img-fluid img-thumbnail"
                                             style="max-width: 400px; min-width: 200px; width: 90%; height: auto; cursor: pointer;"
                                             onclick="window.open(this.src, '_blank')">
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="foto_formal" class="col-md-3 col-form-label">Foto Formal</label>
+                                    <div class="col-md-9">
+                                        <input type="file" id="foto_formal" name="foto_formal" class="form-control"
+                                            accept="image/jpeg,image/png" required>
+                                        <small class="text-muted">Format: JPG/PNG, maksimal 2MB</small>
+                                        @error('foto_formal')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="upload_ktp" class="col-md-3 col-form-label">Upload KTP</label>
+                                    <div class="col-md-9">
+                                        <input type="file" id="upload_ktp" name="upload_ktp" class="form-control"
+                                            accept=".pdf,.jpg,.jpeg,.png" required>
+                                        <small class="text-muted">Format: PDF/JPG/PNG, maksimal 2MB</small>
+                                        @error('upload_ktp')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
@@ -273,76 +292,76 @@
     <script>
         const dataJurusan = {
             "utama": [{
-                value: "TE",
-                label: "Teknik Elektro"
-            },
-            {
-                value: "TM",
-                label: "Teknik Mesin"
-            },
-            {
-                value: "TS",
-                label: "Teknik Sipil"
-            },
-            {
-                value: "AK",
-                label: "Akuntansi"
-            },
-            {
-                value: "AN",
-                label: "Administrasi Niaga"
-            },
-            {
-                value: "TK",
-                label: "Teknik Kimia"
-            },
-            {
-                value: "TI",
-                label: "Teknologi Informasi"
-            }
+                    value: "TE",
+                    label: "Teknik Elektro"
+                },
+                {
+                    value: "TM",
+                    label: "Teknik Mesin"
+                },
+                {
+                    value: "TS",
+                    label: "Teknik Sipil"
+                },
+                {
+                    value: "AK",
+                    label: "Akuntansi"
+                },
+                {
+                    value: "AN",
+                    label: "Administrasi Niaga"
+                },
+                {
+                    value: "TK",
+                    label: "Teknik Kimia"
+                },
+                {
+                    value: "TI",
+                    label: "Teknologi Informasi"
+                }
             ],
             "kediri": [{
-                value: "TI",
-                label: "Teknologi Informasi"
-            },
-            {
-                value: "TM",
-                label: "Teknik Mesin"
-            },
-            {
-                value: "AK",
-                label: "Akuntansi"
-            },
-            {
-                value: "TE",
-                label: "Teknik Elektro"
-            }
+                    value: "TI",
+                    label: "Teknologi Informasi"
+                },
+                {
+                    value: "TM",
+                    label: "Teknik Mesin"
+                },
+                {
+                    value: "AK",
+                    label: "Akuntansi"
+                },
+                {
+                    value: "TE",
+                    label: "Teknik Elektro"
+                }
             ],
             "lumajang": [{
-                value: "TI",
-                label: "Teknologi Informasi"
-            },
-            {
-                value: "TS",
-                label: "Teknik Sipil"
-            },
-            {
-                value: "AK",
-                label: "Akuntansi"
-            }
+                    value: "TI",
+                    label: "Teknologi Informasi"
+                },
+                {
+                    value: "TS",
+                    label: "Teknik Sipil"
+                },
+                {
+                    value: "AK",
+                    label: "Akuntansi"
+                }
             ],
             "pamekasan": [{
-                value: "TM",
-                label: "Teknik Mesin"
-            },
-            {
-                value: "AK",
-                label: "Akuntansi"
-            },
-            {
-                value: "AN",
-                label: "Teknologi Informasi"
-            }
+                    value: "TM",
+                    label: "Teknik Mesin"
+                },
+                {
+                    value: "AK",
+                    label: "Akuntansi"
+                },
+                {
+                    value: "AN",
+                    label: "Teknologi Informasi"
+                }
             ]
         };
 
@@ -393,7 +412,7 @@
             }
         }
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             // Inisialisasi event listener
             $('#kampus').on('change', updateJurusan);
             $('#jurusan').on('change', updateProgramStudi);
@@ -414,7 +433,7 @@
             }
 
             // Validasi file upload
-            $('input[type="file"]').on('change', function () {
+            $('input[type="file"]').on('change', function() {
                 const file = this.files[0];
                 if (file) {
                     const fileSize = file.size / 1024 / 1024; // in MB
@@ -426,7 +445,7 @@
             });
 
             // Form submission handler
-            $('#pendaftaranForm').on('submit', function (e) {
+            $('#pendaftaranForm').on('submit', function(e) {
                 e.preventDefault();
 
                 const form = this;
@@ -449,7 +468,7 @@
                     data: formData,
                     processData: false,
                     contentType: false,
-                    success: function (response) {
+                    success: function(response) {
                         if (response.success) {
                             var successModal = new bootstrap.Modal(document.getElementById(
                                 'successModal'));
@@ -487,7 +506,7 @@
                             }
                         }
                     },
-                    error: function (xhr) {
+                    error: function(xhr) {
                         let errorMessage = 'Terjadi kesalahan pada server';
                         if (xhr.responseJSON && xhr.responseJSON.message) {
                             errorMessage = xhr.responseJSON.message;
@@ -499,7 +518,7 @@
                             'errorModal'));
                         errorModal.show();
                     },
-                    complete: function () {
+                    complete: function() {
                         submitBtn.prop('disabled', false);
                         submitBtn.html('Daftar Sekarang');
                     }
@@ -508,20 +527,20 @@
         });
 
         // Redirect ke landing page setelah modal sukses ditutup
-        $('#successModal').on('hidden.bs.modal', function () {
+        $('#successModal').on('hidden.bs.modal', function() {
             window.location.href = '/beranda'; // Ganti '/' dengan route landing page kamu jika perlu
         });
 
-        $('#successCloseBtn').on('click', function () {
+        $('#successCloseBtn').on('click', function() {
             window.location.href = '/beranda'; // Ganti '/' dengan route landing page kamu jika perlu
         });
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             // Fungsi untuk highlight nav link aktif
             function highlightNav() {
                 const scrollPos = $(document).scrollTop();
 
-                $('section').each(function () {
+                $('section').each(function() {
                     const sectionTop = $(this).offset().top - 100;
                     const sectionBottom = sectionTop + $(this).outerHeight();
 
