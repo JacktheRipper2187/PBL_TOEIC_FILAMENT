@@ -231,56 +231,6 @@
                                             style="max-width: 400px; min-width: 200px; width: 90%; height: auto; cursor: pointer;"
                                             onclick="window.open(this.src, '_blank')">
                                 </div>
-                                <div class="mb-3 row">
-                                    <label for="foto_formal" class="col-md-3 col-form-label">Foto Formal</label>
-                                    <div class="col-md-9">
-                                        <input type="file" id="foto_formal" name="foto_formal" class="form-control"
-                                            accept="image/jpeg,image/png" required>
-                                        <small class="text-muted">Format: JPG/PNG, maksimal 2MB</small>
-                                        @error('foto_formal')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <div class="mb-3 row">
-                                    <label for="foto_formal" class="col-md-3 col-form-label">Foto Formal</label>
-                                    <div class="col-md-9">
-                                        <input type="file" id="foto_formal" name="foto_formal" class="form-control" 
-                                               accept="image/jpeg,image/png" required onchange="previewFile(this, 'fotoFormalPreview')">
-                                        <small class="text-muted">Format: JPG/PNG, maksimal 2MB. Ukuran disarankan: 3x4 cm (354x472 pixel)</small>
-                                        <div id="fotoFormalPreview" class="mt-2"></div>
-                                        @error('foto_formal')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <div class="mb-3 row">
-                                    <label for="upload_ktp" class="col-md-3 col-form-label">Upload KTP</label>
-                                    <div class="col-md-9">
-                                        <input type="file" id="upload_ktp" name="upload_ktp" class="form-control" 
-                                               accept=".pdf,.jpg,.jpeg,.png" required onchange="previewFile(this, 'ktpPreview')">
-                                        <small class="text-muted">Format: PDF/JPG/PNG, maksimal 2MB</small>
-                                        <div id="ktpPreview" class="mt-2"></div>
-                                        @error('upload_ktp')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <div class="mb-3 row">
-                                    <label for="upload_ktp" class="col-md-3 col-form-label">Upload KTP</label>
-                                    <div class="col-md-9">
-<<<<<<< Updated upstream
-                                        <input type="file" id="upload_ktp" name="upload_ktp" class="form-control"
-                                            accept=".pdf,.jpg,.jpeg,.png" required>
-                                        <small class="text-muted">Format: PDF/JPG/PNG, maksimal 2MB</small>
-                                        @error('upload_ktp')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
 
                                 <div class="mb-3 row">
                                     <label for="foto_formal" class="col-md-3 col-form-label">Foto Formal</label>
@@ -314,11 +264,6 @@
                                         <input type="file" id="upload_ktm" name="upload_ktm" class="form-control" 
                                                accept=".pdf,.jpg,.jpeg,.png" required onchange="previewFile(this, 'ktmPreview')">
                                         <small class="text-muted">Format: PDF/JPG/PNG, maksimal 2MB</small>
-=======
-                                        <input type="file" id="upload_ktm" name="upload_ktm" class="form-control" 
-                                               accept=".pdf,.jpg,.jpeg,.png" required onchange="previewFile(this, 'ktmPreview')">
-                                        <small class="text-muted">Format: PDF/JPG/PNG, maksimal 2MB</small>
->>>>>>> Stashed changes
                                         <div id="ktmPreview" class="mt-2"></div>
                                         @error('upload_ktm')
                                             <div class="text-danger">{{ $message }}</div>
