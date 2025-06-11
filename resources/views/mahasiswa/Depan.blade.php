@@ -470,21 +470,20 @@
 
     <!-- Tambahan form di bawah tabel -->
     <div class="mt-4">
+        <div class="mt-3">
+                <label for="image" class="form-label">Upload Gambar Sertifikat</label>
+                <input type="file" class="form-control" name="image" id="image">
+            </div>
+
         <div class="info-item mb-2">
             <span class="info-label">Pengambilan Sertifikat</span>
             <span class="info-value">{{ $mahasiswa->pengambilan_sertifikat ?? '-' }}</span>
         </div>
-
         <form action="{{ route('mahasiswa.update-pengambilan', $mahasiswa->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             <button type="submit" class="btn btn-success w-100 mt-2">
                 <i class="bi bi-check-circle me-1"></i> Tandai Sebagai Sudah Diambil
             </button>
-
-            <div class="mt-3">
-                <label for="image" class="form-label">Upload Gambar Sertifikat</label>
-                <input type="file" class="form-control" name="image" id="image">
-            </div>
         </form>
     </div>
 </div>
