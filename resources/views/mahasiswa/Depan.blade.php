@@ -454,36 +454,66 @@
             </div>
         </div>
 
-        <!-- Data Ujian -->
-        <div id="ujian" class="category-table fade" style="display: none;">
-            <div class="table-responsive">
-                <table class="table table-hover table-striped">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>Hari, Tanggal</th>
-                            <th>Jam</th>
-                            <th>Lokasi</th>
-                            <th>Keterangan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($ujian as $item)
-                            <tr>
-                                <td>{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('l, j F Y') }}
-                                </td>
-                                <td>{{ $item->jam }}</td>
-                                <td>{{ $item->kampus_cabang }}</td>
-                                <td>{{ $item->jurusan }} - {{ $item->program_studi }}</td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="4" class="text-center">Tidak ada jadwal ujian saat ini</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+      <!-- Data Ujian -->
+<div id="ujian" class="category-table fade" style="display: none;">
+    <div class="table-responsive">
+        <table class="table table-hover table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th class="text-center">Jadwal Ujian</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($ujian as $item)
+                    <tr>
+                        <td class="text-center">
+                            @if ($item->jadwal_ujian)
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#imageModal{{ $loop->index }}">
+                                    Lihat Jadwal Ujian
+                                </button>
+                            @else
+                                Tidak ada jadwal
+                            @endif
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td class="text-center">Tidak ada jadwal ujian yang diupload</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal untuk Pop-up Gambar -->
+@foreach ($ujian as $item)
+    @if ($item->jadwal_ujian)
+        <div class="modal fade" id="imageModal{{ $loop->index }}" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel{{ $loop->index }}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content border-0 shadow">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title" id="imageModalLabel{{ $loop->index }}">Jadwal Ujian</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <img src="{{ asset('storage/' . $item->jadwal_ujian) }}" 
+                             alt="Thumbnail Jadwal Ujian" 
+                             class="img-fluid rounded" 
+                             style="max-height: 80vh;">
+                    </div>
+                </div>
             </div>
         </div>
+    @endif
+@endforeach
+
+<!-- Pastikan Bootstrap JS ter-load -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
 
         <!-- Data Pengambilan Sertifikat -->
         <div id="pengambilan" class="category-table fade" style="display: none;">

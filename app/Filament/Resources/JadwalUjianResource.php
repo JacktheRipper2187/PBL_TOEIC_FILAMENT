@@ -3,18 +3,15 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\JadwalUjianResource\Pages;
-use App\Filament\Resources\JadwalUjianResource\RelationManagers;
 use App\Models\JadwalUjian;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\TimePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Tables\Columns\ImageColumn;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class JadwalUjianResource extends Resource
 {
@@ -22,14 +19,15 @@ class JadwalUjianResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Manajemen Jadwal';
+
     public static function form(Form $form): Form
-     {
+    {
         return $form
             ->schema([
-                Forms\Components\FileUpload::make('jadwal_ujian')
-                    ->required()
-                    ->image() // Gunakan image() di FileUpload untuk memastikan hanya gambar yang bisa di-upload
-                    ->disk('public_folder'), 
+                FileUpload::make('jadwal_ujian')
+                    ->disk('public')           // = storage/app/public
+                    ->directory('jadwal')      // = storage/app/public/jadwal
+                    ->visibility('public')
             ]);
     }
 
@@ -37,11 +35,13 @@ class JadwalUjianResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('jadwal_ujian')
-                    ->searchable(),
+                ImageColumn::make('jadwal_ujian')
+                    ->label('Gambar Jadwal')
+                    ->disk('public')
+                    ->height(80),
             ])
             ->filters([
-                //Define filters if needed
+                //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -56,9 +56,7 @@ class JadwalUjianResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array
@@ -69,6 +67,7 @@ class JadwalUjianResource extends Resource
             'edit' => Pages\EditJadwalUjian::route('/{record}/edit'),
         ];
     }
+
     public static function canViewAny(): bool
 {
     $user = auth()->user();
