@@ -10,6 +10,8 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Columns\ViewColumn;
+use Illuminate\Support\Facades\Storage;
 
 class KonfirmasiSkResource extends Resource
 {
@@ -44,17 +46,32 @@ class KonfirmasiSkResource extends Resource
                 ->label('Nama Mahasiswa')
                 ->searchable(),
 
-            Tables\Columns\TextColumn::make('sertifikat_1')
-                ->label('Sertifikat 1')
-                ->formatStateUsing(fn($state) => $state ? 'Lihat File' : '-')
-                ->url(fn($record) => $record->sertifikat_1 ? asset('storage/' . $record->sertifikat_1) : null)
-                ->openUrlInNewTab(),
+Tables\Columns\TextColumn::make('sertifikat_1')
+    ->label('Sertifikat 1')
+    ->formatStateUsing(fn () => '📄 Lihat')
+    ->action(
+        Tables\Actions\Action::make('Lihat Sertifikat 1')
+            ->modalHeading('Preview Sertifikat 1')
+            ->modalContent(fn ($record) => view('components.preview-pdf', [
+                'fileUrl' => Storage::url($record->sertifikat_1),
+            ]))
+            ->modalSubmitAction(false)
+            ->modalCancelAction(false)
+    ),
 
-            Tables\Columns\TextColumn::make('sertifikat_2')
-                ->label('Sertifikat 2')
-                ->formatStateUsing(fn($state) => $state ? 'Lihat File' : '-')
-                ->url(fn($record) => $record->sertifikat_2 ? asset('storage/' . $record->sertifikat_2) : null)
-                ->openUrlInNewTab(),
+Tables\Columns\TextColumn::make('sertifikat_2')
+    ->label('Sertifikat 2')
+    ->formatStateUsing(fn () => '📄 Lihat')
+    ->action(
+        Tables\Actions\Action::make('Lihat Sertifikat 2')
+            ->modalHeading('Preview Sertifikat 2')
+            ->modalContent(fn ($record) => view('components.preview-pdf', [
+                'fileUrl' => Storage::url($record->sertifikat_2),
+            ]))
+            ->modalSubmitAction(false)
+            ->modalCancelAction(false)
+    ),
+
 
             Tables\Columns\TextColumn::make('status')
                 ->badge()
