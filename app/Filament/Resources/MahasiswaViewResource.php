@@ -37,12 +37,12 @@ class MahasiswaViewResource extends Resource
                 Forms\Components\TextInput::make('jurusan')->required(),
                 Forms\Components\TextInput::make('prodi')->required(),
                 Forms\Components\TextInput::make('pengambilan_sertifikat')->required(),
-                Forms\Components\FileUpload::make('foto_sertifikat')
-                    ->label('Foto Pengambilan Sertifikat')
-                    ->image()
-                    ->directory('sertifikat')
-                    ->nullable()
-                    ->disk('public'),
+                //Forms\Components\FileUpload::make('foto_sertifikat')
+                    //->label('Foto Pengambilan Sertifikat')
+                    //->image()
+                    //->directory('sertifikat')
+                    //->nullable()
+                    //->disk('public'),
             ]);
     }
 
@@ -73,29 +73,37 @@ class MahasiswaViewResource extends Resource
                 ->html()
                 ->sortable(),
             // Kolom aksi untuk update pengambilan sertifikat
-            Tables\Columns\TextColumn::make('image_path')
-                    ->label('Bukti Sertifikat')
-                    ->formatStateUsing(fn () => '🖼️ Lihat')
-                    ->action(
-                        Tables\Actions\Action::make('Lihat Sertifikat')
-                            ->modalHeading('Preview Pengambilan Sertifikat')
-                            ->modalContent(fn ($record) => view('components.preview-image', [
-                            'imageUrl' => Storage::url($record->image_path),
-                            ]))
-                            ->modalSubmitAction(false)
-                            ->modalCancelAction(false)
-                    ),
+            //Tables\Columns\TextColumn::make('image_path')
+                    //->label('Bukti Sertifikat')
+                    //->formatStateUsing(fn () => '🖼️ Lihat')
+                    //->action(
+                        //Tables\Actions\Action::make('Lihat Sertifikat')
+                            //->modalHeading('Preview Pengambilan Sertifikat')
+                            //->modalContent(fn ($record) => view('components.preview-image', [
+                            //'imageUrl' => Storage::url($record->image_path),
+                            //]))
+                            //->modalSubmitAction(false)
+                            //->modalCancelAction(false)
+                    //),
         ])
         ->defaultSort('nama_lengkap')
         ->actions([
-            // Aksi untuk mengubah status menjadi 'sudah'
             Tables\Actions\Action::make('konfirmasi_pengambilan')
                 ->label('Konfirmasi Pengambilan')
                 ->icon('heroicon-o-check-circle')
                 ->color('primary')
-                // Menggunakan URL untuk mengarahkan ke halaman pembaruan status
-                ->url(fn($record) => '/update-pengambilan-sertifikat/' . $record->id) // Arahkan ke URL pembaruan
-                ->visible(fn($record) => $record->pengambilan_sertifikat === 'pending'),
+                ->requiresConfirmation() // Menampilkan dialog konfirmasi
+                ->modalHeading('Konfirmasi Pengambilan Sertifikat')
+                ->modalSubheading('Apakah Anda yakin ingin mengubah status pengambilan sertifikat menjadi "sudah"?')
+                ->modalButton('Ya, Konfirmasi')
+                ->action(function ($record) {
+        // Ubah status menjadi 'sudah'
+        $record->update([
+            'pengambilan_sertifikat' => 'sudah',
+        ]);
+    })
+    ->visible(fn($record) => $record->pengambilan_sertifikat === 'belum'),
+
         ])
 
         ->bulkActions([]); // Menonaktifkan aksi Bulk Delete

@@ -65,32 +65,32 @@ class MahasiswaController extends Controller
 
         return back()->with('foto_success', 'Foto profil berhasil diperbarui.');
     }
-    public function updatePengambilan(Request $request, $id)
-{
+    //public function updatePengambilan(Request $request, $id)
+//{
     // Ambil mahasiswa berdasarkan id
-    $mahasiswa = Mahasiswa::findOrFail($id);
+    //$mahasiswa = Mahasiswa::findOrFail($id);
 
     // Validasi input gambar jika ada
-    $request->validate([
-        'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048', // Aturan validasi gambar
-    ]);
+    //$request->validate([
+        //'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048', // Aturan validasi gambar
+    //]);
 
     // Jika ada gambar yang diupload
-    if ($request->hasFile('image')) {
+    //if ($request->hasFile('image')) {
         // Simpan gambar ke storage/public dan ambil pathnya
-        $imagePath = $request->file('image')->store('images/sertifikat', 'public');
+        //$imagePath = $request->file('image')->store('images/sertifikat', 'public');
         
         // Simpan path gambar ke kolom yang sesuai (misalnya `image_path`)
-        $mahasiswa->image_path = $imagePath;
-    }
+        //$mahasiswa->image_path = $imagePath;
+    //}
 
-    // Perbarui status pengambilan sertifikat menjadi 'pending'
-    $mahasiswa->pengambilan_sertifikat = 'pending';
-    $mahasiswa->save();
+    // Perbarui status pengambilan sertifikat menjadi 'sudah'
+    //$mahasiswa->pengambilan_sertifikat = 'sudah';
+    //$mahasiswa->save();
 
     // Redirect kembali dengan pesan sukses
-    return redirect()->back()->with('success', 'Status pengambilan sertifikat berhasil diperbarui.');
-}
+    //return redirect()->back()->with('success', 'Status pengambilan sertifikat berhasil diperbarui.');
+//}
 
 public function updateStatus($id)
 {
