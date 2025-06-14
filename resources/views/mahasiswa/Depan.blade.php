@@ -315,16 +315,66 @@
 
                 @foreach ($pendaftaran as $item)
                     @php
-                        $isGratis = Str::contains(Str::lower($item->title), 'gratis');
-                    @endphp
+                        $isGratis = Str::contains(Str::lower($item->title), ['gratis', 'free']);
 
+                        if ($isGratis) {
+                            $now = now();
+                            $schedule = \App\Models\JadwalPendaftaran::getActiveScheduleForStaticTitle();
+                            $jadwalAktif = $schedule && $schedule->isActive();
+
+                            $debugInfo = [
+                                'title' => $item->title,
+                                'current_time' => $now->format('Y-m-d H:i:s'),
+                                'active_schedule' => $schedule
+                                    ? [
+                                        'id' => $schedule->id,
+                                        'nama' => $schedule->nama_jadwal,
+                                        'status' => $schedule->isActive(),
+                                        'mode' => is_null($schedule->status_manual) ? 'otomatis' : 'manual',
+                                        'periode' =>
+                                            $schedule->tgl_buka->format('d M Y') .
+                                            ' - ' .
+                                            $schedule->tgl_tutup->format('d M Y'),
+                                        'is_current' => $now->between($schedule->tgl_buka, $schedule->tgl_tutup),
+                                        'updated_at' => $schedule->updated_at->format('Y-m-d H:i:s'),
+                                    ]
+                                    : null,
+                                'all_schedules' => \App\Models\JadwalPendaftaran::where('skema', 'gratis')
+                                    ->get()
+                                    ->map(function ($item) use ($now) {
+                                        return [
+                                            'id' => $item->id,
+                                            'nama' => $item->nama_jadwal,
+                                            'status' => $item->isActive(),
+                                            'mode' => is_null($item->status_manual) ? 'otomatis' : 'manual',
+                                            'periode' =>
+                                                $item->tgl_buka->format('d M Y') .
+                                                ' - ' .
+                                                $item->tgl_tutup->format('d M Y'),
+                                            'is_current' => $now->between($item->tgl_buka, $item->tgl_tutup),
+                                            'updated_at' => $item->updated_at->format('Y-m-d H:i:s'),
+                                        ];
+                                    }),
+                            ];
+                        } else {
+                            $jadwalAktif = true;
+                            $debugInfo = null;
+                        }
+                    @endphp
                     <div class="col-md-6 col-lg-4 mb-5">
-                        <a href="{{ !$isGratis || $pendaftaranAktif ? ($item->link ?: route('formpendaftaran')) : 'javascript:void(0)' }}"
-                            onclick="{{ !$isGratis || $pendaftaranAktif ? '' : 'showClosedAlert(event)' }}"
-                            class="portfolio-item mx-auto d-block position-relative {{ !$isGratis || $pendaftaranAktif ? '' : 'opacity-50 cursor-not-allowed' }}"
+                        {{-- @if ($isGratis && $debugInfo)
+                            <!-- Debug info - hapus setelah fix -->
+                            <div class="bg-yellow-100 p-2 mb-2 text-xs">
+                                <pre>{{ json_encode($debugInfo, JSON_PRETTY_PRINT) }}</pre>
+                            </div>
+                        @endif --}}
+
+                        <a href="{{ $jadwalAktif ? ($item->link ?: route('formpendaftaran')) : 'javascript:void(0)' }}"
+                            onclick="{{ $jadwalAktif ? '' : 'showClosedAlert(event)' }}"
+                            class="portfolio-item mx-auto d-block position-relative {{ $jadwalAktif ? '' : 'opacity-50 cursor-not-allowed' }}"
                             target="{{ $item->link ? '_blank' : '_self' }}">
 
-                            @if ($isGratis && !$pendaftaranAktif)
+                            @if ($isGratis && !$jadwalAktif)
                                 <span
                                     class="position-absolute top-0 start-0 bg-danger text-white px-2 py-1 small rounded-end z-10">
                                     {{ __('Ditutup') }}
@@ -549,10 +599,10 @@
                 <!-- Tambahan form di bawah tabel -->
                 <div class="mt-4">
 
-                <div class="info-item mb-2">
-                    <span class="info-label">Pengambilan Sertifikat</span>
-                    <span class="info-value">{{ $mahasiswa->pengambilan_sertifikat ?? '-' }}</span>
-                </div>
+                    <div class="info-item mb-2">
+                        <span class="info-label">Pengambilan Sertifikat</span>
+                        <span class="info-value">{{ $mahasiswa->pengambilan_sertifikat ?? '-' }}</span>
+                    </div>
                     <!--<form action="{{ route('mahasiswa.update-pengambilan', $mahasiswa->id) }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
@@ -569,7 +619,7 @@
                 </div>
             </div>-->
 
-            </div>
+                </div>
     </section>
 
     <!-- CSS Transisi -->

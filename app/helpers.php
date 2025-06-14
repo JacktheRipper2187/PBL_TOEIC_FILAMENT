@@ -9,6 +9,8 @@ use App\Models\Setting;
 use App\Models\pendaftaran;
 use App\Models\JadwalUjian;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
 
 if (!function_exists('get_setting_value')) {
     function get_setting_value($key)
@@ -42,7 +44,8 @@ if (!function_exists('get_section_value')) {
 }
 
 if (!function_exists('get_pendaftaran_value')) {
-    function get_pendaftaran_value() {
+    function get_pendaftaran_value()
+    {
         $locale = session('locale', 'id'); // atau app()->getLocale()
         return DB::table('pendaftarans')->where('locale', $locale)->get();
     }
@@ -86,31 +89,24 @@ if (!function_exists('get_JadwalUjian_value')) {
 }
 
 
-if (!function_exists('is_pendaftaran_active')) {
-    function is_pendaftaran_active()
-    {
-        $now = \Carbon\Carbon::now();
+function is_pendaftaran_active($title = null)
+{
+    if (!is_null($title) && Str::contains(Str::lower($title), 'gratis')) {
+        $schedule = \App\Models\JadwalPendaftaran::getActiveScheduleForStaticTitle();
 
-        $jadwal = \App\Models\JadwalPendaftaran::where('skema', 'like', '%gratis%')->first();
-
-        if (!$jadwal) {
-            return false;
+        // Pastikan jadwal yang dipilih benar-benar aktif
+        if ($schedule) {
+            return $schedule->isActive();
         }
-
-        // Jika status_manual tidak null, gunakan nilai manual
-        if (!is_null($jadwal->status_manual)) {
-            return $jadwal->status_manual == '1' || $jadwal->status_manual === 1;
-        }
-
-        // Jika status_manual null → mode otomatis berdasarkan tanggal
-        return $now->between($jadwal->tgl_buka, $jadwal->tgl_tutup);
+        return false;
     }
+
+    return true;
 }
 
-
-
 if (!function_exists('get_JadwalPelaksanaan_value')) {
-    function get_JadwalPelaksanaan_value($jadwal_pendaftaran_id) {
+    function get_JadwalPelaksanaan_value($jadwal_pendaftaran_id)
+    {
         return \App\Models\JadwalPelaksanaan::where('jadwal_pendaftaran_id', $jadwal_pendaftaran_id)
             ->orderBy('tanggal')
             ->orderBy('jam_mulai')
