@@ -21,7 +21,8 @@
     <section class="page-section bg-primary mb-0" id="pendaftaran">
         <div class="container">
             <br>
-            <h2 class="page-section-heading text-center text-uppercase text-white mb-4">{{ __('messages.participant_registration') }}</h2>
+            <h2 class="page-section-heading text-center text-uppercase text-white mb-4">
+                {{ __('messages.participant_registration') }}</h2>
             <div class="divider-custom">
                 <div class="divider-custom-line"></div>
                 <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
@@ -40,7 +41,8 @@
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <p><i class="bi bi-check-circle-fill text-success me-2"></i>{{ __('messages.congratulate') }}
+                                    <p><i
+                                            class="bi bi-check-circle-fill text-success me-2"></i>{{ __('messages.congratulate') }}
                                     </p>
                                 </div>
                                 <div class="modal-footer">
@@ -62,7 +64,8 @@
                                 </div>
                                 <div class="modal-body" id="errorModalBody"></div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">{{ __('messages.understand') }}</button>
+                                    <button type="button" class="btn btn-danger"
+                                        data-bs-dismiss="modal">{{ __('messages.understand') }}</button>
                                 </div>
                             </div>
                         </div>
@@ -98,7 +101,8 @@
                                 @csrf
 
                                 <div class="mb-3 row">
-                                    <label for="nama_lengkap" class="col-md-3 col-form-label">{{ __('messages.fullname') }}</label>
+                                    <label for="nama_lengkap"
+                                        class="col-md-3 col-form-label">{{ __('messages.fullname') }}</label>
                                     <div class="col-md-9">
                                         <input type="text" id="nama_lengkap" name="nama_lengkap"
                                             value="{{ old('nama_lengkap') }}" class="form-control"
@@ -134,7 +138,8 @@
                                 </div>
 
                                 <div class="mb-3 row">
-                                    <label for="alamat_asal" class="col-md-3 col-form-label">{{ __('messages.home_address') }}</label>
+                                    <label for="alamat_asal"
+                                        class="col-md-3 col-form-label">{{ __('messages.home_address') }}</label>
                                     <div class="col-md-9">
                                         <textarea id="alamat_asal" name="alamat_asal" class="form-control" required>{{ old('alamat_asal') }}</textarea>
                                         @error('alamat_asal')
@@ -144,7 +149,8 @@
                                 </div>
 
                                 <div class="mb-3 row">
-                                    <label for="alamat_sekarang" class="col-md-3 col-form-label">{{ __('messages.current_address') }}</label>
+                                    <label for="alamat_sekarang"
+                                        class="col-md-3 col-form-label">{{ __('messages.current_address') }}</label>
                                     <div class="col-md-9">
                                         <textarea id="alamat_sekarang" name="alamat_sekarang" class="form-control" required>{{ old('alamat_sekarang') }}</textarea>
                                         @error('alamat_sekarang')
@@ -155,10 +161,12 @@
 
                                 <!-- Dropdown Kampus -->
                                 <div class="mb-3 row">
-                                    <label for="kampus" class="col-md-3 col-form-label">{{ __('messages.kampus') }}</label>
+                                    <label for="kampus"
+                                        class="col-md-3 col-form-label">{{ __('messages.kampus') }}</label>
                                     <div class="col-md-9">
                                         <select id="kampus" name="kampus" class="form-select" required>
-                                            <option value="" selected disabled>{{ __('messages.pilih_kampus') }}</option>
+                                            <option value="" selected disabled>{{ __('messages.pilih_kampus') }}
+                                            </option>
                                             <option value="utama" {{ old('kampus') == 'utama' ? 'selected' : '' }}>Kampus
                                                 Utama</option>
                                             <option value="kediri" {{ old('kampus') == 'kediri' ? 'selected' : '' }}>PSDKU
@@ -177,10 +185,12 @@
 
                                 <!-- Dropdown Jurusan -->
                                 <div class="mb-3 row">
-                                    <label for="jurusan" class="col-md-3 col-form-label">{{ __('messages.jurusan') }}</label>
+                                    <label for="jurusan"
+                                        class="col-md-3 col-form-label">{{ __('messages.jurusan') }}</label>
                                     <div class="col-md-9">
                                         <select id="jurusan" name="jurusan" class="form-select" required>
-                                            <option value="" selected disabled>{{ __('messages.pilih_jurusan') }}</option>
+                                            <option value="" selected disabled>{{ __('messages.pilih_jurusan') }}
+                                            </option>
                                         </select>
                                         @error('jurusan')
                                             <div class="text-danger">{{ $message }}</div>
@@ -190,98 +200,85 @@
 
                                 <!-- Dropdown Program Studi -->
                                 <div class="mb-3 row">
-                                    <label for="program_studi" class="col-md-3 col-form-label">{{ __('messages.program_studi') }}</label>
+                                    <label for="program_studi"
+                                        class="col-md-3 col-form-label">{{ __('messages.program_studi') }}</label>
                                     <div class="col-md-9">
                                         <select id="program_studi" name="program_studi" class="form-select" required>
-                                            <option value="" selected disabled>{{ __('messages.pilih_program_studi') }}</option>
+                                            <option value="" selected disabled>
+                                                {{ __('messages.pilih_program_studi') }}</option>
                                         </select>
                                         @error('program_studi')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
                                 </div>
-                                @if (count($jadwalList) === 1 && isset($jadwalList[0]))
-                                    @php $jadwal = $jadwalList[0]; @endphp
-                                    <input type="hidden" name="jadwal_pendaftaran_id" value="{{ $jadwal->id }}">
-                                @elseif(count($jadwalList) > 1)
-                                    <div class="mb-4">
-                                        <label for="jadwal_pendaftaran_id" class="block font-semibold text-gray-700">Pilih
-                                            Jadwal</label>
-                                        <select name="jadwal_pendaftaran_id" id="jadwal_pendaftaran_id  "
-                                            class="w-full p-2 border rounded-md" required>
-                                            <option value="" disabled selected>Pilih Jadwal</option>
-                                            @foreach ($jadwalList as $jadwal)
-                                                <option value="{{ $jadwal->id }}">
-                                                    {{ $jadwal->tanggal_mulai_formatted }} -
-                                                    {{ $jadwal->tanggal_akhir_formatted }} (Kuota: {{ $jadwal->kuota }})
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                @endif
                                 {{-- menampilkan contoh gambar --}}
                                 <div class="mt-2">
                                     <p class="text-muted mb-2">{{ __('messages.contoh_foto_formal') }}</p>
                                     <div class="d-flex justify-content-center">
-                                        <img src="{{ asset('storage/img/contoh_foto_formal.jpg') }}"Add commentMore actions
-                                            alt="Contoh Foto Formal" class="img-fluid img-thumbnail"
+                                        <img src="{{ asset('storage/img/contoh_foto_formal.jpg') }}"Add commentMore
+                                            actions alt="Contoh Foto Formal" class="img-fluid img-thumbnail"
                                             style="max-width: 400px; min-width: 200px; width: 90%; height: auto; cursor: pointer;"
                                             onclick="window.open(this.src, '_blank')">
-                                </div>
-
-                                <div class="mb-3 row">
-                                    <label for="foto_formal" class="col-md-3 col-form-label">{{ __('messages.foto_formal') }}</label>
-                                    <div class="col-md-9">
-                                        <input type="file" id="foto_formal" name="foto_formal" class="form-control" 
-                                               accept="image/jpeg,image/png" required onchange="previewFile(this, 'fotoFormalPreview')">
-                                        <small class="text-muted">{{ __('messages.format_jpg_png_max') }}</small>
-                                        <div id="fotoFormalPreview" class="mt-2"></div>
-                                        @error('foto_formal')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
                                     </div>
-                                </div>
 
-                                <div class="mb-3 row">
-                                    <label for="upload_ktp" class="col-md-3 col-form-label">Upload KTP</label>
-                                    <div class="col-md-9">
-                                        <input type="file" id="upload_ktp" name="upload_ktp" class="form-control" 
-                                               accept=".pdf,.jpg,.jpeg,.png" required onchange="previewFile(this, 'ktpPreview')">
-                                        <small class="text-muted">{{ __('messages.format_pdf_jpg_png_max') }}</small>
-                                        <div id="ktpPreview" class="mt-2"></div>
-                                        @error('upload_ktp')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
+                                    <div class="mb-3 row">
+                                        <label for="foto_formal"
+                                            class="col-md-3 col-form-label">{{ __('messages.foto_formal') }}</label>
+                                        <div class="col-md-9">
+                                            <input type="file" id="foto_formal" name="foto_formal"
+                                                class="form-control" accept="image/jpeg,image/png" required
+                                                onchange="previewFile(this, 'fotoFormalPreview')">
+                                            <small class="text-muted">{{ __('messages.format_jpg_png_max') }}</small>
+                                            <div id="fotoFormalPreview" class="mt-2"></div>
+                                            @error('foto_formal')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="mb-3 row">
-                                    <label for="upload_ktm" class="col-md-3 col-form-label">Upload KTM</label>
-                                    <div class="col-md-9">
-                                        <input type="file" id="upload_ktm" name="upload_ktm" class="form-control" 
-                                               accept=".pdf,.jpg,.jpeg,.png" required onchange="previewFile(this, 'ktmPreview')">
-                                        <small class="text-muted">{{ __('messages.format_pdf_jpg_png_max') }}</small>
-                                        <div id="ktmPreview" class="mt-2"></div>
-                                        @error('upload_ktm')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
+                                    <div class="mb-3 row">
+                                        <label for="upload_ktp" class="col-md-3 col-form-label">Upload KTP</label>
+                                        <div class="col-md-9">
+                                            <input type="file" id="upload_ktp" name="upload_ktp" class="form-control"
+                                                accept=".pdf,.jpg,.jpeg,.png" required
+                                                onchange="previewFile(this, 'ktpPreview')">
+                                            <small class="text-muted">{{ __('messages.format_pdf_jpg_png_max') }}</small>
+                                            <div id="ktpPreview" class="mt-2"></div>
+                                            @error('upload_ktp')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="mb-3 row">
-                                    <div class="col-md-9 offset-md-3">
-                                        <button type="submit" class="btn btn-success" id="submitBtn">
-                                            {{-- Icon daftar (Bootstrap Icons check-circle) --}}
-                                            <i class="bi bi-check-circle me-1"></i>
-                                            {{ __('messages.daftar_sekarang') }}
-                                        </button>
-                                        <a href="{{ url('/beranda') }}" class="btn btn-secondary ms-2">
-                                            {{-- Icon panah kiri (Bootstrap Icons arrow-left) --}}
-                                            <i class="bi bi-arrow-left me-1"></i>
-                                           {{ __('messages.back') }}
-                                        </a>
+                                    <div class="mb-3 row">
+                                        <label for="upload_ktm" class="col-md-3 col-form-label">Upload KTM</label>
+                                        <div class="col-md-9">
+                                            <input type="file" id="upload_ktm" name="upload_ktm" class="form-control"
+                                                accept=".pdf,.jpg,.jpeg,.png" required
+                                                onchange="previewFile(this, 'ktmPreview')">
+                                            <small class="text-muted">{{ __('messages.format_pdf_jpg_png_max') }}</small>
+                                            <div id="ktmPreview" class="mt-2"></div>
+                                            @error('upload_ktm')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
                                     </div>
-                                </div>
+
+                                    <div class="mb-3 row">
+                                        <div class="col-md-9 offset-md-3">
+                                            <button type="submit" class="btn btn-success" id="submitBtn">
+                                                {{-- Icon daftar (Bootstrap Icons check-circle) --}}
+                                                <i class="bi bi-check-circle me-1"></i>
+                                                {{ __('messages.daftar_sekarang') }}
+                                            </button>
+                                            <a href="{{ url('/beranda') }}" class="btn btn-secondary ms-2">
+                                                {{-- Icon panah kiri (Bootstrap Icons arrow-left) --}}
+                                                <i class="bi bi-arrow-left me-1"></i>
+                                                {{ __('messages.back') }}
+                                            </a>
+                                        </div>
+                                    </div>
                             </form>
                         </div>
                     </div>
@@ -394,11 +391,11 @@
         function previewFile(input, previewId) {
             const preview = document.getElementById(previewId);
             const file = input.files[0];
-            
+
             if (!file) return;
-            
+
             preview.innerHTML = '';
-            
+
             if (file.type.match('image.*')) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
@@ -562,7 +559,8 @@
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false);
-                        submitBtn.html('<i class="bi bi-check-circle me-1"></i> Daftar Sekarang');
+                        submitBtn.html(
+                            '<i class="bi bi-check-circle me-1"></i> Daftar Sekarang');
                     }
                 });
             });
