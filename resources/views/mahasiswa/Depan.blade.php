@@ -811,120 +811,205 @@
                     </div>
                 @endif
             </div>
-            <!-- Upload Sertifikat TOEIC -->
-            <h2 class="mt-5 mb-4 text-center fw-bold">
-                <i class="bi bi-file-earmark-text"></i> Upload Sertifikat TOEIC
-            </h2>
+<!-- Judul Section -->
+<h2 class="mt-5 mb-4 text-center fw-bold">
+    <i class="bi bi-file-earmark-text"></i> PENGAJUAN SK TOEIC
+</h2>
 
-            <div class="container">
-                <div class="row">
-                    {{-- Form Upload --}}
-                    <div class="col-md-6">
-                        @if (session('success'))
-                            <div class="alert alert-success text-center animate__animated animate__fadeInDown">
-                                {{ session('success') }}
-                            </div>
-                        @endif
+<div class="container">
+    <!-- Tampilkan form hanya jika belum ada pengajuan atau status ditolak -->
+    @if(!$konfirmasiSkTerakhir || $konfirmasiSkTerakhir->status === 'ditolak')
+    <div class="card shadow-sm mb-4" id="infoAwal">
+        <div class="card-body">
+            <h5 class="card-title fw-semibold">
+                <i class="bi bi-info-circle-fill text-primary"></i> Informasi Pengajuan SK TOEIC
+            </h5>
+            <div class="alert alert-info mt-3">
+                <p class="mb-0">
+                    Mahasiswa yang telah mengikuti ujian TOEIC sebanyak 2 kali dengan score di bawah 500, diperkenankan mengajukan SK TOEIC sebagai pengganti syarat pengambilan ijazah.
+                </p>
+            </div>
+            
+            <div class="alert alert-warning small">
+                <strong><i class="bi bi-exclamation-triangle"></i> Persyaratan:</strong>
+                <ul class="mt-2 mb-0">
+                    <li>Memiliki 2 sertifikat TOEIC resmi</li>
+                    <li>Score kedua sertifikat di bawah 500</li>
+                    <li>Masa berlaku sertifikat masih valid</li>
+                </ul>
+            </div>
+            
+            <button id="btnAjukan" class="btn btn-primary w-100 mt-3">
+                <i class="bi bi-send"></i> Ajukan SK TOEIC
+            </button>
+        </div>
+    </div>
+    @endif
 
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul class="mb-0">
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
+    <!-- Form Section -->
+    <div id="formSection" style="display: {{ ($konfirmasiSkTerakhir && $konfirmasiSkTerakhir->status !== 'ditolak') ? 'block' : 'none' }};">
+        <div class="row">
+            {{-- Form Upload --}}
+            <div class="col-md-6">
+                @if (session('success'))
+                    <div class="alert alert-success text-center animate__animated animate__fadeInDown">
+                        {{ session('success') }}
+                    </div>
+                @endif
 
-                        @php
-                            $status = $konfirmasiSkTerakhir->status ?? null;
-                            $isAktif = !$status || $status === 'ditolak';
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
-                            $statusBadge = match ($status) {
-                                'disetujui' => '<span class="badge bg-success">Disetujui</span>',
-                                'pending' => '<span class="badge bg-warning text-dark">Pending</span>',
-                                'ditolak' => '<span class="badge bg-danger">Ditolak</span>',
-                                default => '<span class="badge bg-secondary">Belum Ada</span>',
-                            };
-                        @endphp
+                @php
+                    $status = $konfirmasiSkTerakhir->status ?? null;
+                    $isAktif = !$status || $status === 'ditolak';
 
-                        <form method="POST" action="{{ route('konfirmasi-sk.store') }}"
-                            enctype="multipart/form-data" class="card p-4 shadow-sm border-primary" id="uploadForm">
-                            @csrf
+                    $statusBadge = match ($status) {
+                        'disetujui' => '<span class="badge bg-success">Disetujui</span>',
+                        'pending' => '<span class="badge bg-warning text-dark">Pending</span>',
+                        'ditolak' => '<span class="badge bg-danger">Ditolak</span>',
+                        default => '<span class="badge bg-secondary">Belum Ada</span>',
+                    };
+                @endphp
 
-                            <div class="mb-3">
-                                <label for="sertifikat_1" class="form-label">Sertifikat 1 (PDF)</label>
-                                <input type="file" class="form-control" id="sertifikat_1" name="sertifikat_1"
-                                    accept="application/pdf" {{ $isAktif ? '' : 'disabled' }}>
-                            </div>
+                <form method="POST" action="{{ route('konfirmasi-sk.store') }}"
+                    enctype="multipart/form-data" class="card p-4 shadow-sm border-primary" id="uploadForm">
+                    @csrf
 
-                            <div class="mb-3">
-                                <label for="sertifikat_2" class="form-label">Sertifikat 2 (PDF)</label>
-                                <input type="file" class="form-control" id="sertifikat_2" name="sertifikat_2"
-                                    accept="application/pdf" {{ $isAktif ? '' : 'disabled' }}>
-                            </div>
-
-                            <button type="submit" class="btn {{ $isAktif ? 'btn-primary' : 'btn-secondary' }} w-100"
-                                {{ $isAktif ? '' : 'disabled' }}>
-                                Kirim
-                            </button>
-
-                            @unless ($isAktif)
-                                <p class="text-muted mt-2 small text-center">
-                                    Tidak bisa upload ulang karena status: {!! $statusBadge !!}
-                                </p>
-                            @endunless
-                        </form>
+                    <div class="mb-3">
+                        <label for="sertifikat_1" class="form-label">Sertifikat 1 (PDF)</label>
+                        <input type="file" class="form-control" id="sertifikat_1" name="sertifikat_1"
+                            accept="application/pdf" {{ $isAktif ? '' : 'disabled' }}>
                     </div>
 
-                    {{-- Status Info --}}
-                    <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="sertifikat_2" class="form-label">Sertifikat 2 (PDF)</label>
+                        <input type="file" class="form-control" id="sertifikat_2" name="sertifikat_2"
+                            accept="application/pdf" {{ $isAktif ? '' : 'disabled' }}>
+                    </div>
+
+                    <button type="submit" class="btn btn-secondary w-100" id="submitBtn" disabled>
+                        Kirim
+                    </button>
+
+                    <div id="fileValidation" class="text-muted small mt-2" style="display:none;">
+                        Harap unggah kedua sertifikat untuk melanjutkan
+                    </div>
+
+                    @unless ($isAktif)
+                        <p class="text-muted mt-2 small text-center">
+                            Tidak bisa upload ulang karena status: {!! $statusBadge !!}
+                        </p>
+                    @endunless
+                </form>
+            </div>
+
+            {{-- Status Info --}}
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
                         @if ($konfirmasiSkTerakhir)
                             @php
                                 $borderClass = match ($status) {
-                                    'disetujui' => 'border-success',
-                                    'ditolak' => 'border-danger',
-                                    'pending' => 'border-warning',
-                                    default => 'border-secondary',
+                                    'disetujui' => 'border-start border-5 border-success',
+                                    'ditolak' => 'border-start border-5 border-danger',
+                                    'pending' => 'border-start border-5 border-warning',
+                                    default => 'border-start border-5 border-secondary',
                                 };
                             @endphp
 
-                            <div class="card shadow-sm {{ $borderClass }}">
-                                <div class="card-body bg-light">
-                                    <h5 class="card-title fw-semibold mb-3">
-                                        <i class="bi bi-info-circle text-info"></i>
-                                        Status: {!! $statusBadge !!}
-                                    </h5>
+                            <div class="{{ $borderClass }} p-3 rounded-end">
+                                <h5 class="card-title fw-semibold mb-3">
+                                    <i class="bi bi-info-circle"></i>
+                                    Status Pengajuan Terakhir
+                                </h5>
+                                
+                                <div class="alert alert-{{ match($status) {
+                                    'disetujui' => 'success',
+                                    'ditolak' => 'danger',
+                                    'pending' => 'warning',
+                                    default => 'secondary',
+                                } }}">
+                                    Status: {!! $statusBadge !!}
+                                    @if ($konfirmasiSkTerakhir->created_at)
+                                        <br>
+                                        <small class="text-muted">
+                                            Diajukan pada: {{ $konfirmasiSkTerakhir->created_at->format('d M Y H:i') }}
+                                        </small>
+                                    @endif
+                                </div>
 
-                                    <ul class="mb-3">
+                                <div class="mb-3">
+                                    <h6><i class="bi bi-file-earmark-pdf"></i> Dokumen Terlampir:</h6>
+                                    <ul class="list-group list-group-flush">
                                         @if ($konfirmasiSkTerakhir->sertifikat_1)
-                                            <li>
-                                                📎 <a
-                                                    href="{{ asset('storage/' . $konfirmasiSkTerakhir->sertifikat_1) }}"
-                                                    target="_blank">Lihat Sertifikat 1</a>
+                                            <li class="list-group-item">
+                                                <a href="{{ asset('storage/' . $konfirmasiSkTerakhir->sertifikat_1) }}"
+                                                    target="_blank" class="text-decoration-none">
+                                                    <i class="bi bi-filetype-pdf text-danger"></i> Sertifikat 1
+                                                </a>
                                             </li>
                                         @endif
                                         @if ($konfirmasiSkTerakhir->sertifikat_2)
-                                            <li>
-                                                📎 <a
-                                                    href="{{ asset('storage/' . $konfirmasiSkTerakhir->sertifikat_2) }}"
-                                                    target="_blank">Lihat Sertifikat 2</a>
+                                            <li class="list-group-item">
+                                                <a href="{{ asset('storage/' . $konfirmasiSkTerakhir->sertifikat_2) }}"
+                                                    target="_blank" class="text-decoration-none">
+                                                    <i class="bi bi-filetype-pdf text-danger"></i> Sertifikat 2
+                                                </a>
                                             </li>
                                         @endif
                                     </ul>
+                                </div>
 
-                                    @if ($konfirmasiSkTerakhir->file_sk && $status === 'disetujui')
+                                @if ($konfirmasiSkTerakhir->file_sk && $status === 'disetujui')
+                                    <div class="d-grid">
                                         <a href="{{ route('mahasiswa.downloadSk', $konfirmasiSkTerakhir->id) }}"
                                             class="btn btn-success">
-                                            <i class="bi bi-download"></i> Unduh File SK Disetujui
+                                            <i class="bi bi-download"></i> Unduh SK Disetujui
                                         </a>
-                                    @endif
+                                    </div>
+                                @endif
+                            </div>
+                        @else
+                            <div class="border-start border-5 border-primary p-3 rounded-end">
+                                <h5 class="card-title fw-semibold mb-3">
+                                    <i class="bi bi-exclamation-circle text-primary"></i>
+                                    Syarat dan Ketentuan Pengajuan SK TOEIC
+                                </h5>
+                                
+                                <div class="alert alert-info">
+                                    <strong>Sebelum mengajukan, pastikan:</strong>
+                                    <ol class="mt-2 mb-0">
+                                        <li>Sertifikat TOEIC masih berlaku</li>
+                                        <li>File yang diupload format PDF</li>
+                                        <li>Maksimal ukuran file 2MB per sertifikat</li>
+                                        <li>Hanya bisa mengajukan sekali dalam satu periode</li>
+                                    </ol>
+                                </div>
+                                
+                                <div class="alert alert-warning small">
+                                    <i class="bi bi-clock-history"></i> <strong>Proses verifikasi:</strong>
+                                    <ul class="mt-2 mb-0">
+                                        <li>Verifikasi membutuhkan waktu 3-5 hari kerja</li>
+                                        <li>Anda akan mendapatkan notifikasi ketika status berubah</li>
+                                        <li>Jika ditolak, Anda bisa mengajukan ulang</li>
+                                    </ul>
                                 </div>
                             </div>
                         @endif
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
         </div>
     </section>
 
@@ -1287,7 +1372,51 @@
             return jam.substring(0, 5); // Ambil hanya HH:MM
         }
     </script>
+  <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const btnAjukan = document.getElementById('btnAjukan');
+    const infoAwal = document.getElementById('infoAwal');
+    const formSection = document.getElementById('formSection');
+    
+    // Jika tombol Ajukan ada (artinya dalam mode awal)
+    if(btnAjukan) {
+        btnAjukan.addEventListener('click', function() {
+            infoAwal.style.display = 'none';
+            formSection.style.display = 'block';
+        });
+    }
 
+    // Validasi Form
+    const fileInput1 = document.getElementById('sertifikat_1');
+    const fileInput2 = document.getElementById('sertifikat_2');
+    const submitBtn = document.getElementById('submitBtn');
+    const validationMsg = document.getElementById('fileValidation');
+
+    function checkFiles() {
+        const bothFilesSelected = fileInput1.files.length > 0 && fileInput2.files.length > 0;
+        
+        if (bothFilesSelected) {
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('btn-secondary');
+            submitBtn.classList.add('btn-primary');
+            validationMsg.style.display = 'none';
+        } else {
+            submitBtn.disabled = true;
+            submitBtn.classList.remove('btn-primary');
+            submitBtn.classList.add('btn-secondary');
+        }
+
+        if (fileInput1.files.length > 0 || fileInput2.files.length > 0) {
+            validationMsg.style.display = 'block';
+        } else {
+            validationMsg.style.display = 'none';
+        }
+    }
+    
+    fileInput1.addEventListener('change', checkFiles);
+    fileInput2.addEventListener('change', checkFiles);
+});
+</script>
 </body>
 
 </html>
