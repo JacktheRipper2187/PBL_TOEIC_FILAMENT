@@ -18,8 +18,13 @@ class KonfirmasiSkMahasiswaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'sertifikat_1' => 'required|file|mimes:pdf',
-            'sertifikat_2' => 'required|file|mimes:pdf',
+            'sertifikat_1' => 'required|file|mimes:pdf|max:2048', // 2MB
+            'sertifikat_2' => 'required|file|mimes:pdf|max:2048',
+        ], [
+            'sertifikat_1.max' => 'Sertifikat 1 tidak boleh lebih dari 2MB',
+            'sertifikat_2.max' => 'Sertifikat 2 tidak boleh lebih dari 2MB',
+            'sertifikat_1.mimes' => 'Sertifikat 1 harus berupa PDF',
+            'sertifikat_2.mimes' => 'Sertifikat 2 harus berupa PDF',
         ]);
 
         $mahasiswa = Mahasiswa::where('user_id', auth()->id())->first();
