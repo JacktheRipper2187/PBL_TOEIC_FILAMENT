@@ -67,16 +67,32 @@ class KonfirmasiSkResource extends Resource
                 // SK Preview column
                 Tables\Columns\TextColumn::make('file_sk')
                     ->label('SK TOEIC')
-                    ->formatStateUsing(fn($state, $record) => $record?->status === 'disetujui' && $state ? '📄 Lihat SK' : '')
+                    ->formatStateUsing(function ($state, $record) {
+                        $shouldShow = $record?->status === 'disetujui' && $state;
+                        return $shouldShow ? '📄 Lihat SK' : '';
+                    })
                     ->action(
                         Tables\Actions\Action::make('previewSK')
                             ->modalHeading('Preview SK TOEIC')
-                            ->modalContent(
-                                fn($record) => $record?->file_sk
-                                    ? view('components.preview-pdf', ['fileUrl' => Storage::url($record->file_sk)])
-                                    : '<p class="p-4">SK sedang diproses</p>'
-                            )
-                    ),
+                            ->modalContent(function ($record) {
+                                if (!$record?->file_sk || $record?->status !== 'disetujui') {
+                                    return view('components.empty-state', [
+                                        'message' => 'SK tidak tersedia'
+                                    ]);
+                                }
+                                return view('components.preview-pdf', [
+                                    'fileUrl' => Storage::url($record->file_sk)
+                                ]);
+                            })
+                            ->hidden(fn($record) => !$record?->file_sk || $record?->status !== 'disetujui')
+                    )
+                    ->extraAttributes(function ($record) {
+                        $isClickable = $record?->status === 'disetujui' && $record?->file_sk;
+                        return [
+                            'style' => $isClickable ? 'cursor: pointer' : 'cursor: default',
+                            'class' => $isClickable ? '' : 'opacity-50'
+                        ];
+                    }),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->color(fn($state) => match ($state) {

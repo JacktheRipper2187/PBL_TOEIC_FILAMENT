@@ -10,8 +10,12 @@ class KonfirmasiSk extends Model
     protected $table = 'konfirmasi_sks';
 
     protected $fillable = [
-        'mahasiswa_id', 'sertifikat_1', 'sertifikat_2',
-        'file_sk', 'status'
+        'mahasiswa_id',
+        'sertifikat_1',
+        'sertifikat_2',
+        'file_sk',
+        'status',
+        'catatan'
     ];
 
     public function mahasiswa()
@@ -19,4 +23,3 @@ class KonfirmasiSk extends Model
         return $this->belongsTo(Mahasiswa::class);
     }
 }
-
