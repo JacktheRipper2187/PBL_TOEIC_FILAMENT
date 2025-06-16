@@ -139,6 +139,7 @@ class KonfirmasiSkResource extends Resource
             ->actions([
                 // Approve Action (auto-generate SK)
                 Tables\Actions\Action::make('approve')
+                    ->label('Setujui')
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
                     ->visible(fn($record) => $record?->status === 'pending')
@@ -158,6 +159,7 @@ class KonfirmasiSkResource extends Resource
 
                 // Reject Action
                 Tables\Actions\Action::make('reject')
+                    ->label('Tolak')
                     ->icon('heroicon-o-x-circle')
                     ->color('danger')
                     ->visible(fn($record) => $record?->status === 'pending')

@@ -942,6 +942,7 @@
                         <div class="col-md-6">
                             <div class="card shadow-sm h-100">
                                 <div class="card-body">
+                                    <!-- Di dalam card Status Pengajuan Terakhir -->
                                     @if ($konfirmasiSkTerakhir)
                                         @php
                                             $borderClass = match ($status) {
@@ -974,6 +975,22 @@
                                                     </small>
                                                 @endif
                                             </div>
+
+                                            <!-- CATATAN PENOLAKAN -->
+                                            @if ($status === 'ditolak' && $konfirmasiSkTerakhir->catatan)
+                                                <div class="alert alert-danger">
+                                                    <h6 class="fw-semibold"><i class="bi bi-exclamation-triangle"></i>
+                                                        Alasan Penolakan:</h6>
+                                                    <div class="mt-2 p-3 bg-white rounded border border-danger">
+                                                        {!! nl2br(e($konfirmasiSkTerakhir->catatan)) !!}
+                                                    </div>
+                                                    <small class="text-muted d-block mt-2">
+                                                        Ditolak pada:
+                                                        {{ $konfirmasiSkTerakhir->updated_at->format('d M Y H:i') }}
+                                                    </small>
+                                                </div>
+                                            @endif
+                                            <!-- END OF CATATAN PENOLAKAN -->
 
                                             <div class="mb-3">
                                                 <h6><i class="bi bi-file-earmark-pdf"></i> Dokumen Terlampir:</h6>
@@ -1008,39 +1025,41 @@
                                                 </div>
                                             @endif
                                         </div>
-                                    @else
-                                        <div class="border-start border-5 border-primary p-3 rounded-end">
-                                            <h5 class="card-title fw-semibold mb-3">
-                                                <i class="bi bi-exclamation-circle text-primary"></i>
-                                                Syarat dan Ketentuan Pengajuan SK TOEIC
-                                            </h5>
 
-                                            <div class="alert alert-info">
-                                                <strong>Sebelum mengajukan, pastikan:</strong>
-                                                <ol class="mt-2 mb-0">
-                                                    <li>Sertifikat TOEIC masih berlaku</li>
-                                                    <li>File yang diupload format PDF</li>
-                                                    <li>Maksimal ukuran file 2MB per sertifikat</li>
-                                                    <li>Hanya bisa mengajukan sekali dalam satu periode</li>
-                                                </ol>
-                                            </div>
-
-                                            <div class="alert alert-warning small">
-                                                <i class="bi bi-clock-history"></i> <strong>Proses verifikasi:</strong>
-                                                <ul class="mt-2 mb-0">
-                                                    <li>Verifikasi membutuhkan waktu 3-5 hari kerja</li>
-                                                    <li>Anda akan mendapatkan notifikasi ketika status berubah</li>
-                                                    <li>Jika ditolak, Anda bisa mengajukan ulang</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    @endif
                                 </div>
+                            @else
+                                <div class="border-start border-5 border-primary p-3 rounded-end">
+                                    <h5 class="card-title fw-semibold mb-3">
+                                        <i class="bi bi-exclamation-circle text-primary"></i>
+                                        Syarat dan Ketentuan Pengajuan SK TOEIC
+                                    </h5>
+
+                                    <div class="alert alert-info">
+                                        <strong>Sebelum mengajukan, pastikan:</strong>
+                                        <ol class="mt-2 mb-0">
+                                            <li>Sertifikat TOEIC masih berlaku</li>
+                                            <li>File yang diupload format PDF</li>
+                                            <li>Maksimal ukuran file 2MB per sertifikat</li>
+                                            <li>Hanya bisa mengajukan sekali dalam satu periode</li>
+                                        </ol>
+                                    </div>
+
+                                    <div class="alert alert-warning small">
+                                        <i class="bi bi-clock-history"></i> <strong>Proses verifikasi:</strong>
+                                        <ul class="mt-2 mb-0">
+                                            <li>Verifikasi membutuhkan waktu 3-5 hari kerja</li>
+                                            <li>Anda akan mendapatkan notifikasi ketika status berubah</li>
+                                            <li>Jika ditolak, Anda bisa mengajukan ulang</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                @endif
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     </section>
 
