@@ -96,5 +96,12 @@
             </p>
         </div>
     </div>
+    <div style="position: absolute; bottom: 20px; left: 20px;">
+    <img src="{{ $qrCode }}" alt="QR Code Verifikasi" style="width: 60px;">
+    <p style="font-size: 10px; margin-top: 5px;">
+        Scan untuk verifikasi keaslian<br>
+        <small>{{ $verificationUrl }}</small>
+    </p>
+</div>
 </body>
 </html>

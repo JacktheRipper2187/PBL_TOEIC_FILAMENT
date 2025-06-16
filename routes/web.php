@@ -20,6 +20,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\KonfirmasiSkMahasiswaController;
 use App\Models\Mahasiswa;
+use App\Models\KonfirmasiSk;
 
 
 use Illuminate\Support\Facades\Auth;
@@ -178,3 +179,8 @@ Route::get('/jadwal-pelaksanaan/{id}', function ($id) {
         'jadwal_pelaksanaan' => $jadwal->jadwalPelaksanaan
     ]);
 });
+
+Route::get('/sk/verify/{id}', function ($id) {
+    $sk = KonfirmasiSk::findOrFail($id);
+    return view('sk_verification', compact('sk'));
+})->name('sk.verify');

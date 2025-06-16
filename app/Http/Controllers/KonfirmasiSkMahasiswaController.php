@@ -7,6 +7,7 @@ use App\Models\Mahasiswa;
 use App\Models\KonfirmasiSk;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class KonfirmasiSkMahasiswaController extends Controller
 {
@@ -41,52 +42,64 @@ class KonfirmasiSkMahasiswaController extends Controller
 
         return back()->with('success', 'Pengajuan konfirmasi SK berhasil dikirim.');
     }
-  public function generateSk($id)
+ public function generateSk($id)
 {
     $konfirmasi = KonfirmasiSk::with('mahasiswa')->findOrFail($id);
     $mahasiswa = $konfirmasi->mahasiswa;
+
+    // Data dasar
     $nomorSurat = 'SK/' . $konfirmasi->id . '/PL2.UPA-BHS/' . date('Y');
+    $tanggal = now()->isoFormat('D MMMM Y');
 
-    // Path ke gambar logo dan tanda tangan
-    $logoPath = public_path('assets/img/Logo Polinema.png');
-    $signaturePath = storage_path('app/public/signatures/ttd_atiqah.png'); // Ganti dengan path tanda tangan asli
-    
-    // Konversi gambar ke base64
-    $logoData = base64_encode(file_get_contents($logoPath));
-    $logo = 'data:image/png;base64,' . $logoData;
-    
-    $signatureData = file_exists($signaturePath) ? 
-        'data:image/png;base64,' . base64_encode(file_get_contents($signaturePath)) : 
-        null;
+    // QR Code
+    $verificationUrl = route('sk.verify', ['id' => $konfirmasi->id]);
+    $qrCode = 'data:image/png;base64,' . base64_encode(
+        QrCode::format('png')
+            ->size(100)
+            ->errorCorrection('H')
+            ->generate($verificationUrl)
+    );
 
-    // Generate PDF
-    $pdf = Pdf::loadView('mahasiswa.pengajuan-sk', [
+    // Logo dan Tanda Tangan
+    $logo = 'data:image/png;base64,' . base64_encode(
+        file_get_contents(public_path('assets/img/Logo Polinema.png'))
+    );
+
+    $signaturePath = storage_path('app/public/signatures/ttd_atiqah.png');
+    $signature = file_exists($signaturePath)
+        ? 'data:image/png;base64,' . base64_encode(file_get_contents($signaturePath))
+        : null;
+
+    // Data untuk PDF
+    $data = [
         'nomorSurat' => $nomorSurat,
         'nama' => $mahasiswa->nama_lengkap ?? '-',
         'nim' => $mahasiswa->nim ?? '-',
         'prodi' => $mahasiswa->prodi ?? '-',
         'jurusan' => $mahasiswa->jurusan ?? '-',
+        'tanggal' => $tanggal,
         'logoPath' => $logo,
-        'signature' => $signatureData,
-        'tanggal' => now()->isoFormat('D MMMM Y')
-    ]);
+        'signature' => $signature,
+        'qrCode' => $qrCode,
+        'verificationUrl' => $verificationUrl,
+    ];
 
-    // Set options untuk DomPDF
-    $pdf->setOptions([
-        'isHtml5ParserEnabled' => true,
-        'isRemoteEnabled' => true,
-        'defaultFont' => 'Arial',
-        'isPhpEnabled' => true
-    ]);
-    $pdf->setPaper('A4', 'portrait');
+    // Generate PDF
+    $pdf = Pdf::loadView('mahasiswa.pengajuan-sk', $data)
+        ->setOptions([
+            'isHtml5ParserEnabled' => true,
+            'isRemoteEnabled' => true,
+            'defaultFont' => 'Arial',
+            'isPhpEnabled' => true
+        ])
+        ->setPaper('A4', 'portrait');
 
+    // Simpan PDF ke storage
     $filename = 'SK_TOEIC_' . $mahasiswa->nim . '_' . now()->format('YmdHis') . '.pdf';
     $path = 'sk_terbit/' . $filename;
-
-    // Simpan ke storage
     Storage::disk('public')->put($path, $pdf->output());
 
-    // Update database
+    // Update status
     $konfirmasi->update([
         'status' => 'disetujui',
         'file_sk' => $path,
@@ -94,4 +107,5 @@ class KonfirmasiSkMahasiswaController extends Controller
 
     return back()->with('success', 'Surat Keterangan berhasil dibuat.');
 }
+
 }
