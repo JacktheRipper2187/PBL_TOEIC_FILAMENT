@@ -41,31 +41,55 @@ class KonfirmasiSkMahasiswaController extends Controller
 
         return back()->with('success', 'Pengajuan konfirmasi SK berhasil dikirim.');
     }
-    public function generateSk($id)
-    {
-        $konfirmasi = KonfirmasiSk::with('mahasiswa')->findOrFail($id);
-        $mahasiswa = $konfirmasi->mahasiswa;
+  public function generateSk($id)
+{
+    $konfirmasi = KonfirmasiSk::with('mahasiswa')->findOrFail($id);
+    $mahasiswa = $konfirmasi->mahasiswa;
 
-        // Generate PDF
-        $pdf = Pdf::loadView('mahasiswa.pengajuan-sk', [
-            'nama' => $mahasiswa->nama_lengkap ?? '-',
-            'nim' => $mahasiswa->nim ?? '-',
-            'prodi' => $mahasiswa->prodi ?? '-',
-            'jurusan' => $mahasiswa->jurusan ?? '-',
-        ]);
+    // Path ke gambar logo dan tanda tangan
+    $logoPath = public_path('assets/img/Logo Polinema.png');
+    $signaturePath = storage_path('app/public/signatures/ttd_atiqah.png'); // Ganti dengan path tanda tangan asli
+    
+    // Konversi gambar ke base64
+    $logoData = base64_encode(file_get_contents($logoPath));
+    $logo = 'data:image/png;base64,' . $logoData;
+    
+    $signatureData = file_exists($signaturePath) ? 
+        'data:image/png;base64,' . base64_encode(file_get_contents($signaturePath)) : 
+        null;
 
-        $filename = 'SK_TOEIC_' . $mahasiswa->nim . '_' . now()->format('YmdHis') . '.pdf';
-        $path = 'sk_terbit/' . $filename;
+    // Generate PDF
+    $pdf = Pdf::loadView('mahasiswa.pengajuan-sk', [
+        'nama' => $mahasiswa->nama_lengkap ?? '-',
+        'nim' => $mahasiswa->nim ?? '-',
+        'prodi' => $mahasiswa->prodi ?? '-',
+        'jurusan' => $mahasiswa->jurusan ?? '-',
+        'logoPath' => $logo,
+        'signature' => $signatureData,
+        'tanggal' => now()->isoFormat('D MMMM Y')
+    ]);
 
-        // Simpan ke storage
-        Storage::disk('public')->put($path, $pdf->output());
+    // Set options untuk DomPDF
+    $pdf->setOptions([
+        'isHtml5ParserEnabled' => true,
+        'isRemoteEnabled' => true,
+        'defaultFont' => 'Arial',
+        'isPhpEnabled' => true
+    ]);
+    $pdf->setPaper('A4', 'portrait');
 
-        // Update DB
-        $konfirmasi->update([
-            'status' => 'disetujui',
-            'file_sk' => $path,
-        ]);
+    $filename = 'SK_TOEIC_' . $mahasiswa->nim . '_' . now()->format('YmdHis') . '.pdf';
+    $path = 'sk_terbit/' . $filename;
 
-        return back()->with('success', 'Surat Keterangan berhasil dibuat.');
-    }
+    // Simpan ke storage
+    Storage::disk('public')->put($path, $pdf->output());
+
+    // Update database
+    $konfirmasi->update([
+        'status' => 'disetujui',
+        'file_sk' => $path,
+    ]);
+
+    return back()->with('success', 'Surat Keterangan berhasil dibuat.');
+}
 }
