@@ -875,7 +875,7 @@
 
                                 $statusBadge = match ($status) {
                                     'disetujui' => '<span class="badge bg-success">Disetujui</span>',
-                                    'pending' => '<span class="badge bg-warning text-dark">Pending</span>',
+                                    'pending' => '<span class="badge bg-warning text-dark">Menunggu</span>',
                                     'ditolak' => '<span class="badge bg-danger">Ditolak</span>',
                                     default => '<span class="badge bg-secondary">Belum Ada</span>',
                                 };
