@@ -3,8 +3,8 @@
 namespace App\Filament\Resources\KonfirmasiSkResource\Pages;
 
 use App\Filament\Resources\KonfirmasiSkResource;
+use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
-use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 
 class EditKonfirmasiSk extends EditRecord
@@ -14,24 +14,20 @@ class EditKonfirmasiSk extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Action::make('generateSk')
-                ->label('Generate SK')
-                ->icon('heroicon-o-document-check')
-                ->color('success')
-                ->requiresConfirmation()
-                ->action(function () {
-                    $record = $this->record;
-
-                    // Panggil controller kamu untuk generate SK
-                    app(\App\Http\Controllers\KonfirmasiSkMahasiswaController::class)->generateSk($record->id);
-
-                    $this->fillForm();
-                    Notification::make()
-                        ->title('Berhasil')
-                        ->body('Surat Keterangan berhasil digenerate.')
-                        ->success()
-                        ->send();
-                }),
+            Actions\DeleteAction::make(),
         ];
+    }
+
+    protected function getSavedNotification(): ?Notification
+    {
+        return Notification::make()
+            ->success()
+            ->title('Status diperbarui')
+            ->body('Status pengajuan SK TOEIC berhasil diperbarui.');
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
     }
 }
