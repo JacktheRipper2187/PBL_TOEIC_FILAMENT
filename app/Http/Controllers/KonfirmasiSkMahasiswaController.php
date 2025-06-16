@@ -45,6 +45,7 @@ class KonfirmasiSkMahasiswaController extends Controller
 {
     $konfirmasi = KonfirmasiSk::with('mahasiswa')->findOrFail($id);
     $mahasiswa = $konfirmasi->mahasiswa;
+    $nomorSurat = 'SK/' . $konfirmasi->id . '/PL2.UPA-BHS/' . date('Y');
 
     // Path ke gambar logo dan tanda tangan
     $logoPath = public_path('assets/img/Logo Polinema.png');
@@ -60,6 +61,7 @@ class KonfirmasiSkMahasiswaController extends Controller
 
     // Generate PDF
     $pdf = Pdf::loadView('mahasiswa.pengajuan-sk', [
+        'nomorSurat' => $nomorSurat,
         'nama' => $mahasiswa->nama_lengkap ?? '-',
         'nim' => $mahasiswa->nim ?? '-',
         'prodi' => $mahasiswa->prodi ?? '-',

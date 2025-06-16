@@ -62,7 +62,7 @@
     </table>
 
     <h3 style="text-align: center;">SURAT KETERANGAN SUDAH MENGIKUTI TOEIC</h3>
-    <p style="text-align: center;">Nomor: /PL2. UPA BHS/{{ date('Y') }}</p>
+    <p style="text-align: center;">Nomor: {{ $nomorSurat }}</p>
 
     <p>Yang bertanda tangan di bawah ini:</p>
     <ol>
